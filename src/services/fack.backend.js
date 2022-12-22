@@ -3,7 +3,7 @@ export const configureFakeBackend = () => {
     let users = [{ email: 'test@gmail.com', password: 'test123'}];
     let realFetch = window.fetch;
     window.fetch = function (url, opts) {
-        const isLoggedIn = opts.headers['Authorization'] === `Bearer ${Jwt_token}`;
+        const isLoggedIn = true;
         return new Promise((resolve, reject) => {
             // wrap in timeout to simulate server api call
             setTimeout(() => {

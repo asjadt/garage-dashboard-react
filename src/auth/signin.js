@@ -7,13 +7,15 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { GooglePlus,Facebook,Twitter,Github,Login,LOGIN,YourName,Password,RememberMe,SignIn,SignUp,LoginWithAuth0,LoginWithJWT } from '../constant';
 import { toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
+import { BACKEND, BACKEND_API } from '../utils/backend';
+import Axios from 'axios';
 
 const Logins = (props) => {
 
   const history = useHistory();
   const {loginWithRedirect} = useAuth0()
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("test123");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("12345678");
   const [loading,setLoading] = useState(false) 
 
   const [value, setValue] = useState(
@@ -136,19 +138,23 @@ const Logins = (props) => {
       body: ({ email, password })
     };
     
-    return fetch('/users/authenticate', requestOptions)
-    .then(handleResponse)
-    .then(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      setValue(man);
-      setName("Emay Walter");
-      localStorage.setItem('token', user);
-      window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
-      return user;
-    });
+   return Axios.post(`${BACKEND_API}/v1.0/login`,{ email, password }).then(response => {
+console.log(response.data.data)
+setValue(man);
+setName(`${response.data.data.first_Name} ${response.data.data.last_Name}`);
+ localStorage.setItem('token', response.data.data.token);
+console.log(response.data.data.token)
+
+window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
+return response.data.data.token;
+    }).catch(err => {
+console.log(err.response)
+    })
+   
   }
   return (
       <div className="page-wrapper">
+        
       <Container fluid={true} className="p-0">
         <div className="authentication-main m-0">
           <Row>
@@ -179,12 +185,18 @@ const Logins = (props) => {
                               {"LOADING..."}
                             </Button>
                             :
-                            <Button color="primary btn-block"   onClick={(event) => loginAuth(event)}>
-                                {LOGIN}
-                            </Button>
+                            <>
+                            <Button color="primary btn-block"   onClick={() => loginWithJwt(email,password)}>
+                                 {LOGIN}
+                             </Button>
+                            {/* <Button color="primary btn-block"   onClick={(event) => loginAuth(event)}>
+                                 {LOGIN}
+                             </Button> */}
+                            </>
+                            
                             }
                           </FormGroup>
-                          <div className="social mt-3">
+                          {/* <div className="social mt-3">
                             <Row form className="btn-showcase">
                               <Col md="6" sm="6">
                                 <Button color="secondary btn-block" onClick={loginWithRedirect}>
@@ -197,9 +209,9 @@ const Logins = (props) => {
                                 </Button>
                               </Col>
                             </Row>
-                          </div> 
-                          <div className="login-divider"></div>
-                          <div className="social mt-3">
+                          </div>  */}
+                          {/* <div className="login-divider"></div> */}
+                          {/* <div className="social mt-3">
                             <Row form className="btn-showcase">
                               <Col md="3" sm="6">
                                 <Button color="social-btn btn-fb" onClick={facebookAuth}>{Facebook}</Button>
@@ -214,7 +226,7 @@ const Logins = (props) => {
                                 <Button color="social-btn btn-github btn-block" onClick={githubAuth} >{Github}</Button>
                               </Col>
                             </Row>
-                          </div>
+                          </div> */}
                         </Form>
                       </div>
                       <div className="sub-cont">
