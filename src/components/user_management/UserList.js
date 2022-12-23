@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import BreadCrumb from '../../layout/Breadcrumb'
-import {Container,Row,Col,Card,CardHeader,Table} from "reactstrap"
+import {Container,Row,Col,Card,CardHeader,Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody} from "reactstrap"
 import { HorizontalBorders,VerticalBorders,BothBordeds,BorderlessTable,DefaultTableBorder,DoubleBorder,BorderBottomColor,DottedBorder,DashedBorder,SolidBorder} from "../../constant";
-import { BACKEND_API } from '../../utils/backend';
+import { BACKEND_API, http } from '../../utils/backend';
 import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView2 from '../../utils/pagination';
+import UserForm from './forms/UserForm';
 
 const UserList = () => {
     const [loading,setLoading] = useState(false);
@@ -17,14 +18,25 @@ const UserList = () => {
     const [total,setTotal] = useState(null)
     const [lastPage,setLastPage] = useState(0)
     const [links,setLinks] = useState(null)
-    const [ current_page, set_current_page] = useState(0)
+    const [ current_page, set_current_page] = useState(0);
+ // modal
+ const [Large, setLarge] = useState(false);
+ const LargeModaltoggle = () => setLarge(!Large);
+
+ // end modal
+ const handlePerPage = (e) => {
+const newValue = parseInt(e.target.value);
+setPerPage(newValue)
+console.log(newValue)
+fetchData(newValue)
+  }
 
     const fetchData = (urlOrPerPage) => {
         setLoading(true)
         setData(null)
         let url;
         if(typeof urlOrPerPage === "string"){
-          url = urlOrPerPage.replace("http", "https");
+          url = urlOrPerPage.replace("http", http);
         
         } else {
           url = `${BACKEND_API}/v1.0/users/${urlOrPerPage}`
@@ -66,10 +78,31 @@ return <div   className="d-flex align-items-center justify-content-center">
 
 </div>
     }
+   
+
     return (
         <Fragment>
             <BreadCrumb parent="Home" subparent="User Management / users" title="Manage Users"/>
             <Container fluid={true}>
+               <Row className='mb-3'>
+                <Col sm="9">
+                </Col>
+                <Col sm="3" >
+                <Button color="primary" onClick={LargeModaltoggle}>Create User</Button>
+                </Col>
+                <Col sm="12">
+                    <Modal isOpen={Large} toggle={LargeModaltoggle} size="lg">
+                      <ModalHeader toggle={LargeModaltoggle} className="text-center">
+                       User
+                      </ModalHeader>
+                      <ModalBody>
+                      <UserForm toggleModal={LargeModaltoggle} fetchData={fetchData} perPage={perPage}></UserForm>
+                      </ModalBody>
+                    </Modal>
+            
+                  </Col> 
+               </Row>
+
                 <Row>
               
                     <Col sm="12">
@@ -85,15 +118,21 @@ return <div   className="d-flex align-items-center justify-content-center">
                                             <th scope="col">{"First Name"}</th>
                                             <th scope="col">{"Last Name"}</th>
                                             <th scope="col">{"email"}</th>
+                                            <th scope="col">{"phone"}</th>
+                                            <th scope="col">{"role"}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {data.map(el => {
-                                            return (   <tr className="Dashed">
+                                            return (   <tr className="Dashed" key={el.id}>
                                             <th scope="row">{el.id}</th>
                                             <td>{el.first_Name}</td>
                                             <td>{el.last_Name}</td>
                                             <td>{el.email}</td>
+                                            <td>{el.phone}</td>
+                                            <td>{el.roles.map(el2 => {
+                                                return <span>{el2.name} </span>
+                                            })}</td>
                                         </tr>)
                                         })}
                                      
@@ -101,23 +140,40 @@ return <div   className="d-flex align-items-center justify-content-center">
                                     </tbody>
                                 </Table>
                             </div>
-                            <Row>
-                                <Col sm="3"></Col>
+                            <Row className='mt-5'>
+                                <Col sm="4" className='text-center'>
+                             
+            <div className="items">
+              <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
+                <option value={6}>6</option>
+                <option value={9}>9</option>
+                <option value={12}>12</option>
+                <option value={15}>15</option>
+               
+              </select>
+            </div>
+        
+   
+          
+         
+                                </Col>
+            <Col sm="2">   <div className="number">{from} - {to} of {total}</div></Col>
                                 <Col sm="6" className='text-center'>
-                                <nav aria-label="Page navigation example   ">
-  <ul className="pagination  ">
-
+                            
+                    <Pagination aria-label="Page navigation example" className="pagination-primary">
+                       
+                    
     {
       links? links.map((el,index,arr) => setLinksView2(el,index,arr,fetchData,current_page,lastPage)):null
     }
     
-  
+    </Pagination>
    
   
 
-  </ul>
-</nav>
+
                                 </Col>
+                               
                             </Row>
                           
          

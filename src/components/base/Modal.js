@@ -247,6 +247,7 @@ const Modals = (props) => {
               </CardBody>
             </Card>
           </Col>
+         
           <Col sm="12">
             <Card>
               <CardHeader>
@@ -256,7 +257,7 @@ const Modals = (props) => {
                  <Button color="primary" onClick={LargeModaltoggle}>{LargeModal}</Button>
                     <Modal isOpen={Large} toggle={LargeModaltoggle} size="lg">
                       <ModalHeader toggle={LargeModaltoggle}>
-                        {LargeModal}
+                        {LargeModal} 
                       </ModalHeader>
                       <ModalBody>
                         ....
