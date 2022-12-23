@@ -46,6 +46,8 @@ import ComingsoonVideo from "./pages/comingSoon/ComingsoonVideo";
 import Maintenance from "./pages/Maintenance";
 
 import Callback from './auth/callback'
+import { apiClient } from './utils/apiClient';
+import { BACKEND_API } from './utils/backend';
 
 // setup fake backend
 configureFakeBackend();
@@ -56,7 +58,7 @@ const Root = (props) =>  {
     const animation = localStorage.getItem("animation") || ConfigDB.data.router_animation || 'fade'
     const abortController = new AbortController();
     const [currentUser, setCurrentUser] = useState(false);
-    const [authenticated,setAuthenticated] = useState(false)
+    const [authenticated,setAuthenticated] = useState(false);
     const jwt_token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -65,7 +67,21 @@ const Root = (props) =>  {
         fetch('/users', requestOptions).then(handleResponse)
         const color = localStorage.getItem('color')
         setAnim(animation)
-        firebase_app.auth().onAuthStateChanged(setCurrentUser);
+
+        apiClient().get(`${BACKEND_API}/v1.0/user`)
+        .then(response => {
+            console.log(response.data)
+            setCurrentUser(response.data)
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
+
+        //  firebase_app.auth().onAuthStateChanged(setCurrentUser);
+
+
+
+
         setAuthenticated(JSON.parse(localStorage.getItem("authenticated")))
         console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
         console.disableYellowBox = true;
@@ -108,10 +124,10 @@ const Root = (props) =>  {
                       <Route  path={`${process.env.PUBLIC_URL}/pages/comingsoonVideo`} component={ComingsoonVideo}></Route>
                         
                       <Route  path={`${process.env.PUBLIC_URL}/callback`} render={() => <Callback/>} />
-                      
+                  
                       {currentUser !== null || authenticated || jwt_token ?
                             <App>
-                            
+                       
                             <Route exact path={`${process.env.PUBLIC_URL}/`} render={() => {
                                     return (<Redirect to={`${process.env.PUBLIC_URL}/dashboard/default`} />)
                                 }} />

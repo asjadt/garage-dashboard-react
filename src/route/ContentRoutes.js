@@ -199,8 +199,20 @@ import KnowledgebaseComponent from "../components/knowledgebase/KnowledgebaseCom
 
 // Support Ticket
 import SupportTicket from "../components/support-ticket/supportTicket";
+import UserList from '../components/user_management/UserList'
 
 export const routes = [
+
+  { path: "/users/list" ,Component: UserList},
+  
+
+
+
+
+
+
+
+
   { path: '/dashboard/default', Component: Default },
   { path: "/dashboard/hospital",Component: Hospital },
   { path: "/dashboard/sass",Component: Sass},

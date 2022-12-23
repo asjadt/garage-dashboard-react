@@ -9,10 +9,32 @@ import {
     Airplay,
     FolderPlus,
     File,
-    Command, Cloud, Book, FileText, Server, Image, Sliders, Map, GitPullRequest, Calendar, Edit, Mail, MessageSquare, UserCheck, Layers, HelpCircle, Database, Headphones, Mic, ShoppingBag, Search, AlertOctagon, Lock, Briefcase, BarChart
+    Command, Cloud, Book, FileText, Server, Image, Sliders, Map, GitPullRequest, Calendar, Edit, Mail, MessageSquare, UserCheck, Layers, HelpCircle, Database, Headphones, Mic, ShoppingBag, Search, AlertOctagon, Lock, Briefcase, BarChart,
+    UserX,
+    User,
+    UserMinus
 } from 'react-feather';
 
 export const MENUITEMS = [
+    {
+        title: 'Dashboard', icon: Home, type: 'link', path: `${process.env.PUBLIC_URL}/dashboard/default`, active: false, bookmark: true,permissionList:["dashboard_view"]
+    },
+    {
+        title: 'User Management', icon: UserX, 
+        type: 'sub', 
+        badgeType: 'primary', 
+        active: false,
+        permissionList:[],
+        children: [
+            { path: `${process.env.PUBLIC_URL}/users/list`, title: 'Users', type: 'link',
+            permission:"users_view"
+         },
+            { path: `${process.env.PUBLIC_URL}/users/list`, title: 'Users', type: 'link' },
+            { path: `${process.env.PUBLIC_URL}/dashboard/sass`, title: 'Sass', type: 'link' },
+            { path: `${process.env.PUBLIC_URL}/dashboard/crm`, title: 'Crm', type: 'link' },
+            { path: `${process.env.PUBLIC_URL}/dashboard/crypto`, title: 'Crypto', type: 'link' }
+        ]
+    },
     {
         title: 'Dashboard', icon: Home, type: 'sub', badgeType: 'primary', active: false, children: [
             { path: `${process.env.PUBLIC_URL}/dashboard/default`, title: 'Default', type: 'link' },

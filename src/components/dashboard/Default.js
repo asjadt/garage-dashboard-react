@@ -69,7 +69,9 @@ const Default = () => {
   
   return (
     <Fragment>
+
       <BreadCrumb parent="Home" subparent="Dashboard" title="Default"/>
+      
       <Container fluid={true}>
         <Row>
           <Col lg="12" className="xl-100">
