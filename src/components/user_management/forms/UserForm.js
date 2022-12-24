@@ -5,15 +5,21 @@ import SweetAlert from 'sweetalert2'
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 
-const UserForm = ({toggleModal,fetchData,perPage}) => {
-    const { register, handleSubmit, errors,setError } = useForm();
+const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
+    const { register, handleSubmit,setValue, errors,setError } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
     const [roles,setRoles] = useState([]);
 
     useEffect(() => {
         loadRoles()
-
+        console.log(userUpdateData)
+        if(type == "update") {
+          const fields = ['first_Name', 'last_Name', 'email', 'phone','country','city','postcode','address_line_1','address_line_2'];
+          fields.forEach(field => setValue(field, userUpdateData[field]));
+          setValue("role",userUpdateData.roles[0].name)
+      
+        }
         return () => {
             
         };
@@ -69,12 +75,12 @@ setRoles(response.data.roles)
         <Col sm="12">
         <Card>
               <CardHeader>
-                <h5>Create User</h5>
+                <h5><span style={{textTransform:"capitalize"}}>{type}</span> User</h5>
               </CardHeader>
               <CardBody>
                 <Form className="needs-validation" noValidate="" onSubmit={handleSubmit(onSubmit)}>
-                  <div className="form-row">
-                    <Col md="4 mb-3">
+                  <div className="form-row mb-2">
+                    <Col md="6 mb-3">
                       <Label htmlFor="first_Name">First Name</Label>
                       <Input className="form-control" name="first_Name" type="text" placeholder="First name" innerRef={register({ required: false })} />
                       <span>{errors.firstName && 'Please provide First name'}</span>
@@ -87,7 +93,7 @@ setRoles(response.data.roles)
                       :(null)}
                      
                     </Col>
-                    <Col md="4 mb-3">
+                    <Col md="6 mb-3">
                       <Label htmlFor="last_Name">Last Name</Label>
                       <Input className="form-control" name="last_Name" type="text" placeholder="Last name" innerRef={register({ required: false })} />
                       <span>{errors.last_Name && 'Last name is required'}</span>
@@ -99,7 +105,7 @@ setRoles(response.data.roles)
                       )
                       :(null)}
                     </Col>
-                    <Col md="4 mb-3">
+                    <Col md="6 mb-3">
                       <Label htmlFor="validationCustomUsername">Email</Label>
                       <InputGroup>
                       <InputGroupAddon addonType="prepend">
@@ -116,8 +122,19 @@ setRoles(response.data.roles)
                       :(null)}
                       </InputGroup>
                     </Col>
+                    <Col md="6 mb-3">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input className="form-control" name="phone" type="text" placeholder="phone" innerRef={register({ required: false })} />
+                      <span>{errors.phone && 'Last name is required'}</span>
+                      {serverSideErrors?(
+                        !serverSideErrors.phone?(
+                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.phone[0]}</div>)
+                      )
+                      :(null)}
+                    </Col>
                   </div>
-                  <div className="form-row">
+                  <div className="form-row mb-2">
                     <Col md="6 mb-3">
                       <Label htmlFor="password">Password</Label>
                       <Input className="form-control" name="password" type="text" placeholder="password" innerRef={register({ required: false, })} />
@@ -142,40 +159,14 @@ setRoles(response.data.roles)
                       )
                       :(null)}
                     </Col>
-                    <Col md="4 mb-3">
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input className="form-control" name="phone" type="text" placeholder="phone" innerRef={register({ required: false })} />
-                      <span>{errors.phone && 'Last name is required'}</span>
-                      {serverSideErrors?(
-                        !serverSideErrors.phone?(
-                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.phone[0]}</div>)
-                      )
-                      :(null)}
-                    </Col>
-                    <Col md="4 mb-3">
-                      <Label htmlFor="phone">Address Line 1</Label>
-                      <Input className="form-control" name="address_line_1" type="text" placeholder="address line 1" innerRef={register({ required: false })} />
-                      <span>{errors.address_line_1 && 'Last name is required'}</span>
-                      {serverSideErrors?(
-                        !serverSideErrors.address_line_1?(
-                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.address_line_1[0]}</div>)
-                      )
-                      :(null)}
-                    </Col>
-                    <Col md="4 mb-3">
-                      <Label htmlFor="phone">Address Line 2</Label>
-                      <Input className="form-control" name="address_line_2" type="text" placeholder="address line 2" innerRef={register({ required: false })} />
-                      <span>{errors.address_line_2 && 'Last name is required'}</span>
-                      {serverSideErrors?(
-                        !serverSideErrors.address_line_2?(
-                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.address_line_2[0]}</div>)
-                      )
-                      :(null)}
-                    </Col>
-                    <Col md="4 mb-3">
+                 
+                  
+                   
+                  
+                  
+                  </div>
+                  <div className='form-row mb-2'>
+                  <Col md="6 mb-3">
                       <Label htmlFor="country">Country</Label>
                       <Input className="form-control" name="country" type="text" placeholder="country" innerRef={register({ required: false })} />
                       <span>{errors.country && 'Last name is required'}</span>
@@ -186,7 +177,7 @@ setRoles(response.data.roles)
                       )
                       :(null)}
                     </Col>
-                    <Col md="4 mb-3">
+                    <Col md="6 mb-3">
                       <Label htmlFor="city">City</Label>
                       <Input className="form-control" name="city" type="text" placeholder="city" innerRef={register({ required: false })} />
                       <span>{errors.city && 'Last name is required'}</span>
@@ -197,7 +188,7 @@ setRoles(response.data.roles)
                       )
                       :(null)}
                     </Col>
-                    <Col md="4 mb-3">
+                    <Col md="6 mb-3">
                       <Label htmlFor="postcode">Postcode</Label>
                       <Input className="form-control" name="postcode" type="text" placeholder="postcode" innerRef={register({ required: false })} />
                       <span>{errors.postcode && 'Last name is required'}</span>
@@ -208,7 +199,32 @@ setRoles(response.data.roles)
                       )
                       :(null)}
                     </Col>
-                    <Col md="4 mb-3">
+                  <Col md="6 mb-3">
+                      <Label htmlFor="phone">Address Line 1</Label>
+                      <Input className="form-control" name="address_line_1" type="textarea" placeholder="address line 1" innerRef={register({ required: false })} />
+                      <span>{errors.address_line_1 && 'Last name is required'}</span>
+                      {serverSideErrors?(
+                        !serverSideErrors.address_line_1?(
+                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.address_line_1[0]}</div>)
+                      )
+                      :(null)}
+                    </Col>
+                    <Col md="6 mb-3">
+                      <Label htmlFor="phone">Address Line 2</Label>
+                      <Input className="form-control" name="address_line_2" type="textarea" placeholder="address line 2" innerRef={register({ required: false })} />
+                      <span>{errors.address_line_2 && 'Last name is required'}</span>
+                      {serverSideErrors?(
+                        !serverSideErrors.address_line_2?(
+                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.address_line_2[0]}</div>)
+                      )
+                      :(null)}
+                    </Col>
+                   
+                  </div>
+                  <div className='form-row mb-2'>
+                  <Col md="6 mb-3">
                     <FormGroup>
                     <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} >
                       <option value="">{"Open this select Role"}</option>
@@ -231,17 +247,8 @@ setRoles(response.data.roles)
                  
                     
                     </Col>
-                  
                   </div>
-                  {/* <FormGroup>
-                    <div className="form-check">
-                      <div className="checkbox p-0">
-                        <Input className="form-check-input" id="invalidCheck" type="checkbox" />
-                        <Label className="form-check-label" htmlFor="invalidCheck">{"Agree to terms and conditions"}</Label>
-                      </div>
-                      <div className="invalid-feedback">{"You must agree before submitting."}</div>
-                    </div>
-                  </FormGroup> */} 
+                
                   {
  loading?( <div className="loader-box">
  <div className="loader-1"></div>

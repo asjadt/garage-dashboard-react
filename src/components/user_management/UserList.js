@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import BreadCrumb from '../../layout/Breadcrumb'
-import {Container,Row,Col,Card,CardHeader,Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody} from "reactstrap"
+import {Container,Row,Col,Card,CardHeader,Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input} from "reactstrap"
 import { HorizontalBorders,VerticalBorders,BothBordeds,BorderlessTable,DefaultTableBorder,DoubleBorder,BorderBottomColor,DottedBorder,DashedBorder,SolidBorder} from "../../constant";
 import { BACKEND_API, http } from '../../utils/backend';
 import { apiClient } from '../../utils/apiClient';
@@ -8,6 +8,10 @@ import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView2 from '../../utils/pagination';
 import UserForm from './forms/UserForm';
+import SweetAlert from 'sweetalert2'
+import {
+Edit,Delete
+} from 'react-feather';
 
 const UserList = () => {
     const [loading,setLoading] = useState(false);
@@ -20,10 +24,46 @@ const UserList = () => {
     const [links,setLinks] = useState(null)
     const [ current_page, set_current_page] = useState(0);
  // modal
- const [Large, setLarge] = useState(false);
- const LargeModaltoggle = () => setLarge(!Large);
+ const [userCreateModal, setUserCreateModal] = useState(false);
+ const userCreateModaltoggle = () => setUserCreateModal(!userCreateModal);
+
+ const [userUpdateData,setUserUpdateData] = useState(null);
+ const [userUpdateModal, setUserUpdateModal] = useState(false);
+ const userUpdateModaltoggle = () => setUserUpdateModal(!userUpdateModal);
+ const editForm = (el) => {
+    userUpdateModaltoggle()
+    setUserUpdateData(el)
+ }
 
  // end modal
+
+ const deleteFunc = (id) => {
+    SweetAlert.fire({
+        title: 'Are you sure?',
+        text: "Once deleted, you will not be able to recover this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'cancel',
+        reverseButtons: true
+      })
+      .then((result) => {
+        if (result.value) {
+            SweetAlert.fire(
+            'Deleted!',
+            'User has been deleted.',
+            'success'
+          )
+        }
+        else{
+            SweetAlert.fire(
+               'User is safe'
+              )
+        }
+ })
+}
+
+
  const handlePerPage = (e) => {
 const newValue = parseInt(e.target.value);
 setPerPage(newValue)
@@ -31,9 +71,12 @@ console.log(newValue)
 fetchData(newValue)
   }
 
-    const fetchData = (urlOrPerPage) => {
-        setLoading(true)
-        setData(null)
+    const fetchData = (urlOrPerPage,useLoading=true) => {
+        if(useLoading) {
+            setLoading(true)
+        }
+      
+        //  setData(null)
         let url;
         if(typeof urlOrPerPage === "string"){
           url = urlOrPerPage.replace("http", http);
@@ -59,9 +102,14 @@ fetchData(newValue)
             console.log(err.response)
         })
     }
+    const [searchKey,setSearchKey] = useState("");
+    const searchFunc = (e) => {
+        setSearchKey(e.target.value);
+        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?search_key=${e.target.value}`,false)
+    }
   
     useEffect(() => {
-        fetchData(perPage);
+        fetchData(perPage,);
     },[])
 
 
@@ -82,25 +130,16 @@ return <div   className="d-flex align-items-center justify-content-center">
 
     return (
         <Fragment>
+            
             <BreadCrumb parent="Home" subparent="User Management / users" title="Manage Users"/>
             <Container fluid={true}>
                <Row className='mb-3'>
                 <Col sm="9">
                 </Col>
                 <Col sm="3" >
-                <Button color="primary" onClick={LargeModaltoggle}>Create User</Button>
+                <Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>
                 </Col>
-                <Col sm="12">
-                    <Modal isOpen={Large} toggle={LargeModaltoggle} size="lg">
-                      <ModalHeader toggle={LargeModaltoggle} className="text-center">
-                       User
-                      </ModalHeader>
-                      <ModalBody>
-                      <UserForm toggleModal={LargeModaltoggle} fetchData={fetchData} perPage={perPage}></UserForm>
-                      </ModalBody>
-                    </Modal>
-            
-                  </Col> 
+              
                </Row>
 
                 <Row>
@@ -110,6 +149,24 @@ return <div   className="d-flex align-items-center justify-content-center">
                             <CardHeader>
                             <h5>User Management</h5><span> Manage your Users </span>
                             </CardHeader>
+                            <Row>
+                            <Col sm="3">
+                                </Col>
+                                <Col sm="6">
+                                <CardHeader>
+                                <Form className="search-form">
+                  <FormGroup className="m-0">
+                    <Label className="sr-only">Search</Label>
+                    <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus/>
+                  </FormGroup>
+                  
+                </Form>
+                
+              </CardHeader>
+                                
+                                </Col>
+                            </Row>
+                          
                             <div className="table-responsive">
                                 <Table>
                                     <thead>
@@ -120,6 +177,7 @@ return <div   className="d-flex align-items-center justify-content-center">
                                             <th scope="col">{"email"}</th>
                                             <th scope="col">{"phone"}</th>
                                             <th scope="col">{"role"}</th>
+                                            <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -133,6 +191,13 @@ return <div   className="d-flex align-items-center justify-content-center">
                                             <td>{el.roles.map(el2 => {
                                                 return <span>{el2.name} </span>
                                             })}</td>
+                                            <td>
+                                                <Edit color="#007bff" size={20} style={{cursor:"pointer"}}
+                                                onClick={() => editForm(el)}
+                                                ></Edit>
+                                                <Delete color="#ff3f70" size={20} style={{cursor:"pointer"}}
+                                                onClick={() => deleteFunc(el.id)}></Delete>
+                                            </td>
                                         </tr>)
                                         })}
                                      
@@ -182,6 +247,23 @@ return <div   className="d-flex align-items-center justify-content-center">
                   
                 </Row>
             </Container>
+
+            <Modal isOpen={userCreateModal} toggle={userCreateModaltoggle} size="lg">
+                      <ModalHeader toggle={userCreateModaltoggle} className="text-center">
+                       User
+                      </ModalHeader>
+                      <ModalBody>
+                      <UserForm toggleModal={userCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></UserForm>
+                      </ModalBody>
+            </Modal>
+            <Modal isOpen={userUpdateModal} toggle={userUpdateModaltoggle} size="lg">
+                      <ModalHeader toggle={userUpdateModaltoggle} className="text-center">
+                       User
+                      </ModalHeader>
+                      <ModalBody>
+                      <UserForm toggleModal={userUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" userUpdateData={userUpdateData}></UserForm>
+                      </ModalBody>
+            </Modal>
         </Fragment>
     );
 };

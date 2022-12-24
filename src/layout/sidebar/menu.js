@@ -37,7 +37,7 @@ export const MENUITEMS = [
     },
     {
         title: 'Dashboard', icon: Home, type: 'sub', badgeType: 'primary', active: false, children: [
-            { path: `${process.env.PUBLIC_URL}/dashboard/default`, title: 'Default', type: 'link' },
+            // { path: `${process.env.PUBLIC_URL}/dashboard/default`, title: 'Default', type: 'link' },
             { path: `${process.env.PUBLIC_URL}/dashboard/hospital`, title: 'Hospital', type: 'link' },
             { path: `${process.env.PUBLIC_URL}/dashboard/sass`, title: 'Sass', type: 'link' },
             { path: `${process.env.PUBLIC_URL}/dashboard/crm`, title: 'Crm', type: 'link' },
