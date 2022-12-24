@@ -6,7 +6,7 @@ import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 
 const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
-    const { register, handleSubmit,setValue, errors,setError } = useForm();
+    const { register, handleSubmit,setValue, errors,setError,getValues } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
     const [roles,setRoles] = useState([]);
@@ -15,7 +15,7 @@ const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
         loadRoles()
         console.log(userUpdateData)
         if(type == "update") {
-          const fields = ['first_Name', 'last_Name', 'email', 'phone','country','city','postcode','address_line_1','address_line_2'];
+          const fields = ['id','first_Name', 'last_Name', 'email', 'phone','country','city','postcode','address_line_1','address_line_2'];
           fields.forEach(field => setValue(field, userUpdateData[field]));
           setValue("role",userUpdateData.roles[0].name)
       
@@ -39,27 +39,53 @@ setRoles(response.data.roles)
   const onSubmit = data => {
     setLoading(true)
     setServerSideErrors(null)
-    
-    apiClient().post(`${BACKEND_API}/v1.0/users`,data)
-    .then(response => {
-        console.log(response.data)
-        setLoading(false)
-        if(response.data) {
-            SweetAlert.fire({title:"Success", text:"User Created Successfully!", icon:"success"});
-            fetchData(perPage)
-            toggleModal();
-        }
-    })
-    .catch(error => {
-        setLoading(false)
-        console.log("error",error.response)
-        if(error.response?.status == 422) {
-            setServerSideErrors(error.response.data.errors)
-            // setError('', { type: 'custom', message: 'custom message' })
-            SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-            // alert(error.response.data.message)
-        }
-    })
+    if(type == "update") {
+      apiClient().put(`${BACKEND_API}/v1.0/users`,data)
+      .then(response => {
+          console.log(response.data)
+          setLoading(false)
+          if(response.data) {
+              SweetAlert.fire({title:"Success", text:"User Updated Successfully!", icon:"success"});
+              fetchData(perPage)
+              toggleModal();
+          }
+      })
+      .catch(error => {
+          setLoading(false)
+          console.log("error",error.response)
+          if(error.response?.status == 422) {
+              setServerSideErrors(error.response.data.errors)
+              // setError('', { type: 'custom', message: 'custom message' })
+              SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
+              // alert(error.response.data.message)
+          }
+      })
+  
+    }
+    if(type == "create") {
+      apiClient().post(`${BACKEND_API}/v1.0/users`,data)
+      .then(response => {
+          console.log(response.data)
+          setLoading(false)
+          if(response.data) {
+              SweetAlert.fire({title:"Success", text:"User Created Successfully!", icon:"success"});
+              fetchData(perPage)
+              toggleModal();
+          }
+      })
+      .catch(error => {
+          setLoading(false)
+          console.log("error",error.response)
+          if(error.response?.status == 422) {
+              setServerSideErrors(error.response.data.errors)
+              // setError('', { type: 'custom', message: 'custom message' })
+              SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
+              // alert(error.response.data.message)
+          }
+      })
+  
+    }
+   
    
     // if (data !== '') {
       
@@ -80,6 +106,8 @@ setRoles(response.data.roles)
               <CardBody>
                 <Form className="needs-validation" noValidate="" onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-row mb-2">
+                  <Input className="form-control" name="id" type="hidden" innerRef={register({ required: false })} />
+
                     <Col md="6 mb-3">
                       <Label htmlFor="first_Name">First Name</Label>
                       <Input className="form-control" name="first_Name" type="text" placeholder="First name" innerRef={register({ required: false })} />
@@ -226,11 +254,12 @@ setRoles(response.data.roles)
                   <div className='form-row mb-2'>
                   <Col md="6 mb-3">
                     <FormGroup>
-                    <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} >
+                    <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} value={userUpdateData?.roles[0].name}>
+                      {console.log(userUpdateData.role)}
                       <option value="">{"Open this select Role"}</option>
                       {roles.map(el => {
                         return (
-                            <option value={el.name} key={el.id}>{el.name}</option>
+                            <option value={el.name} key={el.id}  >{el.name}</option>
                         )
                       })}
                     
