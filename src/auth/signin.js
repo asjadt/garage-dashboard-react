@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
 import { BACKEND, BACKEND_API } from '../utils/backend';
 import Axios from 'axios';
+import { getPermissions } from '../utils/helperFunctions';
 
 const Logins = (props) => {
 
@@ -143,8 +144,8 @@ console.log(response.data.data)
 setValue(man);
 setName(`${response.data.data.first_Name} ${response.data.data.last_Name}`);
  localStorage.setItem('token', response.data.data.token);
-console.log(response.data.data.token)
-
+ localStorage.setItem('user', JSON.stringify(response.data.data));
+ localStorage.setItem('permissions', JSON.stringify(getPermissions(response.data.data)));
 window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
 return response.data.data.token;
     }).catch(err => {

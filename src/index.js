@@ -75,6 +75,7 @@ const Root = (props) =>  {
         })
         .catch(err => {
             console.log(err.response)
+            localStorage.clear()
         })
 
         //  firebase_app.auth().onAuthStateChanged(setCurrentUser);
@@ -124,8 +125,8 @@ const Root = (props) =>  {
                       <Route  path={`${process.env.PUBLIC_URL}/pages/comingsoonVideo`} component={ComingsoonVideo}></Route>
                         
                       <Route  path={`${process.env.PUBLIC_URL}/callback`} render={() => <Callback/>} />
-                  
-                      {currentUser !== null || authenticated || jwt_token ?
+               {console.log("jwt_token",jwt_token)}
+                      {jwt_token ?
                             <App>
                        
                             <Route exact path={`${process.env.PUBLIC_URL}/`} render={() => {

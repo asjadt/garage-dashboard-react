@@ -197,9 +197,9 @@ const Sidebar = () => {
                          <li className={`left-arrow ${layout === 'rtl' ? hideLeftArrowRTL ? 'd-none' : '' : hideLeftArrow ? 'd-none' : ''}`}
                             onClick={(wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToLeftRTL : scrollToLeft}><i className="fa fa-angle-left"></i></li>
                          {
-                            MENUITEMS.map((menuItem, i) => 
+                            MENUITEMS.map((menuItem, i) => {
                                
-                                <li className={`${menuItem.active ? 'active' : ''}`} key={i}>
+                             return   menuItem.show?(<li className={`${menuItem.active ? 'active' : ''}`} key={i}>
                                     {(menuItem.sidebartitle) ? <div className="sidebar-title">{menuItem.sidebartitle}</div>
                                         : ''}
                                     {(menuItem.type === 'sub') ?
@@ -222,7 +222,8 @@ const Sidebar = () => {
                                             style={menuItem.active ? { opacity: 1, transition: 'opacity 500ms ease-in' } : {}}
                                         >
                                             {menuItem.children.map((childrenItem, index) =>
-                                                <li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
+                                                {
+                                                return childrenItem.show?(<li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
                                                     {(childrenItem.type === 'sub') ?
                                                         <a href={childrenItem.path} onClick={() => toggletNavActive(childrenItem)} >
                                                             <i className="fa fa-circle"></i>{childrenItem.title} <i className="fa fa-angle-down pull-right"></i></a>
@@ -237,24 +238,26 @@ const Sidebar = () => {
                                                     {childrenItem.children ?
                                                         <ul className={`sidebar-submenu ${childrenItem.active ? 'menu-open' : 'active'}`}>
                                                             {childrenItem.children.map((childrenSubItem, key) =>
-                                                                <li className={childrenSubItem.active ? 'active' : ''} key={key}>
+                                                                {return childrenSubItem.show?(<li className={childrenSubItem.active ? 'active' : ''} key={key}>
                                                                     {(childrenSubItem.type === 'link') ?
                                                                         <Link  className={childrenSubItem.active ? 'active' : ''}
                                                                             onClick={() => toggletNavActive(childrenSubItem)} to={childrenSubItem.path} >
                                                                             <i className="fa fa-circle"></i>{childrenSubItem.title}
                                                                         </Link>
                                                                         : ''}
-                                                                </li>
+                                                                </li>):(null)}
                                                             )}
                                                         </ul>
                                                     : ''}
-                                                </li>
+                                                </li>):(null)
+                                                
+                                            }
                                             )}
                                             
                                         </ul>
                                         : ''}   
                                 </li>
-
+                            ):(null)}
                             )
                         }
                          <li className={`right-arrow ${layout === 'rtl' ? hideRightArrowRTL ? 'd-none' : '' : hideRightArrow ? 'd-none' : ''}`}

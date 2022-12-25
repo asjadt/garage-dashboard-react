@@ -59,6 +59,9 @@ setRoles(response.data.roles)
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
+          if(error.response?.status == 401) {
+            SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+          }
       })
   
     }
@@ -81,6 +84,9 @@ setRoles(response.data.roles)
               // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
+          }
+          if(error.response?.status == 401) {
+            SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           }
       })
   
@@ -255,7 +261,7 @@ setRoles(response.data.roles)
                   <Col md="6 mb-3">
                     <FormGroup>
                     <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} value={userUpdateData?.roles[0].name}>
-                      {console.log(userUpdateData.role)}
+                     
                       <option value="">{"Open this select Role"}</option>
                       {roles.map(el => {
                         return (

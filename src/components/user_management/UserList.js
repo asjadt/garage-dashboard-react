@@ -12,21 +12,21 @@ import SweetAlert from 'sweetalert2'
 import {
     Edit, Delete, Eye
 } from 'react-feather';
-import UserView from './vew/UserView';
+import UserView from './vews/UserView';
 import DatePicker from "react-datepicker";
+import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
+import { checkPermissions } from '../../utils/helperFunctions';
 
 
 
 
 const UserList = () => {
+ 
+let permissions = JSON.parse(localStorage.getItem("permissions"));
 
-      
-      
-    // new Date(
-    //     new Date().getFullYear(),
-    //     new Date().getMonth(),
-    //     1)
 
+    
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [perPage, setPerPage] = useState(9)
@@ -71,6 +71,7 @@ const UserList = () => {
     const [userViewData, setUserViewData] = useState(null);
     const [userViewModal, setUserViewModal] = useState(false);
     const userViewModaltoggle = () => setUserViewModal(!userViewModal);
+    
     const viewForm = (el) => {
         userViewModaltoggle()
         setUserViewData(el)
@@ -131,7 +132,7 @@ const UserList = () => {
         //  setData(null)
         let url;
         if (typeof urlOrPerPage === "string") {
-            url = urlOrPerPage.replace("http", http);
+            // url = urlOrPerPage.replace("http", http);
 
         } else {
             url = `${BACKEND_API}/v1.0/users/${urlOrPerPage}`
@@ -169,6 +170,11 @@ const UserList = () => {
     border-color: black;
   `;
 
+
+  if(!permissions.includes(USER_CREATE)) {
+return <><Error401Unauthorized></Error401Unauthorized></>
+  }
+
     return (
         <Fragment>
 
@@ -178,7 +184,8 @@ const UserList = () => {
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                        <Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>
+                    {checkPermissions([USER_CREATE],permissions)?(<Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>):(null)} 
+                        
                     </Col>
 
                 </Row>
@@ -277,20 +284,22 @@ const UserList = () => {
                                                 })}</td>
                                                 <td>
 
-                                                    <Eye 
+                                                ,
+            {checkPermissions([USER_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
-                                                    ></Eye>
-
-                                                    <Edit 
+                                                    ></Eye>):(null)} 
+            {checkPermissions([USER_UPDATE],permissions)?( <Edit 
                                                     className='mr-1'
                                                     color="#007bff" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => editForm(el)}
-                                                    ></Edit>
+                                                    ></Edit>):(null)} 
+                                                   
+            {checkPermissions([USER_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
+                                                        onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
 
-                                                    <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => deleteFunc(el.id)}></Delete>
+                                                   
 
                                                 </td>
                                             </tr>)
