@@ -1,7 +1,7 @@
 import React from 'react'
 import { PaginationItem } from 'reactstrap'
 
-const setLinksView2 = (el,index,arr,fetchData,current_page,lastPage) => {
+const setLinksView = (el,index,arr,fetchData,current_page,lastPage) => {
     if(el.label=="&laquo; Previous") {
         if(el.url) {
          return <PaginationItem key={index} className="page-item"><button className="page-link" onClick={() =>
@@ -64,4 +64,4 @@ const setLinksView2 = (el,index,arr,fetchData,current_page,lastPage) => {
      }
 }
 
-export default setLinksView2
+export default setLinksView

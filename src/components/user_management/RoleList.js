@@ -7,21 +7,23 @@ import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView from '../../utils/pagination';
-import UserForm from './forms/UserForm';
+
 import SweetAlert from 'sweetalert2'
 import {
     Edit, Delete, Eye
 } from 'react-feather';
-import UserView from './vews/UserView';
+
 import DatePicker from "react-datepicker";
-import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { ROLE_CREATE, ROLE_DELETE, ROLE_UPDATE, ROLE_VIEW,} from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
+import RoleForm from './forms/RoleForm';
+import RoleView from './vews/RoleView';
 
 
 
 
-const UserList = () => {
+const RoleList = () => {
  
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 
@@ -36,45 +38,31 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [startDate,setstartDate] = useState(new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        1))
-    const [endDate,setendDate] = useState(new Date())
+    const [initialRolePermissions,setInitialRolePermission] = useState(null);
+   
+
 
    
-    const setStartDate = date => {
-        setstartDate(date);
-      let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-      let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-      };
-      const setEndDate = date => {
-        setendDate(date);
-        let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
-        let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-       
-       };
+ 
     // modal
-    const [userCreateModal, setUserCreateModal] = useState(false);
-    const userCreateModaltoggle = () => setUserCreateModal(!userCreateModal);
+    const [roleCreateModal, setRoleCreateModal] = useState(false);
+    const roleCreateModaltoggle = () => setRoleCreateModal(!roleCreateModal);
 
-    const [userUpdateData, setUserUpdateData] = useState(null);
-    const [userUpdateModal, setUserUpdateModal] = useState(false);
-    const userUpdateModaltoggle = () => setUserUpdateModal(!userUpdateModal);
+    const [roleUpdateData, setRoleUpdateData] = useState(null);
+    const [roleUpdateModal, setRoleUpdateModal] = useState(false);
+    const roleUpdateModaltoggle = () => setRoleUpdateModal(!roleUpdateModal);
     const editForm = (el) => {
-        userUpdateModaltoggle()
-        setUserUpdateData(el)
+        roleUpdateModaltoggle()
+        setRoleUpdateData(el)
     }
 
-    const [userViewData, setUserViewData] = useState(null);
-    const [userViewModal, setUserViewModal] = useState(false);
-    const userViewModaltoggle = () => setUserViewModal(!userViewModal);
+    const [roleViewData, setRoleViewData] = useState(null);
+    const [roleViewModal, setRoleViewModal] = useState(false);
+    const roleViewModaltoggle = () => setRoleViewModal(!roleViewModal);
     
     const viewForm = (el) => {
-        userViewModaltoggle()
-        setUserViewData(el)
+        roleViewModaltoggle()
+        setRoleViewData(el)
     }
 
     // end modal
@@ -91,13 +79,13 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/users/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/roles/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
                                 SweetAlert.fire(
                                     'Deleted!',
-                                    'User has been deleted.',
+                                    'Role has been deleted.',
                                     'success'
                                 )
                             }
@@ -110,7 +98,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
                 }
                 else {
                     SweetAlert.fire(
-                        'User is safe'
+                        'Role is safe'
                     )
                 }
             })
@@ -123,12 +111,22 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         console.log(newValue)
         fetchData(newValue)
     }
-
+ const fetchInitialRolePermissions = () => {
+    apiClient().get(`${BACKEND_API}/v1.0/initial-role-permissions`)
+    .then(response => {
+        console.log('initial.....',response.data)
+        setInitialRolePermission(response.data)
+    })
+    .catch(error => {
+        console.log(error.response)
+    })
+ }
     const fetchData = (urlOrPerPage, useLoading = true) => {
+     
         if (useLoading) {
             setLoading(true)
         }
-
+  
         //  setData(null)
         let url;
         if (typeof urlOrPerPage === "string") {
@@ -136,8 +134,9 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/users/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/roles/${urlOrPerPage}`
         }
+        
         apiClient().get(url)
             .then(response => {
                 setLoading(false)
@@ -153,17 +152,21 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
             })
             .catch(err => {
                 setLoading(false)
-                console.log(err.response)
+                // console.log(err)
+                 console.log(err.response)
+                
             })
     }
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?search_key=${e.target.value}`, false)
+        console.log("test")
+        fetchData(`${BACKEND_API}/v1.0/roles/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
         fetchData(perPage,);
+        fetchInitialRolePermissions();
     }, [])
 
 
@@ -172,20 +175,20 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   `;
 
 
-  if(!permissions.includes(USER_VIEW)) {
+  if(!permissions.includes(ROLE_VIEW)) {
 return <><Error401Unauthorized></Error401Unauthorized></>
   }
 
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="User Management / Users" title="Manage Users" />
+            <BreadCrumb parent="Home" subparent="User Management / Roles" title="Manage Roles" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([USER_CREATE],permissions)?(<Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>):(null)} 
+                    {checkPermissions([ROLE_CREATE],permissions)?(<Button color="primary" onClick={roleCreateModaltoggle}>Create Role</Button>):(null)} 
                         
                     </Col>
 
@@ -196,7 +199,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>User Management</h5><span> Manage your Users </span>
+                                <h5>Role Management</h5><span> Manage your Roles </span>
                             </CardHeader>
                             <Row>
                                 
@@ -213,42 +216,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                     </CardHeader>
 
                                 </Col>
-                                <Col sm={4}>
-                                <CardHeader>
-                               <Row  className="date-range">
-                                <Col sm="6">
-                                <DatePicker className="form-control digits"
-                                selected={startDate}
-                                onChange={setStartDate}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                              />
-                                </Col>
-                                <Col sm="6">
-                                <DatePicker className="form-control digits ml-2"
-                                selected={endDate}
-                                onChange={setEndDate}
-                                selectsEnd
-                                endDate={endDate}
-                                minDate={startDate}
-                              />
-                                </Col>
-                               </Row>
-                               
-                            
-                                        {/* <Form className="search-form">
-                                            <FormGroup className="m-0">
-                                                <Label className="sr-only">Search</Label>
-                                                <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
-                                            </FormGroup>
-
-                                        </Form> */}
-
-                                    </CardHeader>
-                              
-                          
-                                </Col>
+                                
                             </Row>
 {/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
             {
@@ -264,11 +232,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                     <thead>
                                         <tr className="Dashed">
                                             <th scope="col">{"#"}</th>
-                                            <th scope="col">{"First Name"}</th>
-                                            <th scope="col">{"Last Name"}</th>
-                                            <th scope="col">{"email"}</th>
-                                            <th scope="col">{"phone"}</th>
-                                            <th scope="col">{"role"}</th>
+                                            <th scope="col">{"Name"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -276,28 +240,23 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                         {data.map(el => {
                                             return (<tr className="Dashed" key={el.id}>
                                                 <th scope="row">{el.id}</th>
-                                                <td>{el.first_Name}</td>
-                                                <td>{el.last_Name}</td>
-                                                <td>{el.email}</td>
-                                                <td>{el.phone}</td>
-                                                <td>{el.roles.map(el2 => {
-                                                    return <span key={el2.id}>{el2.name} </span>
-                                                })}</td>
+                                                <td>{el.name}</td>
+                                              
                                                 <td>
 
                                                 ,
-            {checkPermissions([USER_VIEW],permissions)?(<Eye 
+            {checkPermissions([ROLE_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
                                                     ></Eye>):(null)} 
-            {checkPermissions([USER_UPDATE],permissions)?( <Edit 
+            {checkPermissions([ROLE_UPDATE],permissions)?( <Edit 
                                                     className='mr-1'
                                                     color="#007bff" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => editForm(el)}
                                                     ></Edit>):(null)} 
                                                    
-            {checkPermissions([USER_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
+            {checkPermissions([ROLE_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
 
                                                    
@@ -350,32 +309,35 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-            <Modal isOpen={userCreateModal} toggle={userCreateModaltoggle} size="lg">
-                <ModalHeader toggle={userCreateModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={roleCreateModal} toggle={roleCreateModaltoggle} size="lg">
+                <ModalHeader toggle={roleCreateModaltoggle} className="text-center">
+                    Role
                 </ModalHeader>
                 <ModalBody>
-                    <UserForm toggleModal={userCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></UserForm>
+                    <RoleForm toggleModal={roleCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create" initialRolePermissions={initialRolePermissions}></RoleForm>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={userUpdateModal} toggle={userUpdateModaltoggle} size="lg">
-                <ModalHeader toggle={userUpdateModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={roleUpdateModal} toggle={roleUpdateModaltoggle} size="lg">
+                <ModalHeader toggle={roleUpdateModaltoggle} className="text-center">
+                    Role
                 </ModalHeader>
                 <ModalBody>
-                    <UserForm toggleModal={userUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" userUpdateData={userUpdateData}></UserForm>
+                    <RoleForm toggleModal={roleUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" roleUpdateData={roleUpdateData} initialRolePermissions={initialRolePermissions}></RoleForm>
                 </ModalBody>
             </Modal>
 
-            <Modal isOpen={userViewModal} toggle={userViewModaltoggle} size="lg">
-                <ModalHeader toggle={userViewModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={roleViewModal} toggle={roleViewModaltoggle} size="lg">
+                <ModalHeader toggle={roleViewModaltoggle} className="text-center">
+                    Role
                 </ModalHeader>
                 <ModalBody>
-                    <UserView
-                        toggleModal={userViewModaltoggle}
-                        userViewData={userViewData}>
-                    </UserView>
+                    <RoleView
+                        toggleModal={roleViewModaltoggle}
+                        roleViewData={roleViewData}
+                        initialRolePermissions={initialRolePermissions}
+                        >
+                       
+                    </RoleView>
                 </ModalBody>
             </Modal>
 
@@ -383,4 +345,4 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     );
 };
 
-export default UserList;
+export default RoleList;

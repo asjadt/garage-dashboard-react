@@ -184,7 +184,7 @@ const CheckboxandRadio = (props) =>  {
           <Col md="6">
             <Card>
               <CardHeader>
-                <h5>{AnimatedCheckboxButtons}</h5>
+                <h5>{AnimatedCheckboxButtons} </h5>
               </CardHeader>
               <CardBody className="animate-chk">
                 <Row>

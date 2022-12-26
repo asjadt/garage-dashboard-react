@@ -200,12 +200,12 @@ import KnowledgebaseComponent from "../components/knowledgebase/KnowledgebaseCom
 // Support Ticket
 import SupportTicket from "../components/support-ticket/supportTicket";
 import UserList from '../components/user_management/UserList'
+import RoleList from '../components/user_management/RoleList'
 
 export const routes = [
 
   { path: "/users/list" ,Component: UserList},
-  
-
+  { path: "/roles/list" ,Component: RoleList},
 
 
 

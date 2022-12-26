@@ -14,7 +14,7 @@ import {
     User,
     UserMinus
 } from 'react-feather';
-import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -29,13 +29,14 @@ export const MENUITEMS = [
         badgeType: 'primary', 
         active: false,
         // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
-        show:checkPermissions([USER_CREATE, USER_UPDATE, USER_VIEW, USER_DELETE],permissions),
+        show:checkPermissions([USER_VIEW,ROLE_VIEW],permissions),
         children: [
             { path: `${process.env.PUBLIC_URL}/users/list`, title: 'Users', type: 'link',
             show:checkPermissions([USER_VIEW],permissions),
             },
-            { path: `${process.env.PUBLIC_URL}/users/list`, title: 'Users', type: 'link',
-            show:checkPermissions([USER_VIEW],permissions), },
+            { path: `${process.env.PUBLIC_URL}/roles/list`, title: 'Roles', type: 'link',
+            show:checkPermissions([ROLE_VIEW],permissions), },
+
             { path: `${process.env.PUBLIC_URL}/dashboard/sass`, title: 'Sass', type: 'link',
             show:checkPermissions([USER_VIEW],permissions), },
             { path: `${process.env.PUBLIC_URL}/dashboard/crm`, title: 'Crm', type: 'link',
@@ -218,19 +219,24 @@ export const MENUITEMS = [
         ]
     },
     {
-        title: 'Forms', icon: FileText, type: 'sub', active: false, show:checkPermissions([USER_CREATE, USER_UPDATE, USER_VIEW, USER_DELETE],permissions), children: [
+        title: 'Forms', icon: FileText, type: 'sub', active: false, show:checkPermissions([USER_CREATE],permissions), children: [
             {
-                title: ' Form Controls ', type: 'sub', children: [
+                title: ' Form Controls ', type: 'sub', show:true, children: [
                     { title: 'Form Validation', type: 'link', path: `${process.env.PUBLIC_URL}/forms/form-validation`,
-                    show:checkPermissions([USER_VIEW],permissions),},
+                    show:true},
+
                     { title: 'Basic Input', type: 'link', path: `${process.env.PUBLIC_URL}/forms/baseInput`,
                     show:checkPermissions([USER_VIEW],permissions),},
+
                     { title: 'Checkbox & Radio', type: 'link', path: `${process.env.PUBLIC_URL}/forms/radio-checkbox`,
                     show:checkPermissions([USER_VIEW],permissions),},
+
                     { title: 'Input Groups', type: 'link', path: `${process.env.PUBLIC_URL}/forms/inputGroup`,
                     show:checkPermissions([USER_VIEW],permissions),},
+
                     { title: 'Mega Option', type: 'link', path: `${process.env.PUBLIC_URL}/forms/megaOptions`,
                     show:checkPermissions([USER_VIEW],permissions),},
+
 
                 ]
             },

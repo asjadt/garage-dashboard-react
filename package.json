@@ -23,6 +23,7 @@
     "chartist": "^0.10.1",
     "chartjs-plugin-datalabels": "^0.7.0",
     "classnames": "^2.2.6",
+    "country-state-city": "^3.1.2",
     "emoji-mart": "^3.0.0",
     "feather-icons": "^4.26.0",
     "firebase": "^7.14.0",

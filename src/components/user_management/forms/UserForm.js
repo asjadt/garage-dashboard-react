@@ -4,13 +4,15 @@ import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputG
 import SweetAlert from 'sweetalert2'
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
+import { Country, State, City }  from 'country-state-city';
 
 const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
-    const { register, handleSubmit,setValue, errors,setError,getValues } = useForm();
+    const { register, handleSubmit,setValue, errors,setError , watch } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
     const [roles,setRoles] = useState([]);
-
+    const formValues = watch(); 
+   
     useEffect(() => {
         loadRoles()
         console.log(userUpdateData)
@@ -26,7 +28,7 @@ const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
     }, []);
 
     const loadRoles = () => {
-        apiClient().get(`${BACKEND_API}/v1.0/roles/all`)
+        apiClient().get(`${BACKEND_API}/v1.0/roles/get/all`)
         .then(response => {
 console.log(response.data)
 setRoles(response.data.roles)
@@ -59,8 +61,11 @@ setRoles(response.data.roles)
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-          if(error.response?.status == 401) {
+         else if(error.response?.status == 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+          }
+          else {
+            SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
           }
       })
   
@@ -85,8 +90,11 @@ setRoles(response.data.roles)
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-          if(error.response?.status == 401) {
+       else if(error.response?.status == 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+          } 
+          else {
+            SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
           }
       })
   
@@ -115,8 +123,12 @@ setRoles(response.data.roles)
                   <Input className="form-control" name="id" type="hidden" innerRef={register({ required: false })} />
 
                     <Col md="6 mb-3">
-                      <Label htmlFor="first_Name">First Name</Label>
-                      <Input className="form-control" name="first_Name" type="text" placeholder="First name" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="first_Name">First Name</Label>
+                      <Input className="form-control" name="first_Name" type="text" 
+                      
+                      // placeholder="First name" 
+                      
+                      innerRef={register({ required: false })} />
                       <span>{errors.firstName && 'Please provide First name'}</span>
                      
                       {serverSideErrors?(
@@ -128,8 +140,11 @@ setRoles(response.data.roles)
                      
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="last_Name">Last Name</Label>
-                      <Input className="form-control" name="last_Name" type="text" placeholder="Last name" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="last_Name">Last Name</Label>
+                      <Input className="form-control" name="last_Name" type="text" 
+                      
+                      // placeholder="Last name" 
+                      innerRef={register({ required: false })} />
                       <span>{errors.last_Name && 'Last name is required'}</span>
                     
                       {serverSideErrors?(
@@ -140,12 +155,16 @@ setRoles(response.data.roles)
                       :(null)}
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="validationCustomUsername">Email</Label>
+                      <Label className='text-uppercase' htmlFor="validationCustomUsername">Email</Label>
                       <InputGroup>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>{"@"}</InputGroupText>
                       </InputGroupAddon>
-                        <Input className="form-control" name="email" type="text" placeholder="email" innerRef={register({ required: false })} />
+                        <Input className="form-control" name="email" type="text" 
+                        
+                        // placeholder="email"
+                        
+                        innerRef={register({ required: false })} />
                         <span>{errors.email && 'User name is required'}</span>
                        
                         {serverSideErrors?(
@@ -157,8 +176,12 @@ setRoles(response.data.roles)
                       </InputGroup>
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input className="form-control" name="phone" type="text" placeholder="phone" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="phone">Phone</Label>
+                      <Input className="form-control" name="phone" type="text" 
+                      
+                      // placeholder="phone"
+                      
+                      innerRef={register({ required: false })} />
                       <span>{errors.phone && 'Last name is required'}</span>
                       {serverSideErrors?(
                         !serverSideErrors.phone?(
@@ -170,8 +193,12 @@ setRoles(response.data.roles)
                   </div>
                   <div className="form-row mb-2">
                     <Col md="6 mb-3">
-                      <Label htmlFor="password">Password</Label>
-                      <Input className="form-control" name="password" type="text" placeholder="password" innerRef={register({ required: false, })} />
+                      <Label className='text-uppercase' htmlFor="password">Password</Label>
+                      <Input className="form-control" name="password" type="text" 
+                      
+                      // placeholder="password" 
+                      
+                      innerRef={register({ required: false, })} />
                       <span>{errors.city && 'Please provide a valid city'}</span>
                   
                       {serverSideErrors?(
@@ -182,8 +209,10 @@ setRoles(response.data.roles)
                       :(null)}
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="password_confirmation">Confirm Password</Label>
-                      <Input className="form-control" id="password_confirmation" name="password_confirmation" type="text" placeholder="confirm password" innerRef={register({ false: true })} />
+                      <Label className='text-uppercase' htmlFor="password_confirmation">Confirm Password</Label>
+                      <Input className="form-control" id="password_confirmation" name="password_confirmation" type="text" 
+                      // placeholder="confirm password" 
+                      innerRef={register({ false: true })} />
                       <span>{errors.password && 'Last name is required'}</span>
               
                       {serverSideErrors?(
@@ -201,30 +230,65 @@ setRoles(response.data.roles)
                   </div>
                   <div className='form-row mb-2'>
                   <Col md="6 mb-3">
-                      <Label htmlFor="country">Country</Label>
-                      <Input className="form-control" name="country" type="text" placeholder="country" innerRef={register({ required: false })} />
-                      <span>{errors.country && 'Last name is required'}</span>
-                      {serverSideErrors?(
-                        !serverSideErrors.country?(
-                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.country[0]}</div>)
-                      )
-                      :(null)}
+                    <FormGroup>
+                    <Label className='text-uppercase' htmlFor="country">COUNTRY</Label>
+                    <Input type="select" className="custom-select"  name="country"  innerRef={register({ required: false })} defaultValue={"GB"} value={userUpdateData?.country} >
+                     
+                     <option value="">{"SELECT COUNTRY"}</option>
+                     {Country.getAllCountries().map(el => {
+                      console.log(el)
+                       return (
+                           <option value={el.isoCode} key={el.id}  >{el.name}</option>
+                       )
+                     })}
+                   
+                 
+                   </Input>
+               
+                   {serverSideErrors?(
+                       !serverSideErrors.country?(
+                           <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                       ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.country[0]}</div>)
+                     )
+                     :(null)}
+                  </FormGroup>
+                 
+                    
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="city">City</Label>
-                      <Input className="form-control" name="city" type="text" placeholder="city" innerRef={register({ required: false })} />
-                      <span>{errors.city && 'Last name is required'}</span>
-                      {serverSideErrors?(
-                        !serverSideErrors.city?(
-                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.city[0]}</div>)
-                      )
-                      :(null)}
+                    <FormGroup>
+                    <Label className='text-uppercase' htmlFor="city">CITY</Label>
+                    {console.log(formValues.country)}
+                    <Input type="select" className="custom-select"  name="city"  innerRef={register({ required: false })} value={userUpdateData?.city}>
+                     
+                     <option value="">{"SELECT CITY"}</option>
+                     {City.getCitiesOfCountry(formValues.country).map(el => {
+                       return (
+                           <option value={el.name} key={el.id}  >{el.name}</option>
+                       )
+                     })}
+                   
+                 
+                   </Input>
+               
+                   {serverSideErrors?(
+                       !serverSideErrors.city?(
+                           <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                       ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.city[0]}</div>)
+                     )
+                     :(null)}
+                  </FormGroup>
+                 
+                    
                     </Col>
+                  
                     <Col md="6 mb-3">
-                      <Label htmlFor="postcode">Postcode</Label>
-                      <Input className="form-control" name="postcode" type="text" placeholder="postcode" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="postcode" >Postcode</Label>
+                      <Input className="form-control" name="postcode" type="text" 
+                      
+                      // placeholder="postcode"
+
+                       innerRef={register({ required: false })} />
                       <span>{errors.postcode && 'Last name is required'}</span>
                       {serverSideErrors?(
                         !serverSideErrors.postcode?(
@@ -234,8 +298,11 @@ setRoles(response.data.roles)
                       :(null)}
                     </Col>
                   <Col md="6 mb-3">
-                      <Label htmlFor="phone">Address Line 1</Label>
-                      <Input className="form-control" name="address_line_1" type="textarea" placeholder="address line 1" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="phone">Address Line 1</Label>
+                      <Input className="form-control" name="address_line_1" type="textarea" 
+                      // placeholder="address line 1" 
+                      
+                      innerRef={register({ required: false })} />
                       <span>{errors.address_line_1 && 'Last name is required'}</span>
                       {serverSideErrors?(
                         !serverSideErrors.address_line_1?(
@@ -245,8 +312,11 @@ setRoles(response.data.roles)
                       :(null)}
                     </Col>
                     <Col md="6 mb-3">
-                      <Label htmlFor="phone">Address Line 2</Label>
-                      <Input className="form-control" name="address_line_2" type="textarea" placeholder="address line 2" innerRef={register({ required: false })} />
+                      <Label className='text-uppercase' htmlFor="phone">Address Line 2</Label>
+                      <Input className="form-control" name="address_line_2" type="textarea" 
+                      // placeholder="address line 2" 
+                      
+                      innerRef={register({ required: false })} />
                       <span>{errors.address_line_2 && 'Last name is required'}</span>
                       {serverSideErrors?(
                         !serverSideErrors.address_line_2?(
@@ -260,6 +330,7 @@ setRoles(response.data.roles)
                   <div className='form-row mb-2'>
                   <Col md="6 mb-3">
                     <FormGroup>
+                    <Label className='text-uppercase' htmlFor="role">Role</Label>
                     <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} value={userUpdateData?.roles[0].name}>
                      
                       <option value="">{"Open this select Role"}</option>
