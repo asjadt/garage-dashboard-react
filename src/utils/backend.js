@@ -4,4 +4,4 @@
 
 export const BACKEND_API = `${BACKEND}/api`;
 // export const http = "http"
-export const http = "https"
+export const http = "http"
