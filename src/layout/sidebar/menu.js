@@ -11,10 +11,9 @@ import {
     File,
     Command, Cloud, Book, FileText, Server, Image, Sliders, Map, GitPullRequest, Calendar, Edit, Mail, MessageSquare, UserCheck, Layers, HelpCircle, Database, Headphones, Mic, ShoppingBag, Search, AlertOctagon, Lock, Briefcase, BarChart,
     UserX,
-    User,
-    UserMinus
+    
 } from 'react-feather';
-import { ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { GARAGE_VIEW, ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -37,12 +36,24 @@ export const MENUITEMS = [
             { path: `${process.env.PUBLIC_URL}/roles/list`, title: 'Roles', type: 'link',
             show:checkPermissions([ROLE_VIEW],permissions), },
 
-            { path: `${process.env.PUBLIC_URL}/dashboard/sass`, title: 'Sass', type: 'link',
-            show:checkPermissions([USER_VIEW],permissions), },
-            { path: `${process.env.PUBLIC_URL}/dashboard/crm`, title: 'Crm', type: 'link',
-            show:checkPermissions([USER_VIEW],permissions), },
-            { path: `${process.env.PUBLIC_URL}/dashboard/crypto`, title: 'Crypto', type: 'link',
-            show:checkPermissions([USER_VIEW],permissions), }
+        ]
+    },
+    {
+        title: 'Garage Management', 
+         icon: ShoppingBag, 
+        type: 'sub', 
+        badgeType: 'primary', 
+        active: false,
+        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
+        show:checkPermissions([GARAGE_VIEW],permissions),
+        children: [
+            { path: `${process.env.PUBLIC_URL}/garages/list`, title: 'Garages', type: 'link',
+            show:checkPermissions([GARAGE_VIEW],permissions),
+            },
+            { path: `${process.env.PUBLIC_URL}/garages/create`, title: 'Create Garage', type: 'link',
+            show:checkPermissions([GARAGE_VIEW],permissions),
+            },
+
         ]
     },
     {

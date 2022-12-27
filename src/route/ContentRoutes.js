@@ -201,16 +201,17 @@ import KnowledgebaseComponent from "../components/knowledgebase/KnowledgebaseCom
 import SupportTicket from "../components/support-ticket/supportTicket";
 import UserList from '../components/user_management/UserList'
 import RoleList from '../components/user_management/RoleList'
+import GarageList from '../components/garage_management/GarageList'
 
 export const routes = [
 
   { path: "/users/list" ,Component: UserList},
   { path: "/roles/list" ,Component: RoleList},
 
+  { path: "/garages/list" ,Component: GarageList},
+  { path: "/garages/create" ,Component: RoleList},
 
-
-
-
+  { path: "/garages/update/:id" ,Component: RoleList},
 
 
   { path: '/dashboard/default', Component: Default },

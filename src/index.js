@@ -59,7 +59,8 @@ const Root = (props) =>  {
     const abortController = new AbortController();
     const [currentUser, setCurrentUser] = useState(false);
     const [authenticated,setAuthenticated] = useState(false);
-    const jwt_token = localStorage.getItem('token');
+    const [jwt_token,set_jwt_token] = useState(localStorage.getItem('token'))
+
 
     useEffect(() => {
 
@@ -76,6 +77,7 @@ const Root = (props) =>  {
         .catch(err => {
             console.log(err.response)
             localStorage.clear()
+            set_jwt_token("")
         })
 
         //  firebase_app.auth().onAuthStateChanged(setCurrentUser);
