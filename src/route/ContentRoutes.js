@@ -202,6 +202,7 @@ import SupportTicket from "../components/support-ticket/supportTicket";
 import UserList from '../components/user_management/UserList'
 import RoleList from '../components/user_management/RoleList'
 import GarageList from '../components/garage_management/GarageList'
+import AutomobileCategoryList from '../components/automobile_management/AutomobileCategoryList'
 
 export const routes = [
 
@@ -210,8 +211,10 @@ export const routes = [
 
   { path: "/garages/list" ,Component: GarageList},
   { path: "/garages/create" ,Component: RoleList},
-
   { path: "/garages/update/:id" ,Component: RoleList},
+
+  { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
+
 
 
   { path: '/dashboard/default', Component: Default },

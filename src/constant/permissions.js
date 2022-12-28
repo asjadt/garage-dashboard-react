@@ -12,3 +12,8 @@ export const GARAGE_CREATE = "garage_create";
 export const GARAGE_UPDATE = "garage_update";
 export const GARAGE_VIEW = "garage_view";
 export const GARAGE_DELETE = "garage_delete";
+
+export const AUTOMOBILE_CREATE = "automobile_create";
+export const AUTOMOBILE_UPDATE = "automobile_update";
+export const AUTOMOBILE_VIEW = "automobile_view";
+export const AUTOMOBILE_DELETE = "automobile_delete";

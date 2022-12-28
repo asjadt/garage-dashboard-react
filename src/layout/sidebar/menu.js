@@ -10,10 +10,12 @@ import {
     FolderPlus,
     File,
     Command, Cloud, Book, FileText, Server, Image, Sliders, Map, GitPullRequest, Calendar, Edit, Mail, MessageSquare, UserCheck, Layers, HelpCircle, Database, Headphones, Mic, ShoppingBag, Search, AlertOctagon, Lock, Briefcase, BarChart,
-    UserX,
+    UserX
+    
     
 } from 'react-feather';
-import { GARAGE_VIEW, ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { AiFillCar,AiFillShop } from "react-icons/ai";
+import { AUTOMOBILE_VIEW, GARAGE_VIEW, ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -40,7 +42,7 @@ export const MENUITEMS = [
     },
     {
         title: 'Garage Management', 
-         icon: ShoppingBag, 
+         icon: AiFillShop, 
         type: 'sub', 
         badgeType: 'primary', 
         active: false,
@@ -53,6 +55,21 @@ export const MENUITEMS = [
             { path: `${process.env.PUBLIC_URL}/garages/create`, title: 'Create Garage', type: 'link',
             show:checkPermissions([GARAGE_VIEW],permissions),
             },
+
+        ]
+    },
+    {
+        title: 'Automobile Management', icon:  AiFillCar, 
+        type: 'sub', 
+        badgeType: 'primary', 
+        active: false,
+        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
+        show:checkPermissions([AUTOMOBILE_VIEW],permissions),
+        children: [
+            { path: `${process.env.PUBLIC_URL}/automobile-categories/list`, title: 'Automobile Categories', type: 'link',
+            show:checkPermissions([USER_VIEW],permissions),
+            },
+      
 
         ]
     },
