@@ -264,11 +264,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                     <thead>
                                         <tr className="Dashed">
                                             <th scope="col">{"#"}</th>
-                                            <th scope="col">{"First Name"}</th>
-                                            <th scope="col">{"Last Name"}</th>
-                                            <th scope="col">{"email"}</th>
-                                            <th scope="col">{"phone"}</th>
-                                            <th scope="col">{"role"}</th>
+                                            <th scope="col">{"name"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -276,16 +272,10 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                         {data.map(el => {
                                             return (<tr className="Dashed" key={el.id}>
                                                 <th scope="row">{el.id}</th>
-                                                <td>{el.first_Name}</td>
-                                                <td>{el.last_Name}</td>
-                                                <td>{el.email}</td>
-                                                <td>{el.phone}</td>
-                                                <td>{el.roles.map(el2 => {
-                                                    return <span key={el2.id}>{el2.name} </span>
-                                                })}</td>
+                                                <td>{el.name}</td>
+                                             
                                                 <td>
 
-                                                ,
             {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
