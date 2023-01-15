@@ -203,6 +203,7 @@ import UserList from '../components/user_management/UserList'
 import RoleList from '../components/user_management/RoleList'
 import GarageList from '../components/garage_management/GarageList'
 import AutomobileCategoryList from '../components/automobile_management/AutomobileCategoryList'
+import AutomobileMakeList from '../components/automobile_management/AutomobileMakeList'
 
 export const routes = [
 
@@ -215,6 +216,7 @@ export const routes = [
 
   { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
 
+  { path: "/automobile-category/single/:id"  ,Component: AutomobileMakeList},
 
 
   { path: '/dashboard/default', Component: Default },

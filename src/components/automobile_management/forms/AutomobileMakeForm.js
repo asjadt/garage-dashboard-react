@@ -6,8 +6,8 @@ import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 import { Country, State, City }  from 'country-state-city';
 
-const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
-  
+const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
+  automobileCategory,
   automobileCategoryUpdateData}) => {
     const { register, handleSubmit,setValue, errors,setError , watch } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
@@ -19,7 +19,7 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
 
         console.log(automobileCategoryUpdateData)
         if(type == "update") {
-          const fields = ['id','name', ];
+          const fields = ['id','name', 'description',];
           fields.forEach(field => setValue(field, automobileCategoryUpdateData[field]));
        
       
@@ -35,7 +35,7 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
     setLoading(true)
     setServerSideErrors(null)
     if(type == "update") {
-      apiClient().put(`${BACKEND_API}/v1.0/automobile-categories`,data)
+      apiClient().put(`${BACKEND_API}/v1.0/automobile-makes`,data)
       .then(response => {
           console.log(response.data)
           setLoading(false)
@@ -64,7 +64,7 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
   
     }
     if(type == "create") {
-      apiClient().post(`${BACKEND_API}/v1.0/automobile-categories`,data)
+      apiClient().post(`${BACKEND_API}/v1.0/automobile-makes`,data)
       .then(response => {
           console.log(response.data)
           setLoading(false)
@@ -108,14 +108,38 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
         <Col sm="12">
         <Card>
               <CardHeader>
-                <h5><span style={{textTransform:"capitalize"}}>{type}</span> Automobile Category</h5>
+                <h5><span style={{textTransform:"capitalize"}}>{type}</span> Automobile Make</h5>
               </CardHeader>
               <CardBody>
                 <Form className="needs-validation" noValidate="" onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-row mb-2">
                   <Input className="form-control" name="id" type="hidden" innerRef={register({ required: false })} />
+                  <Col md="12 mb-3">
+                      <Label className='text-uppercase' htmlFor="category">Category</Label>
+                      
+                      <Input className="form-control" name="automobile_category_id" type="hidden" 
+                      value={automobileCategory?.id}
+                      
+                      innerRef={register({ required: false })} />
 
-                    <Col md="6 mb-3">
+
+                      <Input className="form-control" name="category" type="text" 
+                      value={automobileCategory?.name}
+                      readOnly
+                      // placeholder="First name" 
+                      
+                      innerRef={register({ required: false })} />
+                      <span>{errors.firstName && 'Please provide name '}</span>
+                     
+                      {serverSideErrors?(
+                        !serverSideErrors.category?(
+                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.category[0]}</div>)
+                      )
+                      :(null)}
+                     
+                    </Col>
+                    <Col md="12 mb-3">
                       <Label className='text-uppercase' htmlFor="name">name</Label>
                       <Input className="form-control" name="name" type="text" 
                       
@@ -128,6 +152,23 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
                         !serverSideErrors.name?(
                             <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
                         ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.name[0]}</div>)
+                      )
+                      :(null)}
+                     
+                    </Col>
+                    <Col md="12 mb-3">
+                      <Label className='text-uppercase' htmlFor="description">description</Label>
+                      <Input className="form-control" name="description" type="textarea" 
+                      
+                      // placeholder="First name" 
+                      
+                      innerRef={register({ required: false })} />
+                      <span>{errors.firstName && 'Please provide name name'}</span>
+                     
+                      {serverSideErrors?(
+                        !serverSideErrors.description?(
+                            <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.description[0]}</div>)
                       )
                       :(null)}
                      
@@ -156,4 +197,4 @@ const AutomobileCategoryForm = ({toggleModal,fetchData,perPage,type,
   )
 }
 
-export default AutomobileCategoryForm
+export default AutomobileMakeForm

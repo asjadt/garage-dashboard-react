@@ -17,14 +17,39 @@ import DatePicker from "react-datepicker";
 import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIEW } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
+import AutomobileMakeForm from './forms/AutomobileMakeForm';
 
 
 
 
-const AutomobileCategoryList = () => {
- 
+const AutomobileMakeList = () => {
+    let { id } = useParams();
+
 let permissions = JSON.parse(localStorage.getItem("permissions"));
+
+const [automobileCategory,setAutomobileCategory] = useState(null);
+
+// get single data
+useEffect(() => {
+apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/single/${id}`).then(response => {
+
+setAutomobileCategory(response.data)
+})
+.catch(error => {
+
+})
+},[])
+
+
+
+// end get single data
+
+
+
+
+
+
 
 
     
@@ -48,18 +73,18 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         setstartDate(date);
       let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
       let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+         fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
       };
       const setEndDate = date => {
         setendDate(date);
         let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+           fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
        
        };
     // modal
-    const [automobileCategoryCreateModal, setAutomobileCategoryCreateModal] = useState(false);
-    const automobileCategoryCreateModaltoggle = () => setAutomobileCategoryCreateModal(!automobileCategoryCreateModal);
+    const [automobileMakeCreateModal, setAutomobileMakeCreateModal] = useState(false);
+    const automobileMakeCreateModaltoggle = () => setAutomobileMakeCreateModal(!automobileMakeCreateModal);
 
     const [automobileCategoryUpdateData, setAutomobileCategoryUpdateData] = useState(null);
     const [automobileCategoryUpdateModal, setAutomobileCategoryUpdateModal] = useState(false);
@@ -92,7 +117,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-categories/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-makes/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
@@ -137,7 +162,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/automobile-categories/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/automobile-makes/${id}/${urlOrPerPage}`
         }
         apiClient().get(url)
             .then(response => {
@@ -160,7 +185,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?search_key=${e.target.value}`, false)
+        fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
@@ -180,13 +205,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Category" title="Manage Automobile Categories" />
+            <BreadCrumb parent="Home" subparent="Automobile Management / Make" title="Manage Automobile Make" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileCategoryCreateModaltoggle}>Create Automobile Category</Button>):(null)} 
+                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileMakeCreateModaltoggle}>Create  Make of {automobileCategory?.name}</Button>):(null)} 
                         
                     </Col>
 
@@ -197,8 +222,14 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Automobile Category Management</h5><span> Manage your Automobile Category </span>
+                                <h5>Automobile Make Management</h5><span> Manage your Automobile Make </span>
                             </CardHeader>
+                            <Row>
+                                <Col sm="12">  
+                    <h5>Category Name:{automobileCategory?.name}</h5>
+                                </Col>
+                                
+                            </Row>
                             <Row>
                                 
                                 <Col sm="6">
@@ -266,6 +297,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                         <tr className="Dashed">
                                             <th scope="col">{"#"}</th>
                                             <th scope="col">{"name"}</th>
+                                            <th scope="col">{"description"}</th>
+                                            <th scope="col">{"category"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -274,20 +307,15 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                             return (<tr className="Dashed" key={el.id}>
                                                 <th scope="row">{el.id}</th>
                                                 <td>{el.name}</td>
-                                             
+                                                <td>{el.description}</td>
+                                                <td>{el.category?.name}</td>
                                                 <td>
 
-            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(
-            <Link to={`${process.env.PUBLIC_URL}/automobile-category/single/${el.id}`}>
-             <Eye 
+            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
-                                                        // onClick={() => viewForm(el)}
-                                                    >
-
-                                                    </Eye>
-            </Link>
-           ):(null)} 
+                                                        onClick={() => viewForm(el)}
+                                                    ></Eye>):(null)} 
             {checkPermissions([AUTOMOBILE_UPDATE],permissions)?( <Edit 
                                                     className='mr-1'
                                                     color="#007bff" size={18} style={{ cursor: "pointer" }}
@@ -347,26 +375,28 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-            <Modal isOpen={automobileCategoryCreateModal} toggle={automobileCategoryCreateModaltoggle} size="lg">
-                <ModalHeader toggle={automobileCategoryCreateModaltoggle} className="text-center">
-                    Automobile Category
+            <Modal isOpen={automobileMakeCreateModal} toggle={automobileMakeCreateModaltoggle} size="lg">
+                <ModalHeader toggle={automobileMakeCreateModaltoggle} className="text-center">
+                    Automobile Make
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileCategoryForm toggleModal={automobileCategoryCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></AutomobileCategoryForm>
+                    <AutomobileMakeForm toggleModal={automobileMakeCreateModaltoggle} fetchData={fetchData} perPage={perPage} automobileCategory={automobileCategory} type="create"></AutomobileMakeForm>
                 </ModalBody>
             </Modal>
             <Modal isOpen={automobileCategoryUpdateModal} toggle={automobileCategoryUpdateModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryUpdateModaltoggle} className="text-center">
-                    Automobile Category
+                    Automobile Make
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileCategoryForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" automobileCategoryUpdateData={automobileCategoryUpdateData}></AutomobileCategoryForm>
+                    <AutomobileMakeForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
+                    automobileCategory={automobileCategory}
+                    automobileCategoryUpdateData={automobileCategoryUpdateData}></AutomobileMakeForm>
                 </ModalBody>
             </Modal>
 
             <Modal isOpen={automobileCategoryViewModal} toggle={automobileCategoryViewModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryViewModaltoggle} className="text-center">
-                    Automobile Category
+                    Automobile Make
                 </ModalHeader>
                 <ModalBody>
                     <AutomobileCategoryView
@@ -380,4 +410,4 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     );
 };
 
-export default AutomobileCategoryList;
+export default AutomobileMakeList;
