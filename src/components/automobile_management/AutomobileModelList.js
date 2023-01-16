@@ -7,7 +7,7 @@ import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView from '../../utils/pagination';
-import AutomobileCategoryForm from './forms/AutomobileCategoryForm';
+
 import SweetAlert from 'sweetalert2'
 import {
     Edit, Delete, Eye
@@ -18,24 +18,26 @@ import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIE
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
 import { useParams } from 'react-router';
-import AutomobileMakeForm from './forms/AutomobileMakeForm';
+
+import AutomobileModelForm from './forms/AutomobileModelForm';
 import { Link } from 'react-router-dom';
 
 
 
 
-const AutomobileMakeList = () => {
+const AutomobileModelList = () => {
     let { id } = useParams();
 
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 
-const [automobileCategory,setAutomobileCategory] = useState(null);
+const [automobileMake,setAutomobileMake] = useState(null);
 
 // get single data
 useEffect(() => {
-apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/single/get/${id}`).then(response => {
+apiClient().get(`${BACKEND_API}/v1.0/automobile-makes/single/get/${id}`).then(response => {
 
-setAutomobileCategory(response.data)
+    setAutomobileMake(response.data)
+    console.log("data",response.data)
 })
 .catch(error => {
 
@@ -74,25 +76,25 @@ setAutomobileCategory(response.data)
         setstartDate(date);
       let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
       let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+         fetchData(`${BACKEND_API}/v1.0/automobile-models/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
       };
       const setEndDate = date => {
         setendDate(date);
         let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+           fetchData(`${BACKEND_API}/v1.0/automobile-models/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
        
        };
     // modal
-    const [automobileMakeCreateModal, setAutomobileMakeCreateModal] = useState(false);
-    const automobileMakeCreateModaltoggle = () => setAutomobileMakeCreateModal(!automobileMakeCreateModal);
+    const [automobileModelCreateModal, setAutomobileModelCreateModal] = useState(false);
+    const automobileModelCreateModaltoggle = () => setAutomobileModelCreateModal(!automobileModelCreateModal);
 
-    const [automobileMakeUpdateData, setAutomobileMakeUpdateData] = useState(null);
+    const [automobileModelUpdateData, setAutomobileModelUpdateData] = useState(null);
     const [automobileCategoryUpdateModal, setAutomobileCategoryUpdateModal] = useState(false);
     const automobileCategoryUpdateModaltoggle = () => setAutomobileCategoryUpdateModal(!automobileCategoryUpdateModal);
     const editForm = (el) => {
         automobileCategoryUpdateModaltoggle()
-        setAutomobileMakeUpdateData(el)
+        setAutomobileModelUpdateData(el)
     }
 
     const [automobileCategoryViewData, setAutomobileCategoryViewData] = useState(null);
@@ -118,13 +120,13 @@ setAutomobileCategory(response.data)
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-makes/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-models/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
                                 SweetAlert.fire(
                                     'Deleted!',
-                                    'Automobile Make has been deleted.',
+                                    'Automobile Model has been deleted.',
                                     'success'
                                 )
                             }
@@ -163,7 +165,7 @@ setAutomobileCategory(response.data)
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/automobile-makes/${id}/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/automobile-models/${id}/${urlOrPerPage}`
         }
         apiClient().get(url)
             .then(response => {
@@ -186,7 +188,7 @@ setAutomobileCategory(response.data)
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?search_key=${e.target.value}`, false)
+        fetchData(`${BACKEND_API}/v1.0/automobile-models/${id}/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
@@ -206,13 +208,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Make" title="Manage Automobile Make" />
+            <BreadCrumb parent="Home" subparent="Automobile Management / Model" title="Manage Automobile Model" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileMakeCreateModaltoggle}>Create  Make of {automobileCategory?.name}</Button>):(null)} 
+                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileModelCreateModaltoggle}>Create  Model of {automobileMake?.name}</Button>):(null)} 
                         
                     </Col>
 
@@ -223,12 +225,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Automobile Make Management</h5><span> Manage your Automobile Make </span>
+                                <h5>Automobile Model Management</h5><span> Manage your Automobile Model </span>
                             </CardHeader>
                             <Row>
                                 <Col sm="12">  
-                    <h5>Category Name:{automobileCategory?.name}</h5>
-                    <h5>Make list</h5>
+                    <h5>Category Name:{automobileMake?.category?.name}</h5>
+                    <h5>Make:{automobileMake?.name}</h5>
+                    <h5>Model list</h5>
                                 </Col>
                                 
                             </Row>
@@ -301,6 +304,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                             <th scope="col">{"name"}</th>
                                             <th scope="col">{"description"}</th>
                                             <th scope="col">{"category"}</th>
+                                            <th scope="col">{"make"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -310,10 +314,11 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 <th scope="row">{el.id}</th>
                                                 <td>{el.name}</td>
                                                 <td>{el.description}</td>
-                                                <td>{el.category?.name}</td>
+                                                <td>{el.make?.category?.name}</td>
+                                                <td>{el.make?.name}</td>
                                                 <td>
 
-            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Link to={`${process.env.PUBLIC_URL}/automobile-make/single/${el.id}`}>
+            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Link to={`${process.env.PUBLIC_URL}/automobile-model/single/${el.id}`}>
              <Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
@@ -381,28 +386,28 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-            <Modal isOpen={automobileMakeCreateModal} toggle={automobileMakeCreateModaltoggle} size="lg">
-                <ModalHeader toggle={automobileMakeCreateModaltoggle} className="text-center">
-                    Automobile Make
+            <Modal isOpen={automobileModelCreateModal} toggle={automobileModelCreateModaltoggle} size="lg">
+                <ModalHeader toggle={automobileModelCreateModaltoggle} className="text-center">
+                    Automobile Model
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileMakeForm toggleModal={automobileMakeCreateModaltoggle} fetchData={fetchData} perPage={perPage} automobileCategory={automobileCategory} type="create"></AutomobileMakeForm>
+                    <AutomobileModelForm toggleModal={automobileModelCreateModaltoggle} fetchData={fetchData} perPage={perPage} automobileMake={automobileMake} type="create"></AutomobileModelForm>
                 </ModalBody>
             </Modal>
             <Modal isOpen={automobileCategoryUpdateModal} toggle={automobileCategoryUpdateModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryUpdateModaltoggle} className="text-center">
-                    Automobile Make
+                    Automobile Model
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileMakeForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
-                    automobileCategory={automobileCategory}
-                    automobileMakeUpdateData={automobileMakeUpdateData}></AutomobileMakeForm>
+                    <AutomobileModelForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
+                    automobileMake={automobileMake}
+                    automobileModelUpdateData={automobileModelUpdateData}></AutomobileModelForm>
                 </ModalBody>
             </Modal>
 
             <Modal isOpen={automobileCategoryViewModal} toggle={automobileCategoryViewModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryViewModaltoggle} className="text-center">
-                    Automobile Make
+                    Automobile Model
                 </ModalHeader>
                 <ModalBody>
                     <AutomobileCategoryView
@@ -416,4 +421,4 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     );
 };
 
-export default AutomobileMakeList;
+export default AutomobileModelList;

@@ -6,9 +6,9 @@ import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 import { Country, State, City }  from 'country-state-city';
 
-const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
-  automobileCategory,
-  automobileMakeUpdateData}) => {
+const AutomobileModelForm = ({toggleModal,fetchData,perPage,type,
+  automobileMake,
+  automobileModelUpdateData}) => {
     const { register, handleSubmit,setValue, errors,setError , watch } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
@@ -17,10 +17,10 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
    
     useEffect(() => {
 
-        console.log(automobileMakeUpdateData)
+        console.log(automobileModelUpdateData)
         if(type == "update") {
           const fields = ['id','name', 'description',];
-          fields.forEach(field => setValue(field, automobileMakeUpdateData[field]));
+          fields.forEach(field => setValue(field, automobileModelUpdateData[field]));
        
       
         }
@@ -35,12 +35,12 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
     setLoading(true)
     setServerSideErrors(null)
     if(type == "update") {
-      apiClient().put(`${BACKEND_API}/v1.0/automobile-makes`,data)
+      apiClient().put(`${BACKEND_API}/v1.0/automobile-models`,data)
       .then(response => {
           console.log(response.data)
           setLoading(false)
           if(response.data) {
-              SweetAlert.fire({title:"Success", text:"Automobile Make Updated Successfully!", icon:"success"});
+              SweetAlert.fire({title:"Success", text:"Automobile Model Updated Successfully!", icon:"success"});
               fetchData(perPage)
               toggleModal();
           }
@@ -64,12 +64,12 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
   
     }
     if(type == "create") {
-      apiClient().post(`${BACKEND_API}/v1.0/automobile-makes`,data)
+      apiClient().post(`${BACKEND_API}/v1.0/automobile-models`,data)
       .then(response => {
           console.log(response.data)
           setLoading(false)
           if(response.data) {
-              SweetAlert.fire({title:"Success", text:"Automobile Make Created Successfully!", icon:"success"});
+              SweetAlert.fire({title:"Success", text:"Automobile Model Created Successfully!", icon:"success"});
               fetchData(perPage)
               toggleModal();
           }
@@ -108,23 +108,23 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
         <Col sm="12">
         <Card>
               <CardHeader>
-                <h5><span style={{textTransform:"capitalize"}}>{type}</span> Automobile Make</h5>
+                <h5><span style={{textTransform:"capitalize"}}>{type}</span> Automobile Model</h5>
               </CardHeader>
               <CardBody>
                 <Form className="needs-validation" noValidate="" onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-row mb-2">
                   <Input className="form-control" name="id" type="hidden" innerRef={register({ required: false })} />
                   <Col md="12 mb-3">
-                      <Label className='text-uppercase' htmlFor="category">Category</Label>
+                      <Label className='text-uppercase' htmlFor="make">Make</Label>
                       
-                      <Input className="form-control" name="automobile_category_id" type="hidden" 
-                      value={automobileCategory?.id}
+                      <Input className="form-control" name="automobile_make_id" type="hidden" 
+                      value={automobileMake?.id}
                       
                       innerRef={register({ required: false })} />
 
 
-                      <Input className="form-control" name="category" type="text" 
-                      value={automobileCategory?.name}
+                      <Input className="form-control" name="make" type="text" 
+                      value={automobileMake?.name}
                       readOnly
                       // placeholder="First name" 
                       
@@ -132,9 +132,9 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
                       <span>{errors.firstName && 'Please provide name '}</span>
                      
                       {serverSideErrors?(
-                        !serverSideErrors.category?(
+                        !serverSideErrors.make?(
                             <div className="valid-feedback" style={{display:"block"}}>{"Looks good!"}</div>
-                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.category[0]}</div>)
+                        ):( <div className="invalid-feedback" style={{display:"block"}}>{serverSideErrors.make[0]}</div>)
                       )
                       :(null)}
                      
@@ -197,4 +197,4 @@ const AutomobileMakeForm = ({toggleModal,fetchData,perPage,type,
   )
 }
 
-export default AutomobileMakeForm
+export default AutomobileModelForm

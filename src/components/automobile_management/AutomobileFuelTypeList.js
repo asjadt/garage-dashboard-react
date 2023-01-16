@@ -7,7 +7,7 @@ import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView from '../../utils/pagination';
-import AutomobileCategoryForm from './forms/AutomobileCategoryForm';
+
 import SweetAlert from 'sweetalert2'
 import {
     Edit, Delete, Eye
@@ -18,24 +18,26 @@ import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIE
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
 import { useParams } from 'react-router';
-import AutomobileMakeForm from './forms/AutomobileMakeForm';
+
+import AutomobileFuelTypeForm from './forms/AutomobileFuelTypeForm';
 import { Link } from 'react-router-dom';
 
 
 
 
-const AutomobileMakeList = () => {
+const AutomobileFuelTypeList = () => {
     let { id } = useParams();
 
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 
-const [automobileCategory,setAutomobileCategory] = useState(null);
+const [automobileModelVariant,setAutomobileModelVariant] = useState(null);
 
 // get single data
 useEffect(() => {
-apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/single/get/${id}`).then(response => {
+apiClient().get(`${BACKEND_API}/v1.0/automobile-model-variants/single/get/${id}`).then(response => {
 
-setAutomobileCategory(response.data)
+    setAutomobileModelVariant(response.data)
+    console.log("data",response.data)
 })
 .catch(error => {
 
@@ -74,25 +76,25 @@ setAutomobileCategory(response.data)
         setstartDate(date);
       let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
       let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+         fetchData(`${BACKEND_API}/v1.0/automobile-fuel-types/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
       };
       const setEndDate = date => {
         setendDate(date);
         let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+           fetchData(`${BACKEND_API}/v1.0/automobile-fuel-types/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
        
        };
     // modal
-    const [automobileMakeCreateModal, setAutomobileMakeCreateModal] = useState(false);
-    const automobileMakeCreateModaltoggle = () => setAutomobileMakeCreateModal(!automobileMakeCreateModal);
+    const [automobileFuelTypeCreateModal, setAutomobileFuelTypeCreateModal] = useState(false);
+    const automobileFuelTypeCreateModaltoggle = () => setAutomobileFuelTypeCreateModal(!automobileFuelTypeCreateModal);
 
-    const [automobileMakeUpdateData, setAutomobileMakeUpdateData] = useState(null);
+    const [automobileFuelTypeUpdateData, setAutomobileFuelTypeUpdateData] = useState(null);
     const [automobileCategoryUpdateModal, setAutomobileCategoryUpdateModal] = useState(false);
     const automobileCategoryUpdateModaltoggle = () => setAutomobileCategoryUpdateModal(!automobileCategoryUpdateModal);
     const editForm = (el) => {
         automobileCategoryUpdateModaltoggle()
-        setAutomobileMakeUpdateData(el)
+        setAutomobileFuelTypeUpdateData(el)
     }
 
     const [automobileCategoryViewData, setAutomobileCategoryViewData] = useState(null);
@@ -118,13 +120,13 @@ setAutomobileCategory(response.data)
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-makes/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-fuel-types/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
                                 SweetAlert.fire(
                                     'Deleted!',
-                                    'Automobile Make has been deleted.',
+                                    'Automobile Fuel Type has been deleted.',
                                     'success'
                                 )
                             }
@@ -163,7 +165,7 @@ setAutomobileCategory(response.data)
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/automobile-makes/${id}/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/automobile-fuel-types/${id}/${urlOrPerPage}`
         }
         apiClient().get(url)
             .then(response => {
@@ -186,7 +188,7 @@ setAutomobileCategory(response.data)
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?search_key=${e.target.value}`, false)
+        fetchData(`${BACKEND_API}/v1.0/automobile-fuel-types/${id}/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
@@ -206,13 +208,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Make" title="Manage Automobile Make" />
+            <BreadCrumb parent="Home" subparent="Automobile Management / Fuel Type" title="Manage Automobile Fuel Type" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileMakeCreateModaltoggle}>Create  Make of {automobileCategory?.name}</Button>):(null)} 
+                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileFuelTypeCreateModaltoggle}>Create  Fuel Types of {automobileModelVariant?.name}</Button>):(null)} 
                         
                     </Col>
 
@@ -223,12 +225,15 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Automobile Make Management</h5><span> Manage your Automobile Make </span>
+                                <h5>Automobile Fuel Type Management</h5><span> Manage your Automobile Fuel Type </span>
                             </CardHeader>
                             <Row>
                                 <Col sm="12">  
-                    <h5>Category Name:{automobileCategory?.name}</h5>
-                    <h5>Make list</h5>
+                    <h5>Category Name:{automobileModelVariant?.model?.make?.category?.name}</h5>
+                    <h5>Make:{automobileModelVariant?.model?.make?.name}</h5>
+                    <h5>Model:{automobileModelVariant?.model?.name}</h5>
+                    <h5>Model Variant:{automobileModelVariant?.name}</h5>
+                    <h5>Fuel Type list</h5>
                                 </Col>
                                 
                             </Row>
@@ -301,6 +306,9 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                             <th scope="col">{"name"}</th>
                                             <th scope="col">{"description"}</th>
                                             <th scope="col">{"category"}</th>
+                                            <th scope="col">{"make"}</th>
+                                            <th scope="col">{"model"}</th>
+                                            <th scope="col">{"model variant"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -310,10 +318,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 <th scope="row">{el.id}</th>
                                                 <td>{el.name}</td>
                                                 <td>{el.description}</td>
-                                                <td>{el.category?.name}</td>
+                                                <td>{el.model_variant?.model?.make?.category?.name}</td>
+                                                <td>{el.model_variant?.model?.make?.name}</td>
+                                                <td>{el.model_variant?.model?.name}</td>
+                                                <td>{el.model_variant?.name}</td>
                                                 <td>
 
-            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Link to={`${process.env.PUBLIC_URL}/automobile-make/single/${el.id}`}>
+            {/* {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Link to={`${process.env.PUBLIC_URL}/automobile-model-variant/single/${el.id}`}>
              <Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
@@ -321,7 +332,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                     >
 
                                                     </Eye>
-            </Link>):(null)} 
+            </Link>):(null)}  */}
             {checkPermissions([AUTOMOBILE_UPDATE],permissions)?( <Edit 
                                                     className='mr-1'
                                                     color="#007bff" size={18} style={{ cursor: "pointer" }}
@@ -381,28 +392,28 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-            <Modal isOpen={automobileMakeCreateModal} toggle={automobileMakeCreateModaltoggle} size="lg">
-                <ModalHeader toggle={automobileMakeCreateModaltoggle} className="text-center">
-                    Automobile Make
+            <Modal isOpen={automobileFuelTypeCreateModal} toggle={automobileFuelTypeCreateModaltoggle} size="lg">
+                <ModalHeader toggle={automobileFuelTypeCreateModaltoggle} className="text-center">
+                    Automobile Fuel Type
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileMakeForm toggleModal={automobileMakeCreateModaltoggle} fetchData={fetchData} perPage={perPage} automobileCategory={automobileCategory} type="create"></AutomobileMakeForm>
+                    <AutomobileFuelTypeForm toggleModal={automobileFuelTypeCreateModaltoggle} fetchData={fetchData} perPage={perPage} automobileModelVariant={automobileModelVariant} type="create"></AutomobileFuelTypeForm>
                 </ModalBody>
             </Modal>
             <Modal isOpen={automobileCategoryUpdateModal} toggle={automobileCategoryUpdateModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryUpdateModaltoggle} className="text-center">
-                    Automobile Make
+                    Automobile Fuel Type
                 </ModalHeader>
                 <ModalBody>
-                    <AutomobileMakeForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
-                    automobileCategory={automobileCategory}
-                    automobileMakeUpdateData={automobileMakeUpdateData}></AutomobileMakeForm>
+                    <AutomobileFuelTypeForm toggleModal={automobileCategoryUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
+                    automobileModelVariant={automobileModelVariant}
+                    automobileFuelTypeUpdateData={automobileFuelTypeUpdateData}></AutomobileFuelTypeForm>
                 </ModalBody>
             </Modal>
 
             <Modal isOpen={automobileCategoryViewModal} toggle={automobileCategoryViewModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryViewModaltoggle} className="text-center">
-                    Automobile Make
+                    Automobile Fuel Type
                 </ModalHeader>
                 <ModalBody>
                     <AutomobileCategoryView
@@ -416,4 +427,4 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     );
 };
 
-export default AutomobileMakeList;
+export default AutomobileFuelTypeList;
