@@ -17,3 +17,11 @@ export const AUTOMOBILE_CREATE = "automobile_create";
 export const AUTOMOBILE_UPDATE = "automobile_update";
 export const AUTOMOBILE_VIEW = "automobile_view";
 export const AUTOMOBILE_DELETE = "automobile_delete";
+
+
+
+
+export const SERVICE_CREATE = "service_create";
+export const SERVICE_UPDATE = "service_update";
+export const SERVICE_VIEW = "service_view";
+export const SERVICE_DELETE = "service_delete";

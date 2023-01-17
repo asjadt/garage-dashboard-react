@@ -60,7 +60,7 @@ const UserView = ({toggleModal,userViewData}) => {
                   <Col md="6 mb-3">
                       <Label className={"text-uppercase"} htmlFor="country">Country</Label>
                       
-                      <p>{Country.getCountryByCode(userViewData.country).name}</p>
+                      <p>{Country.getCountryByCode(userViewData.country)?.name}</p>
                     </Col>
                     <Col md="6 mb-3">
                       <Label className={"text-uppercase"} htmlFor="city">City</Label>

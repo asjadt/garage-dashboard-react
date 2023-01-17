@@ -194,7 +194,7 @@ setRoles(response.data.roles)
                   <div className="form-row mb-2">
                     <Col md="6 mb-3">
                       <Label className='text-uppercase' htmlFor="password">Password</Label>
-                      <Input className="form-control" name="password" type="text" 
+                      <Input className="form-control" name="password" type="password" 
                       
                       // placeholder="password" 
                       
@@ -210,7 +210,7 @@ setRoles(response.data.roles)
                     </Col>
                     <Col md="6 mb-3">
                       <Label className='text-uppercase' htmlFor="password_confirmation">Confirm Password</Label>
-                      <Input className="form-control" id="password_confirmation" name="password_confirmation" type="text" 
+                      <Input className="form-control" id="password_confirmation" name="password_confirmation" type="password" 
                       // placeholder="confirm password" 
                       innerRef={register({ false: true })} />
                       <span>{errors.password && 'Last name is required'}</span>
@@ -232,7 +232,7 @@ setRoles(response.data.roles)
                   <Col md="6 mb-3">
                     <FormGroup>
                     <Label className='text-uppercase' htmlFor="country">COUNTRY</Label>
-                    <Input type="select" className="custom-select"  name="country"  innerRef={register({ required: false })} defaultValue={"GB"} value={userUpdateData?.country} >
+                    <Input type="select" className="custom-select"  name="country"  innerRef={register({ required: false })} defaultValue={"GB"} value={formValues.country?formValues.country:userUpdateData?.country} onChange={(e) => setValue("country",e.target.value)} >
                      
                      <option value="">{"SELECT COUNTRY"}</option>
                      {Country.getAllCountries().map(el => {
@@ -259,7 +259,7 @@ setRoles(response.data.roles)
                     <FormGroup>
                     <Label className='text-uppercase' htmlFor="city">CITY</Label>
                     {console.log(formValues.country)}
-                    <Input type="select" className="custom-select"  name="city"  innerRef={register({ required: false })} value={userUpdateData?.city}>
+                    <Input type="select" className="custom-select"  name="city"  innerRef={register({ required: false })} value={formValues.city?formValues.city:userUpdateData?.city} onChange={(e) => setValue("city",e.target.value)}>
                      
                      <option value="">{"SELECT CITY"}</option>
                      {City.getCitiesOfCountry(formValues.country).map(el => {
@@ -331,7 +331,7 @@ setRoles(response.data.roles)
                   <Col md="6 mb-3">
                     <FormGroup>
                     <Label className='text-uppercase' htmlFor="role">Role</Label>
-                    <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} value={userUpdateData?.roles[0].name}>
+                    <Input type="select" className="custom-select"  name="role"  innerRef={register({ required: false })} value={formValues.role?formValues.role:userUpdateData?.roles[0].name} onChange={(e) => setValue("role",e.target.value)}>
                      
                       <option value="">{"Open this select Role"}</option>
                       {roles.map(el => {

@@ -207,6 +207,7 @@ import AutomobileMakeList from '../components/automobile_management/AutomobileMa
 import AutomobileModelList from '../components/automobile_management/AutomobileModelList'
 import AutomobileModelVariantList from '../components/automobile_management/AutomobileModelVariantList'
 import AutomobileFuelTypeList from '../components/automobile_management/AutomobileFuelTypeList'
+import ServiceList from '../components/service_management/ServiceList'
 
 export const routes = [
 
@@ -223,6 +224,15 @@ export const routes = [
   { path: "/automobile-make/single/:id"  ,Component: AutomobileModelList},
   { path: "/automobile-model/single/:id"  ,Component: AutomobileModelVariantList},
   { path: "/automobile-model-variant/single/:id"  ,Component: AutomobileFuelTypeList},
+
+  
+  { path: "/services/list" ,Component: ServiceList},
+
+
+
+
+
+
 
 
 

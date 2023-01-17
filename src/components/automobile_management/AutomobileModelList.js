@@ -139,7 +139,7 @@ apiClient().get(`${BACKEND_API}/v1.0/automobile-makes/single/get/${id}`).then(re
                 }
                 else {
                     SweetAlert.fire(
-                        'Automobile Category is safe'
+                        'Automobile Model is safe'
                     )
                 }
             })

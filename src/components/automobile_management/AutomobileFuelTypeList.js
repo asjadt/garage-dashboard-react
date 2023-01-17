@@ -139,7 +139,7 @@ apiClient().get(`${BACKEND_API}/v1.0/automobile-model-variants/single/get/${id}`
                 }
                 else {
                     SweetAlert.fire(
-                        'Automobile Category is safe'
+                        'Automobile Fuel Type is safe'
                     )
                 }
             })

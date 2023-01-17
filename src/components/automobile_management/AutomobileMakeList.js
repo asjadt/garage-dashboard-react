@@ -137,7 +137,7 @@ setAutomobileCategory(response.data)
                 }
                 else {
                     SweetAlert.fire(
-                        'Automobile Category is safe'
+                        'Automobile Make is safe'
                     )
                 }
             })

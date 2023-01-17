@@ -40,6 +40,7 @@ export const MENUITEMS = [
 
         ]
     },
+    
     {
         title: 'Garage Management', 
          icon: AiFillShop, 
@@ -55,6 +56,21 @@ export const MENUITEMS = [
             { path: `${process.env.PUBLIC_URL}/garages/create`, title: 'Create Garage', type: 'link',
             show:checkPermissions([GARAGE_VIEW],permissions),
             },
+
+        ]
+    },
+    {
+        title: 'Service Management', icon: UserX, 
+        type: 'sub', 
+        badgeType: 'primary', 
+        active: false,
+        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
+        show:checkPermissions([USER_VIEW],permissions),
+        children: [
+            { path: `${process.env.PUBLIC_URL}/services/list`, title: 'Services', type: 'link',
+            show:checkPermissions([USER_VIEW],permissions),
+            },
+           
 
         ]
     },
