@@ -72,6 +72,7 @@
     "react-slick": "^0.25.2",
     "react-sparklines": "^1.7.0",
     "react-spinners": "^0.13.7",
+    "react-step-progress-bar": "^1.0.3",
     "react-stepzilla": "^6.0.2",
     "react-times": "^3.1.12",
     "react-to-print": "^2.6.3",

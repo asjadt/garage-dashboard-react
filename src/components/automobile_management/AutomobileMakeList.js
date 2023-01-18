@@ -342,7 +342,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                 </Table>
                             </div>
                             <Row className='mt-5'>
-                                <Col sm="4" className='text-center'>
+                                <Col sm="2" className='text-center'>
 
                                     <div className="items">
                                         <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
@@ -359,7 +359,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
 
                                 </Col>
                                 <Col sm="2">   <div className="number">{from} - {to} of {total}</div></Col>
-                                <Col sm="6" className='text-center'>
+                                <Col sm="8" className='text-center'>
 
                                     <Pagination aria-label="Page navigation example" className="pagination-primary">
 

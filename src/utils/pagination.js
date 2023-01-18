@@ -2,6 +2,10 @@ import React from 'react'
 import { PaginationItem } from 'reactstrap'
 
 const setLinksView = (el,index,arr,fetchData,current_page,lastPage) => {
+
+
+
+
     if(el.label=="&laquo; Previous") {
         if(el.url) {
          return <PaginationItem key={index} className="page-item"><button className="page-link" onClick={() =>
@@ -13,13 +17,27 @@ const setLinksView = (el,index,arr,fetchData,current_page,lastPage) => {
       }
     else if(el.label=="Next &raquo;") {
        if(el.url) {
-        return <PaginationItem key={index} className="page-item"><button onClick={() =>
+        return <PaginationItem key={index} className={`page-item ${el.active?"active":""}`}><button onClick={() =>
            fetchData(el.url)} className="page-link" >Next</button></PaginationItem>
        } 
        else {
         return <PaginationItem key={index} className="page-item disabled"><button className="page-link" >Next</button></PaginationItem>
        }
      } else {
+
+     
+        return <PaginationItem key={index} className={`page-item ${el.active?"active":""}`}><button className="page-link" onClick={() =>
+         el.url?fetchData(el.url):null} >{el.label}</button></PaginationItem>
+       
+      
+    
+
+
+
+
+
+
+
        if(index === 1) {
          return   <React.Fragment key={index}><PaginationItem  className="page-item"><button className={`page-link  ${el.active && "text-dark"}`} onClick={() =>
            index == current_page?null:fetchData(el.url)} >

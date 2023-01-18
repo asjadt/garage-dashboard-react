@@ -3,16 +3,21 @@ import {useForm} from 'react-hook-form'
 import {Row,Col,Form,Label,Input} from 'reactstrap'
 import { FirstName,LastName } from "../../../../constant";
 const Registration = () => {
-    const { register, handleSubmit, errors } = useForm(); 
-
+    const { register, handleSubmit, errors,setError } = useForm(); 
+    setError('firstName', { type: 'custom', message: 'custom message' });
     const onSubmit = data => {
-
+        alert('You submitted the form and stuff!');
+        return isValidated()
         if (data !== '') {
             alert('You submitted the form and stuff!');
         } else {
             errors.showMessages();
         }
     };
+    const isValidated = () => { 
+
+        return false;
+    }
     return (
         <Fragment>
             <Row>

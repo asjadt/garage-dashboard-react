@@ -208,6 +208,7 @@ import AutomobileModelList from '../components/automobile_management/AutomobileM
 import AutomobileModelVariantList from '../components/automobile_management/AutomobileModelVariantList'
 import AutomobileFuelTypeList from '../components/automobile_management/AutomobileFuelTypeList'
 import ServiceList from '../components/service_management/ServiceList'
+import GarageCreate from '../components/garage_management/GarageCreate'
 
 export const routes = [
 
@@ -215,8 +216,12 @@ export const routes = [
   { path: "/roles/list" ,Component: RoleList},
 
   { path: "/garages/list" ,Component: GarageList},
-  { path: "/garages/create" ,Component: RoleList},
+  { path: "/garages/create" ,Component: GarageCreate},
   { path: "/garages/update/:id" ,Component: RoleList},
+
+
+
+
 
   { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
 
