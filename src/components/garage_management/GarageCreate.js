@@ -34,7 +34,7 @@ import GarageStep from './forms/GarageStep';
 const GarageCreate = () => {
  
     const [state,setState] = useState({
-        currentStep: 1,
+        currentStep: 3,
       })
     const [user,setUser] = useState({
         first_Name : '',
@@ -63,14 +63,95 @@ const GarageCreate = () => {
         city: '',
         postcode: '',
         logo: '',
-        is_mobile_garage: '',
-        wifi_available: '',
+        is_mobile_garage: '1',
+        wifi_available: '1',
         labour_rate: '',
         average_time_slot: '',
     })  
+
+
+    const [automobileCategories,setAutomobileCategories] = useState([]);
+
+    const [service,setService] = useState([
+      {
+        automobile_category_id:"1",
+        services:[
+
+        ],
+        automobile_makes:[
+
+        ]
+      }
+    ])  
+
+  useEffect(() => {
+    loadAutomobileCategories()
+  },[])
+  const loadAutomobileCategories = () => {
+    apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/get/all`)
+    .then(response => {
+console.log(response.data)
+let categories = response.data
+setAutomobileCategories(categories)
+// let tempServices = service
+
+// if(!tempServices.length) {
+//  tempServices[0] = {
+//   automobile_category_id:categories[0].id,
+//   services:[]
+//  }
+
+// }
+
+
+
+    })
+    .catch(error => {
+       if(error.response?.status == 401) {
+        SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+      }
+      else {
+        SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
+      }
+    })
+}
+
+
+  
+
+
+
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
 let permissions = JSON.parse(localStorage.getItem("permissions"));
+
+
+
+
+
+    const addCategory = () => {
+   
+    
+    let tempServices = JSON.parse(JSON.stringify(service))
+
+
+    tempServices.push({
+      automobile_category_id:"1",
+      services:[
+
+      ],
+      automobile_makes:[
+
+      ]
+    });
+    // console.log(service)
+    // console.log(tempServices)
+    setService(tempServices)
+
+    
+    }
+
+
 
 
 
@@ -108,7 +189,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
 
     apiClient()
     .post(`${BACKEND_API}/v1.0/auth/register-with-garage`,{
-        user:user
+        user:user,
+        garage:garage,
     })
     .then(res => {
 console.log("garage",res)
@@ -160,9 +242,37 @@ console.log("garage",res)
                 (currentStep >= 2)
                 &&
                 (
-                    errors["garage.name"]
-                    ||
-                    errors["garage.last_Name"]
+                  errors["garage.name"]
+                  ||
+                  errors["garage.about"]
+                  ||
+                  errors["garage.web_page"]
+                  ||
+                  errors["garage.phone"]
+                  ||
+                  errors["garage.email"]
+                  ||
+                  errors["garage.additional_information"]
+                  ||
+                  errors["garage.country"]
+                  ||
+                  errors["garage.city"]
+                  ||
+                  errors["garage.postcode"]
+                  ||
+                  errors["garage.address_line_1"]
+                  ||
+                  errors["garage.address_line_2"]
+                  ||
+                  errors["garage.logo"]
+                  ||
+                  errors["garage.is_mobile_garage"]
+                  ||
+                  errors["garage.wifi_available"]
+                  ||
+                  errors["garage.labour_rate"]
+                  ||
+                  errors["garage.average_time_slot"]
                 )
             ){
                
@@ -179,9 +289,8 @@ console.log("garage",res)
                 (currentStep >= 3)
                 &&
                 (
-                    errors["service.first_Name"]
-                    ||
-                    errors["service.last_Name"]
+                    errors["service.automobile_categories"]
+                   
                 )
             
           ){
@@ -279,6 +388,19 @@ console.log("garage",res)
     // ...else render nothing
     return null;
   }
+
+ const  handleCategoryChange = (e) => {
+       let index = e.target.name.split("-")[1];
+       let name = e.target.name.split("-")[2];
+
+    let tempServices = JSON.parse(JSON.stringify(service))
+    console.log(tempServices,index,name)
+    tempServices[index] = {
+     ...tempServices[index],
+     [name]:e.target.value
+    };
+    setService(tempServices)
+ }
     return (
         <Fragment>
 
@@ -320,10 +442,15 @@ console.log("garage",res)
                 data={garage}
                 serverSideErrors={serverSideErrors}
               />
+
                <ServiceStep
                 currentStep={state.currentStep}
                 handleChange={handleUserChange}
-                email={state.email}
+                data={service}
+                serverSideErrors={serverSideErrors}
+                addCategory={addCategory}
+                automobileCategories={automobileCategories}
+                handleCategoryChange={handleCategoryChange}
               />
 
 

@@ -133,12 +133,12 @@ setAutomobileCategories(response.data)
                     <FormGroup>
                     <Label className='text-uppercase' htmlFor="automobile_category_id">Automobile Category</Label>
                     {console.log("category",formValues)}
-                    <Input className="form-control" name="category" type="text" 
+                    {/* <Input className="form-control" name="category" type="text" 
                       
                      readOnly
                       
-                      innerRef={register({ required: false })} />
-                    {/* <Input type="select" className="custom-select"  name="automobile_category_id"  innerRef={register({ required: false })} value={formValues.automobile_category_id?formValues.automobile_category_id:serviceUpdateData?.automobile_category_id} onChange={(e) => setValue("automobile_category_id",e.target.value)}>
+                      innerRef={register({ required: false })} /> */}
+                    <Input type="select" className="custom-select"  name="automobile_category_id"  innerRef={register({ required: false })} value={formValues.automobile_category_id?formValues.automobile_category_id:serviceUpdateData?.automobile_category_id} onChange={(e) => setValue("automobile_category_id",e.target.value)}>
                      
                       <option value="">{"Select Automobile Category"}</option>
                       {automobileCategories.map(el => {
@@ -148,7 +148,7 @@ setAutomobileCategories(response.data)
                       })}
                     
                   
-                    </Input> */}
+                    </Input>
                 
                     {serverSideErrors?(
                         !serverSideErrors.automobile_category_id?(
