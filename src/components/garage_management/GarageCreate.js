@@ -76,7 +76,7 @@ const GarageCreate = () => {
       {
         automobile_category_id:"1",
         services:[
-
+            
         ],
         automobile_makes:[
 
@@ -86,24 +86,18 @@ const GarageCreate = () => {
 
   useEffect(() => {
     loadAutomobileCategories()
+    
+    loadAutomobileMakes()
+
+    
   },[])
+
   const loadAutomobileCategories = () => {
     apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/get/all`)
     .then(response => {
 console.log(response.data)
 let categories = response.data
 setAutomobileCategories(categories)
-// let tempServices = service
-
-// if(!tempServices.length) {
-//  tempServices[0] = {
-//   automobile_category_id:categories[0].id,
-//   services:[]
-//  }
-
-// }
-
-
 
     })
     .catch(error => {
@@ -117,38 +111,87 @@ setAutomobileCategories(categories)
 }
 
 
+
+const loadAutomobileMakes = () => {
+  apiClient().get(`${BACKEND_API}/v1.0/automobile-makes-all/${1}`)
+  .then(response => {
+console.log("makes",response.data)
+let makes = response.data
+// setAutomobileCategories(categories)
+
+// let tempServices = JSON.parse(JSON.stringify(service))
+
+// tempServices[0] = {
+// ...tempServices[0],
+// services:[...tempServices[0].services],
+// automobile_makes:[...makes]
+// };
+
+// setService(tempServices)
+ loadServices(makes)
+  })
+  .catch(error => {
+     if(error.response?.status == 401) {
+      SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+    }
+    else {
+      SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
+    }
+  })
+}
+const loadServices = (makes) => {
+  apiClient().get(`${BACKEND_API}/v1.0/services-all/${1}`)
+  .then(response => {
+console.log("services",response.data)
+let services = response.data
+// setAutomobileCategories(categories)
+let tempServices = JSON.parse(JSON.stringify(service))
+
+console.log(tempServices)
+tempServices[0] = {
+...tempServices[0],
+services:[...services],
+ automobile_makes:makes
+
+};
+
+setService(tempServices)
+  })
+  .catch(error => {
+     if(error.response?.status == 401) {
+      SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
+    }
+    else {
+      SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
+    }
+  })
+}
+
+
   
 
 
 
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
-let permissions = JSON.parse(localStorage.getItem("permissions"));
+    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
 
 
 
 
     const addCategory = () => {
-   
-    
     let tempServices = JSON.parse(JSON.stringify(service))
-
-
     tempServices.push({
       automobile_category_id:"1",
       services:[
-
       ],
       automobile_makes:[
-
       ]
     });
     // console.log(service)
     // console.log(tempServices)
     setService(tempServices)
-
-    
     }
 
 
@@ -158,13 +201,11 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   if(!permissions.includes(GARAGE_CREATE)) {
 return <><Error401Unauthorized></Error401Unauthorized></>
   }
-  const steps =
-  [
+  const steps =  [
       { name: 'Step 1', component: <Registration /> },
       { name: 'Step 2', component: <Emails /> },
       { name: 'Step 3', component: <Birthdate /> },
-      
-  ]
+      ]
  
   const handleUserChange = (e) => {
     const { name, value } = e.target;
@@ -401,6 +442,51 @@ console.log("garage",res)
     };
     setService(tempServices)
  }
+
+ const  handleMakeChange = (e) => {
+  const {name}  = e.target
+  let index = name.split("-")[1];
+  let makeIndex = name.split("-")[3];
+
+let tempServices = JSON.parse(JSON.stringify(service))
+console.log(tempServices)
+
+
+
+
+
+tempServices[index].automobile_makes[makeIndex].checked =  !tempServices[index].automobile_makes[makeIndex].checked;
+setService(tempServices)
+}
+
+const  handleModelChange = (e) => {
+  const {name}  = e.target
+  let index = name.split("-")[1];
+  let makeIndex = name.split("-")[3];
+  let modelIndex = name.split("-")[5];
+
+let tempServices = JSON.parse(JSON.stringify(service))
+console.log(tempServices)
+
+tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked =  !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked ;
+setService(tempServices)
+}
+
+const  handleServiceChange = (e) => {
+  const {name}  = e.target
+  let index = name.split("-")[1];
+  let makeIndex = name.split("-")[3];
+
+let tempServices = JSON.parse(JSON.stringify(service))
+console.log(tempServices)
+
+
+
+
+
+tempServices[index].services[makeIndex].checked =  !tempServices[index].services[makeIndex].checked;
+setService(tempServices)
+}
     return (
         <Fragment>
 
@@ -451,6 +537,9 @@ console.log("garage",res)
                 addCategory={addCategory}
                 automobileCategories={automobileCategories}
                 handleCategoryChange={handleCategoryChange}
+                handleMakeChange={handleMakeChange}
+                handleModelChange={handleModelChange}
+                handleServiceChange={handleServiceChange}
               />
 
 
