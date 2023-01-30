@@ -25,3 +25,9 @@ export const SERVICE_CREATE = "service_create";
 export const SERVICE_UPDATE = "service_update";
 export const SERVICE_VIEW = "service_view";
 export const SERVICE_DELETE = "service_delete";
+
+
+export const SUB_SERVICE_CREATE = "sub_service_create";
+export const SUB_SERVICE_UPDATE = "sub_service_update";
+export const SUB_SERVICE_VIEW = "sub_service_view";
+export const SUB_SERVICE_DELETE = "sub_service_delete";

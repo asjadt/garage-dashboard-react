@@ -209,6 +209,7 @@ import AutomobileModelVariantList from '../components/automobile_management/Auto
 import AutomobileFuelTypeList from '../components/automobile_management/AutomobileFuelTypeList'
 import ServiceList from '../components/service_management/ServiceList'
 import GarageCreate from '../components/garage_management/GarageCreate'
+import SubServiceList from '../components/service_management/SubServiceList'
 
 export const routes = [
 
@@ -233,7 +234,7 @@ export const routes = [
   
   { path: "/services/list" ,Component: ServiceList},
 
-
+  { path: "/services/single/:id"  ,Component: SubServiceList},
 
 
 

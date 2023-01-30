@@ -7,24 +7,54 @@ import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
 import { ClipLoader } from 'react-spinners';
 import setLinksView from '../../utils/pagination';
-import ServiceForm from './forms/ServiceForm';
+
 import SweetAlert from 'sweetalert2'
 import {
     Edit, Delete, Eye
 } from 'react-feather';
-import ServiceView from './vews/ServiceView';
+import SubServiceView from './vews/SubServiceView';
 import DatePicker from "react-datepicker";
-import { SERVICE_CREATE, SERVICE_DELETE, SERVICE_UPDATE, SERVICE_VIEW } from '../../constant/permissions';
+import { 
+    
+    SERVICE_CREATE, SERVICE_DELETE, SERVICE_UPDATE, SERVICE_VIEW, 
+
+
+} from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
+import { useParams } from 'react-router';
+import SubServiceForm from './forms/SubServiceForm';
 import { Link } from 'react-router-dom';
 
 
 
 
-const ServiceList = () => {
- 
+const SubServiceList = () => {
+    let { id } = useParams();
+
 let permissions = JSON.parse(localStorage.getItem("permissions"));
+
+const [service,setService] = useState(null);
+
+// get single data
+useEffect(() => {
+apiClient().get(`${BACKEND_API}/v1.0/services/single/get/${id}`).then(response => {
+
+
+
+
+
+
+    setService(response.data)
+
+})
+.catch(error => {
+
+})
+},[])
+
+
+// end get single data
 
 
     
@@ -48,34 +78,37 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         setstartDate(date);
       let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
       let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/services/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+         fetchData(`${BACKEND_API}/v1.0/sub-services/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
       };
       const setEndDate = date => {
         setendDate(date);
         let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/services/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+           fetchData(`${BACKEND_API}/v1.0/sub-services/${id}/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
        
        };
     // modal
-    const [serviceCreateModal, setServiceCreateModal] = useState(false);
-    const serviceCreateModaltoggle = () => setServiceCreateModal(!serviceCreateModal);
+ 
+    const [subServiceCreateModal, setSubServiceCreateModal] = useState(false);
 
-    const [serviceUpdateData, setServiceUpdateData] = useState(null);
-    const [serviceUpdateModal, setServiceUpdateModal] = useState(false);
-    const serviceUpdateModaltoggle = () => setServiceUpdateModal(!serviceUpdateModal);
+    const subServiceCreateModaltoggle = () => setSubServiceCreateModal(!subServiceCreateModal);
+   
+    const [subServiceUpdateData, setSubServiceUpdateData] = useState(null);
+    const [subServiceUpdateModal, setSubServiceUpdateModal] = useState(false);
+    const subServiceUpdateModaltoggle = () => setSubServiceUpdateModal(!subServiceUpdateModal);
     const editForm = (el) => {
-        serviceUpdateModaltoggle()
-        setServiceUpdateData(el)
+        subServiceUpdateModaltoggle()
+        setSubServiceUpdateData(el)
     }
 
-    const [serviceViewData, setServiceViewData] = useState(null);
-    const [serviceViewModal, setServiceViewModal] = useState(false);
-    const serviceViewModaltoggle = () => setServiceViewModal(!serviceViewModal);
+    const [subServiceViewData, setSubServiceViewData] = useState(null);
+    const [subServiceViewModal, setSubServiceViewModal] = useState(false);
+    const subServiceViewModaltoggle = () => setSubServiceViewModal(!subServiceViewModal);
     
+
     const viewForm = (el) => {
-        serviceViewModaltoggle()
-        setServiceViewData(el)
+        subServiceViewModaltoggle()
+        setSubServiceViewData(el)
     }
 
     // end modal
@@ -92,13 +125,13 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/services/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-makes/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
                                 SweetAlert.fire(
                                     'Deleted!',
-                                    'Service has been deleted.',
+                                    'Automobile Sub Service has been deleted.',
                                     'success'
                                 )
                             }
@@ -111,7 +144,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
                 }
                 else {
                     SweetAlert.fire(
-                        'Service is safe'
+                        'Automobile Sub Service is safe'
                     )
                 }
             })
@@ -137,7 +170,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/services/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/automobile-makes/${id}/${urlOrPerPage}`
         }
         apiClient().get(url)
             .then(response => {
@@ -160,7 +193,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/services/${perPage}?search_key=${e.target.value}`, false)
+        fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
@@ -180,13 +213,13 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Service Management / Services" title="Manage Services" />
+            <BreadCrumb parent="Home" subparent="Service / Sub Service" title="Manage Sub Service" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([SERVICE_CREATE],permissions)?(<Button color="primary" onClick={serviceCreateModaltoggle}>Create Service</Button>):(null)} 
+                    {checkPermissions([SERVICE_CREATE],permissions)?(<Button color="primary" onClick={subServiceCreateModaltoggle}>Create  Sub Service of {service?.name}</Button>):(null)} 
                         
                     </Col>
 
@@ -197,8 +230,16 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Service Management</h5><span> Manage your Services </span>
+                                <h5>Automobile Sub Service</h5><span>Manage your Sub Service </span>
                             </CardHeader>
+                            <Row>
+                                <Col sm="12">  
+                    <h5>Category Name:{service?.category?.name}</h5>
+                    <h5>Service Name:{service?.name}</h5>
+                    <h5>Sub Service list</h5>
+                                </Col>
+                                
+                            </Row>
                             <Row>
                                 
                                 <Col sm="6">
@@ -267,7 +308,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                             <th scope="col">{"#"}</th>
                                             <th scope="col">{"name"}</th>
                                             <th scope="col">{"description"}</th>
-                                            <th scope="col">{"automobile category"}</th>
+                                            <th scope="col">{"category"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
@@ -278,11 +319,11 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 <td>{el.name}</td>
                                                 <td>{el.description}</td>
                                                 <td>{el.category?.name}</td>
-                                               
                                                 <td>
 
-                                                {checkPermissions([SERVICE_VIEW],permissions)?(
-            <Link to={`${process.env.PUBLIC_URL}/services/single/${el.id}`}>
+           
+     
+           {/* {checkPermissions([AUTOMOBILE_VIEW],permissions)?(<Link to={`${process.env.PUBLIC_URL}/automobile-make/single/${el.id}`}>
              <Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
@@ -290,13 +331,22 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                     >
 
                                                     </Eye>
-            </Link>
-           ):(null)} 
-            {/* {checkPermissions([SERVICE_VIEW],permissions)?(<Eye 
+            </Link>):(null)} */}
+
+
+
+                                      {checkPermissions([SERVICE_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
-                                                    ></Eye>):(null)}  */}
+                                                    ></Eye>):(null)} 
+
+
+
+
+      
+
+
             {checkPermissions([SERVICE_UPDATE],permissions)?( <Edit 
                                                     className='mr-1'
                                                     color="#007bff" size={18} style={{ cursor: "pointer" }}
@@ -356,32 +406,34 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-            <Modal isOpen={serviceCreateModal} toggle={serviceCreateModaltoggle} size="lg">
-                <ModalHeader toggle={serviceCreateModaltoggle} className="text-center">
-                Service
+            <Modal isOpen={subServiceCreateModal} toggle={subServiceCreateModaltoggle} size="lg">
+                <ModalHeader toggle={subServiceCreateModaltoggle} className="text-center">
+                   Sub Service
                 </ModalHeader>
                 <ModalBody>
-                    <ServiceForm toggleModal={serviceCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></ServiceForm>
+                    <SubServiceForm toggleModal={subServiceCreateModaltoggle} fetchData={fetchData} perPage={perPage} service={service} type="create"></SubServiceForm>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={serviceUpdateModal} toggle={serviceUpdateModaltoggle} size="lg">
-                <ModalHeader toggle={serviceUpdateModaltoggle} className="text-center">
-                Service
+            <Modal isOpen={subServiceUpdateModal} toggle={subServiceUpdateModaltoggle} size="lg">
+                <ModalHeader toggle={subServiceUpdateModaltoggle} className="text-center">
+                   Sub Service
                 </ModalHeader>
                 <ModalBody>
-                    <ServiceForm toggleModal={serviceUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" serviceUpdateData={serviceUpdateData}></ServiceForm>
+                    <SubServiceForm toggleModal={subServiceUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" 
+                    service={service}
+                    subServiceUpdateData={subServiceUpdateData}></SubServiceForm>
                 </ModalBody>
             </Modal>
 
-            <Modal isOpen={serviceViewModal} toggle={serviceViewModaltoggle} size="lg">
-                <ModalHeader toggle={serviceViewModaltoggle} className="text-center">
-                Service
+            <Modal isOpen={subServiceViewModal} toggle={subServiceViewModaltoggle} size="lg">
+                <ModalHeader toggle={subServiceViewModaltoggle} className="text-center">
+                    Sub Service
                 </ModalHeader>
                 <ModalBody>
-                    <ServiceView
-                        toggleModal={serviceViewModaltoggle}
-                        serviceViewData={serviceViewData}>
-                    </ServiceView>
+                    <SubServiceView
+                        toggleModal={subServiceViewModaltoggle}
+                        subServiceViewData={subServiceViewData}>
+                    </SubServiceView>
                 </ModalBody>
             </Modal>
 
@@ -389,4 +441,4 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     );
 };
 
-export default ServiceList;
+export default SubServiceList;
