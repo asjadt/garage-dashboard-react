@@ -6,12 +6,12 @@ import SweetAlert from 'sweetalert2'
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 
-const SubServiceView = ({toggleModal,serviceViewData}) => {
+const SubServiceView = ({toggleModal,subServiceViewData}) => {
   
  
 
     useEffect(() => {
-        console.log(serviceViewData)
+        console.log(subServiceViewData)
         return () => {  
         };
     }, []);
@@ -31,8 +31,8 @@ const SubServiceView = ({toggleModal,serviceViewData}) => {
               <div className='form-row mb-2'>
                   <Col md="6 mb-3">
            
-                    <Label className={"text-uppercase"} htmlFor="phone">Automobile Category</Label>
-                    <p>{serviceViewData.category?.name}</p>
+                    <Label className={"text-uppercase"} htmlFor="phone">Sub Service</Label>
+                    <p>{subServiceViewData?.service?.name}</p>
                 
           
                  
@@ -42,14 +42,14 @@ const SubServiceView = ({toggleModal,serviceViewData}) => {
                   <div className="form-row mb-2">
                     <Col md="12 mb-3">
                       <Label className={"text-uppercase"} htmlFor="name"> Name</Label>
-                      <p>{serviceViewData.name}</p>
+                      <p>{subServiceViewData?.name}</p>
                      
                      
                     
                     </Col>
                     <Col md="12 mb-3">
                       <Label className={"text-uppercase"} htmlFor="description">Description</Label>
-                      <p>{serviceViewData.description}</p>
+                      <p>{subServiceViewData?.description}</p>
                       
                     </Col>
                    

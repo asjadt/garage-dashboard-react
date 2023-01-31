@@ -125,7 +125,7 @@ apiClient().get(`${BACKEND_API}/v1.0/services/single/get/${id}`).then(response =
         })
             .then((result) => {
                 if (result.value) {
-                    apiClient().delete(`${BACKEND_API}/v1.0/automobile-makes/${id}`)
+                    apiClient().delete(`${BACKEND_API}/v1.0/sub-services/${id}`)
                         .then(response => {
                             if (response.status == 200 && response.data.ok) {
                                 fetchData(perPage);
@@ -170,7 +170,7 @@ apiClient().get(`${BACKEND_API}/v1.0/services/single/get/${id}`).then(response =
             // url = urlOrPerPage.replace("http", http);
 
         } else {
-            url = `${BACKEND_API}/v1.0/automobile-makes/${id}/${urlOrPerPage}`
+            url = `${BACKEND_API}/v1.0/sub-services/${id}/${urlOrPerPage}`
         }
         apiClient().get(url)
             .then(response => {
@@ -193,7 +193,7 @@ apiClient().get(`${BACKEND_API}/v1.0/services/single/get/${id}`).then(response =
     const [searchKey, setSearchKey] = useState("");
     const searchFunc = (e) => {
         setSearchKey(e.target.value);
-        fetchData(`${BACKEND_API}/v1.0/automobile-makes/${id}/${perPage}?search_key=${e.target.value}`, false)
+        fetchData(`${BACKEND_API}/v1.0/sub-services/${id}/${perPage}?search_key=${e.target.value}`, false)
     }
 
     useEffect(() => {
@@ -308,6 +308,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                             <th scope="col">{"#"}</th>
                                             <th scope="col">{"name"}</th>
                                             <th scope="col">{"description"}</th>
+                                            <th scope="col">{"service"}</th>
                                             <th scope="col">{"category"}</th>
                                             <th scope="col">{"actions"}</th>
                                         </tr>
@@ -318,7 +319,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 <th scope="row">{el.id}</th>
                                                 <td>{el.name}</td>
                                                 <td>{el.description}</td>
-                                                <td>{el.category?.name}</td>
+                                                <td>{el.service?.name}</td>
+                                                <td>{el.service?.category?.name}</td>
                                                 <td>
 
            
@@ -333,13 +335,17 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                     </Eye>
             </Link>):(null)} */}
 
-
-
-                                      {checkPermissions([SERVICE_VIEW],permissions)?(<Eye 
+    {checkPermissions([SERVICE_VIEW],permissions)?(<Eye 
                                                     className='mr-1'
                                                     color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
                                                     ></Eye>):(null)} 
+
+                                      {/* {checkPermissions([SERVICE_VIEW],permissions)?(<Eye 
+                                                    className='mr-1'
+                                                    color="#51bb25" size={18} style={{ cursor: "pointer" }}
+                                                        onClick={() => viewForm(el)}
+                                                    ></Eye>):(null)}  */}
 
 
 

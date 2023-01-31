@@ -31,10 +31,10 @@ import GarageStep from './forms/GarageStep';
 
 
 
-const GarageCreate = () => {
+const GarageCreate = ({ history }) => {
  
     const [state,setState] = useState({
-        currentStep: 3,
+        currentStep: 1,
       })
     const [user,setUser] = useState({
         first_Name : '',
@@ -232,9 +232,14 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     .post(`${BACKEND_API}/v1.0/auth/register-with-garage`,{
         user:user,
         garage:garage,
+        service:service[0]
     })
     .then(res => {
-console.log("garage",res)
+      SweetAlert.fire({title:"Success", text:"Garage Registered Successfully!", icon:"success"});
+      history.push("/garages/list");
+console.log("garage",res);
+
+
     })
     .catch(error => {
         setLoading(false)
@@ -330,7 +335,9 @@ console.log("garage",res)
                 (currentStep >= 3)
                 &&
                 (
-                    errors["service.automobile_categories"]
+                    errors["service.makes"]
+                    ||
+                    errors["service.services"]
                    
                 )
             
@@ -456,6 +463,13 @@ console.log(tempServices)
 
 
 tempServices[index].automobile_makes[makeIndex].checked =  !tempServices[index].automobile_makes[makeIndex].checked;
+
+tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
+  element.checked=true;
+  return element
+});
+
+
 setService(tempServices)
 }
 
@@ -475,16 +489,30 @@ setService(tempServices)
 const  handleServiceChange = (e) => {
   const {name}  = e.target
   let index = name.split("-")[1];
-  let makeIndex = name.split("-")[3];
+  let serviceIndex = name.split("-")[3];
 
 let tempServices = JSON.parse(JSON.stringify(service))
 console.log(tempServices)
 
 
+tempServices[index].services[serviceIndex].checked =  !tempServices[index].services[serviceIndex].checked;
+tempServices[index].services[serviceIndex].sub_services.forEach(element => {
+  element.checked=true;
+  return element
+});
+setService(tempServices)
+}
 
+const  handleSubServiceChange = (e) => {
+  const {name}  = e.target;
+  let index = name.split("-")[1];
+  let serviceIndex = name.split("-")[3];
+  let subServiceIndex = name.split("-")[5];
 
-
-tempServices[index].services[makeIndex].checked =  !tempServices[index].services[makeIndex].checked;
+let tempServices = JSON.parse(JSON.stringify(service));
+console.log(subServiceIndex);
+console.log("test",tempServices[index].services[serviceIndex].sub_services[subServiceIndex]);
+tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked =  !tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked ;
 setService(tempServices)
 }
     return (
@@ -540,6 +568,7 @@ setService(tempServices)
                 handleMakeChange={handleMakeChange}
                 handleModelChange={handleModelChange}
                 handleServiceChange={handleServiceChange}
+                handleSubServiceChange={handleSubServiceChange}
               />
 
 
