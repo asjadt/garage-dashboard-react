@@ -1,21 +1,21 @@
-import React, { Fragment,useState,useEffect } from 'react';
+import { Auth0Provider } from '@auth0/auth0-react';
+import React, { Fragment, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import {firebase_app,auth0} from './data/config';
-import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { Auth0Provider } from '@auth0/auth0-react'
-import store from './store/index'
-import {BrowserRouter,Switch,Route,Redirect} from 'react-router-dom'
-import { CSSTransition,TransitionGroup } from 'react-transition-group'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import App from './components/app';
-import {routes} from './route/ContentRoutes'
 import ScrollToTop from "./components/common/ScrollToTop";
-import ConfigDB from './data/customizer/config'
-import {configureFakeBackend ,authHeader, handleResponse} from './services/fack.backend'
+import { auth0 } from './data/config';
+import ConfigDB from './data/customizer/config';
+import './index.scss';
+import { routes } from './route/ContentRoutes';
+import { authHeader, configureFakeBackend, handleResponse } from './services/fack.backend';
+import * as serviceWorker from './serviceWorker';
+import store from './store/index';
 
 // Signin page
-import Signin from './auth/signin'
+import Signin from './auth/signin';
 
 // Error page 
 import Error400 from "./pages/errors/Error400";
@@ -27,15 +27,15 @@ import Error503 from "./pages/errors/Error503";
 
 
 // Authentication
+import Forgetpwd from "./pages/authentication/Forgetpwd";
 import Login from "./pages/authentication/Login";
 import LoginWithBgImage from "./pages/authentication/LoginWithBgImage";
 import LoginWithBgVideo from "./pages/authentication/LoginWithBgVideo";
 import Register from "./pages/authentication/Register";
 import RegisterWithBgImage from "./pages/authentication/RegisterWithBgImage";
 import RegisterWithBgVideo from "./pages/authentication/RegisterWithBgVideo";
-import UnlockUser from "./pages/authentication/UnlockUser";
-import Forgetpwd from "./pages/authentication/Forgetpwd";
 import Resetpwd from "./pages/authentication/Resetpwd";
+import UnlockUser from "./pages/authentication/UnlockUser";
 
 // Comming soon
 import Comingsoon from "./pages/comingSoon/Comingsoon";
@@ -45,7 +45,8 @@ import ComingsoonVideo from "./pages/comingSoon/ComingsoonVideo";
 // Maintenance
 import Maintenance from "./pages/Maintenance";
 
-import Callback from './auth/callback'
+import Callback from './auth/callback';
+import Registration from './auth/Registration';
 import { apiClient } from './utils/apiClient';
 import { BACKEND_API } from './utils/backend';
 
@@ -102,7 +103,11 @@ const Root = (props) =>  {
                 <BrowserRouter basename={`/`}>
                 <ScrollToTop />
                   <Switch>
+
+                        {/* AUTHENTICATION ROUTES  */}
                       <Route  path={`${process.env.PUBLIC_URL}/login`} component={Signin} />
+                      <Route  path={`${process.env.PUBLIC_URL}/registration`} component={Registration} />
+                      
                       <Route  path={`${process.env.PUBLIC_URL}/pages/errors/error400`} component={Error400}></Route>
                       <Route  path={`${process.env.PUBLIC_URL}/pages/errors/error401`} component={Error401}></Route>
                       <Route  path={`${process.env.PUBLIC_URL}/pages/errors/error403`} component={Error403}></Route>

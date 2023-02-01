@@ -5,7 +5,7 @@
 $url_0: url("../../images/other-images/auth-layer.png") !important;
 $url_1: url(../../images/other-images/auth-bg-1.jpg) !important;
 
-.auth-minibox{
+.auth-minibox {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,22 +15,22 @@ $url_1: url(../../images/other-images/auth-bg-1.jpg) !important;
 .authentication-main {
   margin-top: 80px;
   .auth-innerright {
-    .card-body{
-      .theme-form{
+    .card-body {
+      .theme-form {
         width: calc(100% - 290px);
       }
     }
   }
 }
-.auth-minibox1{
+.auth-minibox1 {
   width: 460px;
   z-index: 2;
   margin: 0 auto;
 }
 
 .auth-bg {
-  .card-body{
-    .theme-form{
+  .card-body {
+    .theme-form {
       width: calc(100% - 290px);
     }
     background-color: $card-body-color;
@@ -43,8 +43,8 @@ $url_1: url(../../images/other-images/auth-bg-1.jpg) !important;
   padding: 50px 100px;
 }
 .auth-bg-video {
-  .card-body{
-    .theme-form{
+  .card-body {
+    .theme-form {
       width: calc(100% - 290px);
     }
     background-color: $card-body-color;
@@ -114,7 +114,6 @@ $url_1: url(../../images/other-images/auth-bg-1.jpg) !important;
   }
 }
 
-
 //New scss
 $contW: 900px;
 $imgW: 290px;
@@ -130,7 +129,6 @@ $diffRatio: ($contW - $imgW) / $contW;
   }
 }
 
-
 .cont {
   overflow: hidden;
   position: relative;
@@ -140,10 +138,10 @@ $diffRatio: ($contW - $imgW) / $contW;
   padding: 30px;
   border-radius: 12px;
 }
-.cont{
-  & > div{
-    &:nth-child(1){
-      height:100%;
+.cont {
+  & > div {
+    &:nth-child(1) {
+      height: 100%;
       display: flex;
       align-items: center;
     }
@@ -162,7 +160,7 @@ $diffRatio: ($contW - $imgW) / $contW;
   width: calc(100% + 260px);
 
   @include signUpActive {
-    transform: translate3d($formW * -1,0,0);
+    transform: translate3d($formW * -1, 0, 0);
   }
 }
 
@@ -177,29 +175,29 @@ $diffRatio: ($contW - $imgW) / $contW;
   padding-top: 360px;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 0;
     width: $contW;
     height: 100%;
-    background-image: url('../../images/other-images/login-bg.jpg') !important;
+    background-image: url("../../images/other-images/login-bg.jpg") !important;
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
   }
 
   @include signUpActive {
     &:before {
-      transform: translate3d($formW,0,0);
+      transform: translate3d($formW, 0, 0);
     }
   }
 
@@ -214,11 +212,9 @@ $diffRatio: ($contW - $imgW) / $contW;
     color: #fff;
     transition: transform $switchAT ease-in-out;
 
-
     &.m--up {
-
       @include signUpActive {
-        transform: translateX($imgW*2);
+        transform: translateX($imgW * 2);
       }
     }
 
@@ -244,7 +240,7 @@ $diffRatio: ($contW - $imgW) / $contW;
     margin: 0 50px;
 
     &:after {
-      content: '';
+      content: "";
       z-index: 2;
       position: absolute;
       left: 0;
@@ -267,7 +263,7 @@ $diffRatio: ($contW - $imgW) / $contW;
       transition: transform $switchAT;
 
       &.m--in {
-        transform: translateY($btnH*-2);
+        transform: translateY($btnH * -2);
 
         @include signUpActive {
           transform: translateY(0);
@@ -276,7 +272,7 @@ $diffRatio: ($contW - $imgW) / $contW;
 
       &.m--up {
         @include signUpActive {
-          transform: translateY($btnH*2);
+          transform: translateY($btnH * 2);
         }
       }
     }
@@ -313,15 +309,15 @@ $diffRatio: ($contW - $imgW) / $contW;
   @include signUpActive {
     transition-timing-function: ease-in-out;
     transition-duration: $switchAT;
-    transform: translate3d($formW,0,0);
+    transform: translate3d($formW, 0, 0);
   }
 }
 
 .sign-up {
-  transform: translate3d($contW * -1,0,0);
+  transform: translate3d($contW * -1, 0, 0);
 
   @include signUpActive {
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -338,25 +334,26 @@ $diffRatio: ($contW - $imgW) / $contW;
 }
 @media only screen and (max-width: 991px) {
   .auth-bg-video {
-    .card-body{
-      .theme-form{
+    .card-body {
+      .theme-form {
         width: calc(100%);
         margin-bottom: 295px;
       }
       .s--signup {
-        .theme-form{
+        .theme-form {
           margin-top: 295px;
           margin-bottom: 0;
         }
       }
     }
-    .cont { 
+    .cont {
       .img:before {
         transform: translate3d(0, 0px, 0) !important;
-     }
+      }
     }
     .theme-form {
-      .login-divider, .form-divider {
+      .login-divider,
+      .form-divider {
         &:before {
           left: 41% !important;
         }
@@ -382,7 +379,8 @@ $diffRatio: ($contW - $imgW) / $contW;
     width: 20%;
   }
   .theme-form {
-    .login-divider, .form-divider {
+    .login-divider,
+    .form-divider {
       &:before {
         left: 46% !important;
       }
@@ -400,11 +398,11 @@ $diffRatio: ($contW - $imgW) / $contW;
   .cont {
     width: 100%;
     &.s--signup {
-       .img {
-          &:before {
-            transform: translate3d(0, 0px, 0) !important;
-          }
+      .img {
+        &:before {
+          transform: translate3d(0, 0px, 0) !important;
         }
+      }
       .sub-cont {
         transform: translate3d(0, 0, 0) !important;
       }
@@ -466,7 +464,8 @@ $diffRatio: ($contW - $imgW) / $contW;
     transform: translate3d(0, 626px, 0) !important;
   }
   .theme-form {
-    .login-divider, .form-divider {
+    .login-divider,
+    .form-divider {
       &:before {
         left: 39% !important;
       }
@@ -481,7 +480,8 @@ $diffRatio: ($contW - $imgW) / $contW;
 @media only screen and (max-width: 360px) {
   .auth-bg-video {
     .theme-form {
-      .login-divider, .form-divider {
+      .login-divider,
+      .form-divider {
         &:before {
           left: 38% !important;
         }
@@ -495,7 +495,8 @@ $diffRatio: ($contW - $imgW) / $contW;
     transform: translate3d(0, 645px, 0) !important;
   }
   .theme-form {
-    .login-divider, .form-divider {
+    .login-divider,
+    .form-divider {
       &:before {
         left: 32% !important;
       }
@@ -505,3 +506,7 @@ $diffRatio: ($contW - $imgW) / $contW;
 /**=====================
     25. Authentication CSS Ends
 ==========================**/
+
+.pb-10 {
+  padding-bottom: 10px;
+}
