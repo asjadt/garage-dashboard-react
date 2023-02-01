@@ -232,7 +232,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     .post(`${BACKEND_API}/v1.0/auth/register-with-garage`,{
         user:user,
         garage:garage,
-        service:service[0]
+        service:currentStep==3?service[0]:null
     })
     .then(res => {
       SweetAlert.fire({title:"Success", text:"Garage Registered Successfully!", icon:"success"});
