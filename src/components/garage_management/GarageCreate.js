@@ -1,33 +1,24 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, CardBody, CardTitle, CardText, CardFooter } from "reactstrap"
-import SweetAlert from 'sweetalert2'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Container, Form, Row } from "reactstrap";
+import SweetAlert from 'sweetalert2';
+import BreadCrumb from '../../layout/Breadcrumb';
 
-import { BACKEND_API } from '../../utils/backend';
 import { apiClient } from '../../utils/apiClient';
-import { css } from "@emotion/react";
-
-import setLinksView from '../../utils/pagination';
+import { BACKEND_API } from '../../utils/backend';
 
 
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
-import GarageView from './vews/GarageView';
-import DatePicker from "react-datepicker";
-import { GARAGE_CREATE, GARAGE_DELETE, GARAGE_UPDATE, GARAGE_VIEW } from '../../constant/permissions';
+
+import { withRouter } from 'react-router-dom';
+import { GARAGE_CREATE } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
-import { checkPermissions } from '../../utils/helperFunctions';
-import { Link, withRouter } from 'react-router-dom';
 import Registration from '../forms/form-layout/form-wizard-1/registration';
 
 import Birthdate from '../forms/form-layout/form-wizard-1/birthdate';
-import StepZilla from "react-stepzilla";
 import Emails from '../forms/form-layout/form-wizard-1/email';
-import MultiStepProgressBar from './utils/MultiStepProgressBar';
-import UserStep from './forms/UserStep';
-import ServiceStep from './forms/ServiceStep';
 import GarageStep from './forms/GarageStep';
+import ServiceStep from './forms/ServiceStep';
+import UserStep from './forms/UserStep';
+import MultiStepProgressBar from './utils/MultiStepProgressBar';
 
 
 
@@ -90,7 +81,7 @@ const GarageCreate = ({ history }) => {
     loadAutomobileMakes()
 
     
-  },[])
+  },[loadAutomobileMakes])
 
   const loadAutomobileCategories = () => {
     apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/get/all`)
