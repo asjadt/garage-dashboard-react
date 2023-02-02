@@ -23,188 +23,174 @@ import MultiStepProgressBar from './utils/MultiStepProgressBar';
 
 
 const GarageCreate = ({ history }) => {
- 
-    const [state,setState] = useState({
-        currentStep: 1,
+
+  const [state, setState] = useState({
+    currentStep: 1,
+  })
+  const [user, setUser] = useState({
+    first_Name: '',
+    last_Name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    phone: '',
+    image: '',
+    address_line_1: '',
+    address_line_2: '',
+    country: '',
+    city: '',
+    postcode: '',
+  })
+  const [garage, setGarage] = useState({
+    name: '',
+    about: '',
+    web_page: '',
+    phone: '',
+    email: '',
+    additional_information: '',
+    address_line_1: '',
+    address_line_2: '',
+    country: '',
+    city: '',
+    postcode: '',
+    logo: '',
+    is_mobile_garage: '1',
+    wifi_available: '1',
+    labour_rate: '',
+    average_time_slot: '',
+  })
+
+
+  const [automobileCategories, setAutomobileCategories] = useState([]);
+
+  const [service, setService] = useState([
+    {
+      automobile_category_id: "1",
+      services: [
+
+      ],
+      automobile_makes: [
+
+      ]
+    }
+  ])
+  const loadAutomobileMakes = () => {
+    apiClient().get(`${BACKEND_API}/v1.0/automobile-makes-all/${1}`)
+      .then(response => {
+        console.log("makes", response.data)
+        let makes = response.data
+        // setAutomobileCategories(categories)
+
+        // let tempServices = JSON.parse(JSON.stringify(service))
+
+        // tempServices[0] = {
+        // ...tempServices[0],
+        // services:[...tempServices[0].services],
+        // automobile_makes:[...makes]
+        // };
+
+        // setService(tempServices)
+        loadServices(makes)
       })
-    const [user,setUser] = useState({
-        first_Name : '',
-        last_Name : '',
-        email : '',
-        password : '',
-        password_confirmation : '',
-        phone : '',
-        image : '',
-        address_line_1 : '',
-        address_line_2 : '',
-        country : '',
-        city : '',
-        postcode : '',
-    })  
-    const [garage,setGarage] = useState({
-        name: '',
-        about: '',
-        web_page: '',
-        phone: '',
-        email: '',
-        additional_information: '',
-        address_line_1: '',
-        address_line_2: '',
-        country: '',
-        city: '',
-        postcode: '',
-        logo: '',
-        is_mobile_garage: '1',
-        wifi_available: '1',
-        labour_rate: '',
-        average_time_slot: '',
-    })  
-
-
-    const [automobileCategories,setAutomobileCategories] = useState([]);
-
-    const [service,setService] = useState([
-      {
-        automobile_category_id:"1",
-        services:[
-            
-        ],
-        automobile_makes:[
-
-        ]
-      }
-    ])  
-
+      .catch(error => {
+        if (error.response?.status === 401) {
+          SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
+        }
+        else {
+          SweetAlert.fire({ title: "something went wrong!!", text: "Please Try Again", icon: "warning" });
+        }
+      })
+  }
   useEffect(() => {
     loadAutomobileCategories()
-    
     loadAutomobileMakes()
-
-    
-  },[loadAutomobileMakes])
+  }, [])
 
   const loadAutomobileCategories = () => {
     apiClient().get(`${BACKEND_API}/v1.0/automobile-categories/get/all`)
-    .then(response => {
-console.log(response.data)
-let categories = response.data
-setAutomobileCategories(categories)
+      .then(response => {
+        console.log(response.data)
+        let categories = response.data
+        setAutomobileCategories(categories)
 
-    })
-    .catch(error => {
-       if(error.response?.status == 401) {
-        SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
-      }
-      else {
-        SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
-      }
-    })
-}
-
-
-
-const loadAutomobileMakes = () => {
-  apiClient().get(`${BACKEND_API}/v1.0/automobile-makes-all/${1}`)
-  .then(response => {
-console.log("makes",response.data)
-let makes = response.data
-// setAutomobileCategories(categories)
-
-// let tempServices = JSON.parse(JSON.stringify(service))
-
-// tempServices[0] = {
-// ...tempServices[0],
-// services:[...tempServices[0].services],
-// automobile_makes:[...makes]
-// };
-
-// setService(tempServices)
- loadServices(makes)
-  })
-  .catch(error => {
-     if(error.response?.status == 401) {
-      SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
-    }
-    else {
-      SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
-    }
-  })
-}
-const loadServices = (makes) => {
-  apiClient().get(`${BACKEND_API}/v1.0/services-all/${1}`)
-  .then(response => {
-console.log("services",response.data)
-let services = response.data
-// setAutomobileCategories(categories)
-let tempServices = JSON.parse(JSON.stringify(service))
-
-console.log(tempServices)
-tempServices[0] = {
-...tempServices[0],
-services:[...services],
- automobile_makes:makes
-
-};
-
-setService(tempServices)
-  })
-  .catch(error => {
-     if(error.response?.status == 401) {
-      SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
-    }
-    else {
-      SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
-    }
-  })
-}
+      })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
+        }
+        else {
+          SweetAlert.fire({ title: "something went wrong!!", text: "Please Try Again", icon: "warning" });
+        }
+      })
+  }
 
 
-  
+  const loadServices = (makes) => {
+    apiClient().get(`${BACKEND_API}/v1.0/services-all/${1}`)
+      .then(response => {
+        console.log("services", response.data)
+        let services = response.data
+        // setAutomobileCategories(categories)
+        let tempServices = JSON.parse(JSON.stringify(service))
+
+        console.log(tempServices)
+        tempServices[0] = {
+          ...tempServices[0],
+          services: [...services],
+          automobile_makes: makes
+
+        };
+
+        setService(tempServices)
+      })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
+        }
+        else {
+          SweetAlert.fire({ title: "something went wrong!!", text: "Please Try Again", icon: "warning" });
+        }
+      })
+  }
 
 
 
-    const [serverSideErrors,setServerSideErrors] = useState(null);
-    const [loading,setLoading] = useState(false);
-    let permissions = JSON.parse(localStorage.getItem("permissions"));
+  const [serverSideErrors, setServerSideErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
+  let permissions = JSON.parse(localStorage.getItem("permissions"));
 
 
-
-
-
-    const addCategory = () => {
+  const addCategory = () => {
     let tempServices = JSON.parse(JSON.stringify(service))
     tempServices.push({
-      automobile_category_id:"1",
-      services:[
+      automobile_category_id: "1",
+      services: [
       ],
-      automobile_makes:[
+      automobile_makes: [
       ]
     });
     // console.log(service)
     // console.log(tempServices)
     setService(tempServices)
-    }
-
-
-
-
-
-  if(!permissions.includes(GARAGE_CREATE)) {
-return <><Error401Unauthorized></Error401Unauthorized></>
   }
-  const steps =  [
-      { name: 'Step 1', component: <Registration /> },
-      { name: 'Step 2', component: <Emails /> },
-      { name: 'Step 3', component: <Birthdate /> },
-      ]
- 
+
+  if (!permissions.includes(GARAGE_CREATE)) {
+    return <><Error401Unauthorized></Error401Unauthorized></>
+  }
+
+  const steps = [
+    { name: 'Step 1', component: <Registration /> },
+    { name: 'Step 2', component: <Emails /> },
+    { name: 'Step 3', component: <Birthdate /> },
+  ]
+
   const handleUserChange = (e) => {
     const { name, value } = e.target;
-    setUser({...user,[name]: value});
+    setUser({ ...user, [name]: value });
   }
   const handleGarageChange = (e) => {
     const { name, value } = e.target;
-    setGarage({...garage,[name]: value});
+    setGarage({ ...garage, [name]: value });
   }
 
   const handleSubmit = (e) => {
@@ -220,163 +206,161 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     let currentStep = state.currentStep;
 
     apiClient()
-    .post(`${BACKEND_API}/v1.0/auth/register-with-garage`,{
-        user:user,
-        garage:garage,
-        service:currentStep==3?service[0]:null
-    })
-    .then(res => {
-      SweetAlert.fire({title:"Success", text:"Garage Registered Successfully!", icon:"success"});
-      history.push("/garages/list");
-console.log("garage",res);
-
-
-    })
-    .catch(error => {
+      .post(`${BACKEND_API}/v1.0/auth/register-with-garage`, {
+        user: user,
+        garage: garage,
+        service: currentStep == 3 ? service[0] : null
+      })
+      .then(res => {
+        SweetAlert.fire({ title: "Success", text: "Garage Registered Successfully!", icon: "success" });
+        history.push("/garages/list");
+        console.log("garage", res);
+      })
+      .catch(error => {
         setLoading(false)
-          console.log("error",error.response)
-          if(error.response?.status == 422) {
-            const {errors} = error.response.data
-            setServerSideErrors(errors)
-            if(
-                (currentStep >= 1)
-                &&
-                (
-                    errors["user.first_Name"]
-                    ||
-                    errors["user.last_Name"]
-                    ||
-                    errors["user.email"]
-                    ||
-                    errors["user.password"]
-                    ||
-                    errors["user.phone"]
-                    ||
-                    errors["user.image"]
-                    ||
-                    errors["user.address_line_1"]
-                    ||
-                    errors["user.address_line_2"]
-                    ||
-                    errors["user.country"]
-                    ||
-                    errors["user.city"]
-                    ||
-                    errors["user.postcode"]
-                  
-                )
-            ){
-       
-                setState({
-                        ...state,
-                          currentStep: 1
-                 });
-               
-                SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-                return
-            }
-         else   if(
-                (currentStep >= 2)
-                &&
-                (
-                  errors["garage.name"]
-                  ||
-                  errors["garage.about"]
-                  ||
-                  errors["garage.web_page"]
-                  ||
-                  errors["garage.phone"]
-                  ||
-                  errors["garage.email"]
-                  ||
-                  errors["garage.additional_information"]
-                  ||
-                  errors["garage.country"]
-                  ||
-                  errors["garage.city"]
-                  ||
-                  errors["garage.postcode"]
-                  ||
-                  errors["garage.address_line_1"]
-                  ||
-                  errors["garage.address_line_2"]
-                  ||
-                  errors["garage.logo"]
-                  ||
-                  errors["garage.is_mobile_garage"]
-                  ||
-                  errors["garage.wifi_available"]
-                  ||
-                  errors["garage.labour_rate"]
-                  ||
-                  errors["garage.average_time_slot"]
-                )
-            ){
-               
-                setState({
-                        ...state,
-                          currentStep: 2
-                 });
-            
-                SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-                return
-            }
-          else  if(
-            
-                (currentStep >= 3)
-                &&
-                (
-                    errors["service.makes"]
-                    ||
-                    errors["service.services"]
-                   
-                )
-            
-          ){
-                setState({
-                        ...state,
-                          currentStep: 3
-                 });
-                
-                SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-                return
-            }
-            else {
-                console.log("errors",errors)
-                setServerSideErrors(null)
-                _next()
-            }
+        console.log("error", error.response)
+        if (error.response?.status == 422) {
+          const { errors } = error.response.data
+          setServerSideErrors(errors)
+          if (
+            (currentStep >= 1)
+            &&
+            (
+              errors["user.first_Name"]
+              ||
+              errors["user.last_Name"]
+              ||
+              errors["user.email"]
+              ||
+              errors["user.password"]
+              ||
+              errors["user.phone"]
+              ||
+              errors["user.image"]
+              ||
+              errors["user.address_line_1"]
+              ||
+              errors["user.address_line_2"]
+              ||
+              errors["user.country"]
+              ||
+              errors["user.city"]
+              ||
+              errors["user.postcode"]
 
-              
-              // setError('', { type: 'custom', message: 'custom message' })
-           
-              // alert(error.response.data.message)
+            )
+          ) {
+
+            setState({
+              ...state,
+              currentStep: 1
+            });
+
+            SweetAlert.fire({ title: error.response.data.message, text: "Please Try Again", icon: "warning" });
+            return
           }
-       else if(error.response?.status == 401) {
-            SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
-          } 
+          else if (
+            (currentStep >= 2)
+            &&
+            (
+              errors["garage.name"]
+              ||
+              errors["garage.about"]
+              ||
+              errors["garage.web_page"]
+              ||
+              errors["garage.phone"]
+              ||
+              errors["garage.email"]
+              ||
+              errors["garage.additional_information"]
+              ||
+              errors["garage.country"]
+              ||
+              errors["garage.city"]
+              ||
+              errors["garage.postcode"]
+              ||
+              errors["garage.address_line_1"]
+              ||
+              errors["garage.address_line_2"]
+              ||
+              errors["garage.logo"]
+              ||
+              errors["garage.is_mobile_garage"]
+              ||
+              errors["garage.wifi_available"]
+              ||
+              errors["garage.labour_rate"]
+              ||
+              errors["garage.average_time_slot"]
+            )
+          ) {
+
+            setState({
+              ...state,
+              currentStep: 2
+            });
+
+            SweetAlert.fire({ title: error.response.data.message, text: "Please Try Again", icon: "warning" });
+            return
+          }
+          else if (
+
+            (currentStep >= 3)
+            &&
+            (
+              errors["service.makes"]
+              ||
+              errors["service.services"]
+
+            )
+
+          ) {
+            setState({
+              ...state,
+              currentStep: 3
+            });
+
+            SweetAlert.fire({ title: error.response.data.message, text: "Please Try Again", icon: "warning" });
+            return
+          }
           else {
-            SweetAlert.fire({title:"something went wrong!!", text:"Please Try Again", icon:"warning"});
+            console.log("errors", errors)
+            setServerSideErrors(null)
+            _next()
           }
-      
-        console.log("garage_err",error)
-    })
 
-};
 
-  const   _next = () => {
-       let currentStep = state.currentStep;
+          // setError('', { type: 'custom', message: 'custom message' })
+
+          // alert(error.response.data.message)
+        }
+        else if (error.response?.status == 401) {
+          SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
+        }
+        else {
+          SweetAlert.fire({ title: "something went wrong!!", text: "Please Try Again", icon: "warning" });
+        }
+
+        console.log("garage_err", error)
+      })
+
+  };
+
+  const _next = () => {
+    let currentStep = state.currentStep;
 
     currentStep = currentStep >= 2 ? 3 : currentStep + 1;
 
     setState({
-        ...state,
-          currentStep: currentStep
-        });
+      ...state,
+      currentStep: currentStep
+    });
 
-   
-  
-    
+
+
+
   }
 
   const _prev = () => {
@@ -384,7 +368,7 @@ console.log("garage",res);
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
     setState({
-        ...state,
+      ...state,
       currentStep: currentStep
     });
   }
@@ -404,7 +388,7 @@ console.log("garage",res);
     return null;
   }
 
- const  nextButton = () => {
+  const nextButton = () => {
     let currentStep = state.currentStep;
     // If the current step is not 3, then render the "next" button
     if (currentStep < 3) {
@@ -417,112 +401,122 @@ console.log("garage",res);
     // ...else render nothing
     return null;
   }
- const  submitButton =() => {
+  const submitButton = () => {
     let currentStep = state.currentStep;
 
     // If the current step is the last step, then render the "submit" button
     if (currentStep > 2) {
-      return <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>;
+      return (
+        <>
+          {
+            loading ?
+              <Button color="primary float-right" type='button' disabled>Loading..</Button>
+              :
+              <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>
+          }
+        </>
+
+      )
     }
     // ...else render nothing
     return null;
   }
 
- const  handleCategoryChange = (e) => {
-       let index = e.target.name.split("-")[1];
-       let name = e.target.name.split("-")[2];
+  const handleCategoryChange = (e) => {
+    let index = e.target.name.split("-")[1];
+    let name = e.target.name.split("-")[2];
 
     let tempServices = JSON.parse(JSON.stringify(service))
-    console.log(tempServices,index,name)
+    console.log(tempServices, index, name)
     tempServices[index] = {
-     ...tempServices[index],
-     [name]:e.target.value
+      ...tempServices[index],
+      [name]: e.target.value
     };
     setService(tempServices)
- }
+  }
 
- const  handleMakeChange = (e) => {
-  const {name}  = e.target
-  let index = name.split("-")[1];
-  let makeIndex = name.split("-")[3];
+  const handleMakeChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let makeIndex = name.split("-")[3];
 
-let tempServices = JSON.parse(JSON.stringify(service))
-console.log(tempServices)
-
-
+    let tempServices = JSON.parse(JSON.stringify(service))
+    console.log(tempServices)
 
 
 
-tempServices[index].automobile_makes[makeIndex].checked =  !tempServices[index].automobile_makes[makeIndex].checked;
-
-tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
-  element.checked=true;
-  return element
-});
 
 
-setService(tempServices)
-}
+    tempServices[index].automobile_makes[makeIndex].checked = !tempServices[index].automobile_makes[makeIndex].checked;
 
-const  handleModelChange = (e) => {
-  const {name}  = e.target
-  let index = name.split("-")[1];
-  let makeIndex = name.split("-")[3];
-  let modelIndex = name.split("-")[5];
-
-let tempServices = JSON.parse(JSON.stringify(service))
-console.log(tempServices)
-
-tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked =  !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked ;
-setService(tempServices)
-}
-
-const  handleServiceChange = (e) => {
-  const {name}  = e.target
-  let index = name.split("-")[1];
-  let serviceIndex = name.split("-")[3];
-
-let tempServices = JSON.parse(JSON.stringify(service))
-console.log(tempServices)
+    tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
+      element.checked = true;
+      return element
+    });
 
 
-tempServices[index].services[serviceIndex].checked =  !tempServices[index].services[serviceIndex].checked;
-tempServices[index].services[serviceIndex].sub_services.forEach(element => {
-  element.checked=true;
-  return element
-});
-setService(tempServices)
-}
+    setService(tempServices)
+  }
 
-const  handleSubServiceChange = (e) => {
-  const {name}  = e.target;
-  let index = name.split("-")[1];
-  let serviceIndex = name.split("-")[3];
-  let subServiceIndex = name.split("-")[5];
+  const handleModelChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let makeIndex = name.split("-")[3];
+    let modelIndex = name.split("-")[5];
 
-let tempServices = JSON.parse(JSON.stringify(service));
-console.log(subServiceIndex);
-console.log("test",tempServices[index].services[serviceIndex].sub_services[subServiceIndex]);
-tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked =  !tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked ;
-setService(tempServices)
-}
-    return (
-        <Fragment>
+    let tempServices = JSON.parse(JSON.stringify(service))
+    console.log(tempServices)
 
-            <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
-            <Container fluid={true}>
-             
+    tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked = !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked;
+    setService(tempServices)
+  }
 
-                <Row>
+  const handleServiceChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let serviceIndex = name.split("-")[3];
 
-                    <Col sm="12">
-                        <Form onSubmit={handleSubmit}>
-                        <Card>
-                            <CardHeader>
-                                <h5>Garage Management</h5><span> Create Garage </span>
-                            </CardHeader>
-                            <CardBody>
-                            {/* <StepZilla 
+    let tempServices = JSON.parse(JSON.stringify(service))
+    console.log(tempServices)
+
+
+    tempServices[index].services[serviceIndex].checked = !tempServices[index].services[serviceIndex].checked;
+    tempServices[index].services[serviceIndex].sub_services.forEach(element => {
+      element.checked = true;
+      return element
+    });
+    setService(tempServices)
+  }
+
+  const handleSubServiceChange = (e) => {
+    const { name } = e.target;
+    let index = name.split("-")[1];
+    let serviceIndex = name.split("-")[3];
+    let subServiceIndex = name.split("-")[5];
+
+    let tempServices = JSON.parse(JSON.stringify(service));
+    console.log(subServiceIndex);
+    console.log("test", tempServices[index].services[serviceIndex].sub_services[subServiceIndex]);
+    tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked = !tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked;
+    setService(tempServices)
+  }
+  return (
+    <Fragment>
+
+      <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
+      <Container fluid={true}>
+
+
+        <Row>
+
+          <Col sm="12">
+            <Form onSubmit={handleSubmit}>
+              <Card>
+                <CardHeader>
+                  <h5>Garage Management</h5><span> Create Garage </span>
+                </CardHeader>
+                <CardBody>
+                  {/* <StepZilla 
                                 steps={steps} 
                                 showSteps={true} 
                                 showNavigation={true} 
@@ -530,66 +524,50 @@ setService(tempServices)
                                 prevBtnOnLastStep={true}
                               /> */}
 
-<CardTitle>
-               <MultiStepProgressBar currentStep={state.currentStep} /> 
-              </CardTitle>
-              <CardText />
+                  <CardTitle>
+                    <MultiStepProgressBar currentStep={state.currentStep} />
+                  </CardTitle>
+                  <CardText />
 
-              <UserStep
-                currentStep={state.currentStep}
-                handleChange={handleUserChange}
-                data={user}
-                serverSideErrors={serverSideErrors}
-              />
-               <GarageStep
-                currentStep={state.currentStep}
-                handleChange={handleGarageChange}
-                data={garage}
-                serverSideErrors={serverSideErrors}
-              />
+                  <UserStep
+                    currentStep={state.currentStep}
+                    handleChange={handleUserChange}
+                    data={user}
+                    serverSideErrors={serverSideErrors}
+                  />
+                  <GarageStep
+                    currentStep={state.currentStep}
+                    handleChange={handleGarageChange}
+                    data={garage}
+                    serverSideErrors={serverSideErrors}
+                  />
 
-               <ServiceStep
-                currentStep={state.currentStep}
-                handleChange={handleUserChange}
-                data={service}
-                serverSideErrors={serverSideErrors}
-                addCategory={addCategory}
-                automobileCategories={automobileCategories}
-                handleCategoryChange={handleCategoryChange}
-                handleMakeChange={handleMakeChange}
-                handleModelChange={handleModelChange}
-                handleServiceChange={handleServiceChange}
-                handleSubServiceChange={handleSubServiceChange}
-              />
-
-
-
-
-
-
-                            </CardBody>
-                           
-                            <CardFooter>
-              {previousButton()}
-              {nextButton()}
-              {submitButton()}
-            </CardFooter>
-                  
-
-                        </Card>
-                        </Form>
-                    </Col>
-
-                </Row>
-            </Container>
-
-          
-           
-
-        
-
-        </Fragment>
-    );
+                  <ServiceStep
+                    currentStep={state.currentStep}
+                    handleChange={handleUserChange}
+                    data={service}
+                    serverSideErrors={serverSideErrors}
+                    addCategory={addCategory}
+                    automobileCategories={automobileCategories}
+                    handleCategoryChange={handleCategoryChange}
+                    handleMakeChange={handleMakeChange}
+                    handleModelChange={handleModelChange}
+                    handleServiceChange={handleServiceChange}
+                    handleSubServiceChange={handleSubServiceChange}
+                  />
+                </CardBody>
+                <CardFooter>
+                  {previousButton()}
+                  {nextButton()}
+                  {submitButton()}
+                </CardFooter>
+              </Card>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
 };
 
 export default withRouter(GarageCreate);

@@ -1,21 +1,9 @@
 import {
-    Home,
-    Box,
-    DollarSign,
-    UserPlus,
-    Users,
-    Chrome,
-    Settings,
-    Airplay,
-    FolderPlus,
-    File,
-    Command, Cloud, Book, FileText, Server, Image, Sliders, Map, GitPullRequest, Calendar, Edit, Mail, MessageSquare, UserCheck, Layers, HelpCircle, Database, Headphones, Mic, ShoppingBag, Search, AlertOctagon, Lock, Briefcase, BarChart,
-    UserX
-    
-    
+    Airplay, AlertOctagon, BarChart, Book, Box, Briefcase, Calendar, Chrome, Cloud, Command, Database, DollarSign, Edit, File, FileText, FolderPlus, GitPullRequest, Headphones, HelpCircle, Home, Image, Layers, Lock, Mail, Map, MessageSquare, Mic, Search, Server, Settings, ShoppingBag, Sliders, UserCheck, UserPlus,
+    Users, UserX
 } from 'react-feather';
-import { AiFillCar,AiFillShop } from "react-icons/ai";
-import { AUTOMOBILE_VIEW, GARAGE_VIEW, ROLE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { AiFillCar, AiFillShop } from "react-icons/ai";
+import { AUTOMOBILE_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -65,10 +53,10 @@ export const MENUITEMS = [
         badgeType: 'primary', 
         active: false,
         // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
-        show:checkPermissions([USER_VIEW],permissions),
+        show:checkPermissions([SERVICE_VIEW],permissions),
         children: [
             { path: `${process.env.PUBLIC_URL}/services/list`, title: 'Services', type: 'link',
-            show:checkPermissions([USER_VIEW],permissions),
+            show:checkPermissions([SERVICE_VIEW],permissions),
             },
            
 

@@ -1,32 +1,28 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from "reactstrap"
-import { HorizontalBorders, VerticalBorders, BothBordeds, BorderlessTable, DefaultTableBorder, DoubleBorder, BorderBottomColor, DottedBorder, DashedBorder, SolidBorder } from "../../constant";
-import { BACKEND_API, http } from '../../utils/backend';
-import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
-import { ClipLoader } from 'react-spinners';
+import React, { Fragment, useEffect, useState } from 'react';
+import DatePicker from "react-datepicker";
+import { Delete, Edit, Eye } from 'react-feather';
+import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
+import SweetAlert from 'sweetalert2';
+import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import BreadCrumb from '../../layout/Breadcrumb';
+import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
+import { apiClient } from '../../utils/apiClient';
+import { BACKEND_API } from '../../utils/backend';
+import { checkPermissions } from '../../utils/helperFunctions';
 import setLinksView from '../../utils/pagination';
 import UserForm from './forms/UserForm';
-import SweetAlert from 'sweetalert2'
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
 import UserView from './vews/UserView';
-import DatePicker from "react-datepicker";
-import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
-import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
-import { checkPermissions } from '../../utils/helperFunctions';
 
 
 
 
 const UserList = () => {
- 
-let permissions = JSON.parse(localStorage.getItem("permissions"));
+
+    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
 
-    
+
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [perPage, setPerPage] = useState(9)
@@ -36,26 +32,26 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [startDate,setstartDate] = useState(new Date(
+    const [startDate, setstartDate] = useState(new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
         1))
-    const [endDate,setendDate] = useState(new Date())
+    const [endDate, setendDate] = useState(new Date())
 
-   
+
     const setStartDate = date => {
         setstartDate(date);
-      let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-      let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-      };
-      const setEndDate = date => {
+        let startDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+    };
+    const setEndDate = date => {
         setendDate(date);
-        let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
-        let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-       
-       };
+        let startDataFinal = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+
+    };
     // modal
     const [userCreateModal, setUserCreateModal] = useState(false);
     const userCreateModaltoggle = () => setUserCreateModal(!userCreateModal);
@@ -71,7 +67,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [userViewData, setUserViewData] = useState(null);
     const [userViewModal, setUserViewModal] = useState(false);
     const userViewModaltoggle = () => setUserViewModal(!userViewModal);
-    
+
     const viewForm = (el) => {
         userViewModaltoggle()
         setUserViewData(el)
@@ -172,34 +168,29 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   `;
 
 
-  if(!permissions.includes(USER_VIEW)) {
-return <><Error401Unauthorized></Error401Unauthorized></>
-  }
+    if (!permissions.includes(USER_VIEW)) {
+        return <><Error401Unauthorized></Error401Unauthorized></>
+    }
 
     return (
         <Fragment>
 
             <BreadCrumb parent="Home" subparent="User Management / Users" title="Manage Users" />
             <Container fluid={true}>
-                <Row className='mb-3'>
-                    <Col sm="9">
-                    </Col>
-                    <Col sm="3" >
-                    {checkPermissions([USER_CREATE],permissions)?(<Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>):(null)} 
-                        
-                    </Col>
-
-                </Row>
-
                 <Row>
-
                     <Col sm="12">
                         <Card>
-                            <CardHeader>
-                                <h5>User Management</h5><span> Manage your Users </span>
+                            <CardHeader className="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5>User Management</h5>
+                                    <span> Manage your Users </span>
+                                </div>
+
+                                {checkPermissions([USER_CREATE], permissions) ? (<Button color="primary" onClick={userCreateModaltoggle}>Create User</Button>) : (null)}
+
                             </CardHeader>
                             <Row>
-                                
+
                                 <Col sm="6">
                                     <CardHeader>
                                         <Form className="search-form">
@@ -214,29 +205,29 @@ return <><Error401Unauthorized></Error401Unauthorized></>
 
                                 </Col>
                                 <Col sm={4}>
-                                <CardHeader>
-                               <Row  className="date-range">
-                                <Col sm="6">
-                                <DatePicker className="form-control digits"
-                                selected={startDate}
-                                onChange={setStartDate}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                              />
-                                </Col>
-                                <Col sm="6">
-                                <DatePicker className="form-control digits ml-2"
-                                selected={endDate}
-                                onChange={setEndDate}
-                                selectsEnd
-                                endDate={endDate}
-                                minDate={startDate}
-                              />
-                                </Col>
-                               </Row>
-                               
-                            
+                                    <CardHeader>
+                                        <Row className="date-range">
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits"
+                                                    selected={startDate}
+                                                    onChange={setStartDate}
+                                                    selectsStart
+                                                    startDate={startDate}
+                                                    endDate={endDate}
+                                                />
+                                            </Col>
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits ml-2"
+                                                    selected={endDate}
+                                                    onChange={setEndDate}
+                                                    selectsEnd
+                                                    endDate={endDate}
+                                                    minDate={startDate}
+                                                />
+                                            </Col>
+                                        </Row>
+
+
                                         {/* <Form className="search-form">
                                             <FormGroup className="m-0">
                                                 <Label className="sr-only">Search</Label>
@@ -246,11 +237,11 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                         </Form> */}
 
                                     </CardHeader>
-                              
-                          
+
+
                                 </Col>
                             </Row>
-{/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
+                            {/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
             {
                 loading ? <ClipLoader loading={loading} css={override} size={150} >loading</ClipLoader> : <h3 className="display-3" >
                     No Data to show
@@ -258,7 +249,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
             }
 
         </div>):(null)} */}
-                          
+
                             <div className="table-responsive">
                                 <Table>
                                     <thead>
@@ -285,22 +276,22 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 })}</td>
                                                 <td>
 
-                                                ,
-            {checkPermissions([USER_VIEW],permissions)?(<Eye 
-                                                    className='mr-1'
-                                                    color="#51bb25" size={18} style={{ cursor: "pointer" }}
+                                                    ,
+                                                    {checkPermissions([USER_VIEW], permissions) ? (<Eye
+                                                        className='mr-1'
+                                                        color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
-                                                    ></Eye>):(null)} 
-            {checkPermissions([USER_UPDATE],permissions)?( <Edit 
-                                                    className='mr-1'
-                                                    color="#007bff" size={18} style={{ cursor: "pointer" }}
+                                                    ></Eye>) : (null)}
+                                                    {checkPermissions([USER_UPDATE], permissions) ? (<Edit
+                                                        className='mr-1'
+                                                        color="#007bff" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => editForm(el)}
-                                                    ></Edit>):(null)} 
-                                                   
-            {checkPermissions([USER_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
+                                                    ></Edit>) : (null)}
 
-                                                   
+                                                    {checkPermissions([USER_DELETE], permissions) ? (<Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
+                                                        onClick={() => deleteFunc(el.id)}></Delete>) : (null)}
+
+
 
                                                 </td>
                                             </tr>)

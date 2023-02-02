@@ -1,0 +1,11 @@
+/* DISABLE NUMBER FIELD ARROW  */
+/* Chrome, Safari, Edge, Opera */
+.numberField::-webkit-outer-spin-button,
+.numberField::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+.numberField[type="number"] {
+  -moz-appearance: textfield;
+}

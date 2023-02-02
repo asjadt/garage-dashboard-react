@@ -1,48 +1,48 @@
 // Dashboard
+import Crm from '../components/dashboard/Crm'
+import Crypto from '../components/dashboard/Crypto'
 import Default from '../components/dashboard/Default'
 import Hospital from '../components/dashboard/Hospital'
 import Sass from '../components/dashboard/Sass'
-import Crm from '../components/dashboard/Crm'
-import Crypto from '../components/dashboard/Crypto'
 
 // Base
-import GeneralWidget from '../components/widgets/General'
-import ChartWidget from '../components/widgets/Charts'
-import StateColor from '../components/base/Statecolor'
-import Typography from '../components/base/Typography'
-import Avatars from '../components/base/Avatars'
-import HelperClasses from '../components/base/HelperClasses'
-import Grid from '../components/base/Grid'
-import TagAndPills from '../components/base/TagAndPills'
-import Progress from '../components/base/Progress'
-import Modal from '../components/base/Modal'
+import Accordian from '../components/base/Accordian/Accordian'
 import Alert from '../components/base/Alert/Alert'
-import Popover from '../components/base/Popover/Popover'
-import Tooltip from '../components/base/Tooltip/Tooltip'
-import Spinner from '../components/base/Spinner'
+import Avatars from '../components/base/Avatars'
 import Dropdown from '../components/base/DropDown/Dropdown'
+import Grid from '../components/base/Grid'
+import HelperClasses from '../components/base/HelperClasses'
+import List from '../components/base/List'
+import Modal from '../components/base/Modal'
+import Navs from '../components/base/Nav/Navs'
+import Popover from '../components/base/Popover/Popover'
+import Progress from '../components/base/Progress'
+import Shadow from '../components/base/Shadow'
+import Spinner from '../components/base/Spinner'
+import StateColor from '../components/base/Statecolor'
 import TabBootstrap from '../components/base/Tabs/TabBootstrap'
 import TabLine from '../components/base/Tabs/TabLine'
-import Accordian from '../components/base/Accordian/Accordian'
-import Navs from '../components/base/Nav/Navs'
-import Shadow from '../components/base/Shadow'
-import List from '../components/base/List'
+import TagAndPills from '../components/base/TagAndPills'
+import Tooltip from '../components/base/Tooltip/Tooltip'
+import Typography from '../components/base/Typography'
+import ChartWidget from '../components/widgets/Charts'
+import GeneralWidget from '../components/widgets/General'
 
 // Advance 
-import Scrolling from '../components/advance/Scrolling'
 import BootstrapNotify from '../components/advance/BootstrapNotify'
-import Rating from '../components/advance/Rating'
+import Breadcrumb from '../components/advance/Breadcrumb'
+import Carousel from '../components/advance/carousel/Carousel'
+import DragAndDrop from '../components/advance/DragAndDrop'
 import Dropzone from '../components/advance/Dropzone'
+import Imagecrop from '../components/advance/Imagecrop'
+import Pagination from '../components/advance/Pagination'
+import RangeSlider from '../components/advance/RangeSlider'
+import Rating from '../components/advance/Rating'
+import Scrolling from '../components/advance/Scrolling'
+import Steps from '../components/advance/Steps/Steps'
+import Sticky from '../components/advance/Sticky'
 import SweetAlert from '../components/advance/SweetAlert'
 import Tour from '../components/advance/Tour'
-import Sticky from '../components/advance/Sticky'
-import Breadcrumb from '../components/advance/Breadcrumb'
-import Imagecrop from '../components/advance/Imagecrop'
-import RangeSlider from '../components/advance/RangeSlider'
-import Carousel from '../components/advance/carousel/Carousel'
-import Pagination from '../components/advance/Pagination'
-import Steps from '../components/advance/Steps/Steps'
-import DragAndDrop from '../components/advance/DragAndDrop'
 import UploadImage from '../components/advance/uploadImage'
 
 // todo-app
@@ -52,15 +52,15 @@ import UploadImage from '../components/advance/uploadImage'
  import TodoFirebase from '../components/application/todo-firebase-app/todo-firebase'
 
  // E-commerce-app 
- import Product from '../components/application/ecommerce-app/product'
- import ProductDetail from '../components/application/ecommerce-app/productpage'
  import Cart from '../components/application/ecommerce-app/Cart'
- import Wishlist from '../components/application/ecommerce-app/Wishlist'
- import Productlist from '../components/application/ecommerce-app/productlist'
- import Paymentdetails from '../components/application/ecommerce-app/paymentdetails'
- import OrderHistory from '../components/application/ecommerce-app/OrderHistory'
- import Checkout from '../components/application/ecommerce-app/Checkout'
- import Invoice from '../components/application/ecommerce-app/Invoice'
+import Checkout from '../components/application/ecommerce-app/Checkout'
+import Invoice from '../components/application/ecommerce-app/Invoice'
+import OrderHistory from '../components/application/ecommerce-app/OrderHistory'
+import Paymentdetails from '../components/application/ecommerce-app/paymentdetails'
+import Product from '../components/application/ecommerce-app/product'
+import Productlist from '../components/application/ecommerce-app/productlist'
+import ProductDetail from '../components/application/ecommerce-app/productpage'
+import Wishlist from '../components/application/ecommerce-app/Wishlist'
 
  // Chat 
  import Chat from '../components/application/chat-app/chat'
@@ -70,28 +70,28 @@ import SocialApp from '../components/social-app/SocialApp'
 
 // Job Search 
 import CardView from '../components/jobSearch/CardView'
-import JobList from '../components/jobSearch/Job-list'
-import JobDetail from '../components/jobSearch/Job-detail'
 import JobApply from '../components/jobSearch/Job-apply'
+import JobDetail from '../components/jobSearch/Job-detail'
+import JobList from '../components/jobSearch/Job-list'
 
  // Email
  import Email from '../components/application/email-app/emailDefault'
 
  // Contact app
  import ContactApp from '../components/application/contact-app/contactApp'
- import NewUser from '../components/application/contact-app/new-user' 
- import EditUser from '../components/application/contact-app/edit-user'
+import EditUser from '../components/application/contact-app/edit-user'
+import NewUser from '../components/application/contact-app/new-user'
 
  // Forms
-import FormValidation from '../components/forms/form-control/form-validation'
 import BaseInput from '../components/forms/form-control/baseInput'
+import CheckboxandRadio from '../components/forms/form-control/CheckboxandRadio'
+import FormValidation from '../components/forms/form-control/form-validation'
 import InputGroup from '../components/forms/form-control/InputGroup'
 import MegaOption from '../components/forms/form-control/MegaOption'
-import CheckboxandRadio from '../components/forms/form-control/CheckboxandRadio'
 
 // Form Layout
-import FormDefault from '../components/forms/form-layout/formDefault'
 import FormWizard1 from '../components/forms/form-layout/form-wizard-1/Formwizard1'
+import FormDefault from '../components/forms/form-layout/formDefault'
 
  // Forms widgets
 import Datepicker from '../components/forms/form-widget/datepicker'
@@ -101,38 +101,38 @@ import Typeahead from '../components/forms/form-widget/typeaheadComponent/typeah
 // Tabels
 import BasicTabels from '../components/tables/BasicTable'
 import BorderTable from '../components/tables/BorderTable'
+import DataTable from '../components/tables/DataTable'
 import SizingTable from '../components/tables/SizingTable'
 import StylingTable from '../components/tables/StylingTable'
-import DataTable from '../components/tables/DataTable'
 
 // Cards
 import BasicCards from '../components/cards/BasicCards'
 import CreativeCards from '../components/cards/CreativeCards'
-import TabCard from '../components/cards/TabCard'
 import DraggingCards from '../components/cards/DraggingCards'
+import TabCard from '../components/cards/TabCard'
 
 // Users
-import UserProfile from '../components/users/UserProfile'
-import UserEdit from '../components/users/UserEdit'
 import UserCards from '../components/users/UserCards'
+import UserEdit from '../components/users/UserEdit'
+import UserProfile from '../components/users/UserProfile'
 
 // Calendar
 import BasicCalender from '../components/calendar/BasicCalendar'
 import DraggableCalendar from '../components/calendar/DraggableCalendar'
 
 // Icons
+import FeatherIcons from '../components/icons/FeatherIcons'
 import FlagIcons from '../components/icons/FlagIcons'
 import FontAwsomeIcon from '../components/icons/FontAwsomeIcon'
 import IcoIcons from '../components/icons/IcoIcons'
 import ThemifyIcons from '../components/icons/ThemifyIcons'
-import FeatherIcons from '../components/icons/FeatherIcons'
 import WeatherIcons from '../components/icons/WeatherIcons'
 
+import Ionicicon from '../components/icons/Ionic-icon'
 import Materialdesignicon from '../components/icons/Materialdesignicon'
 import Pe7icons from '../components/icons/Pe7icons'
-import Typicon from '../components/icons/Typicon'
 import Simplelineicon from '../components/icons/Simplelineicon'
-import Ionicicon from '../components/icons/Ionic-icon'
+import Typicon from '../components/icons/Typicon'
 
 // Buttons 
 import DefaultButton from '../components/buttons/Default-Button'
@@ -143,10 +143,10 @@ import RaisedButton from '../components/buttons/RaisedButton'
 
 // Gallary
 import ImageGallery from '../components/gallery/ImageGallery'
-import ImageWithDesc from '../components/gallery/ImageWithDesc'
-import MesonryGallery from '../components/gallery/MesonryGallery'
-import MesonryDesc from '../components/gallery/MesonryDesc'
 import ImageHover from '../components/gallery/ImageHover'
+import ImageWithDesc from '../components/gallery/ImageWithDesc'
+import MesonryDesc from '../components/gallery/MesonryDesc'
+import MesonryGallery from '../components/gallery/MesonryGallery'
 
 
 // Timelines
@@ -155,11 +155,11 @@ import Timeline2 from '../components/timelines/Timeline2'
 
 
 // Charts 
-import Apexcharts from "../components/charts/ApexCharts/Apexcharts";
-import GoogleCharts from "../components/charts/GoogleCharts/GoogleCharts";
-import KnobChart from "../components/charts/KnobChart/KnobChart";
-import Chartsjs from "../components/charts/Chartsjs/Chartsjs";
-import Chartist from "../components/charts/ChartistCharts/Chartist";
+import Apexcharts from "../components/charts/ApexCharts/Apexcharts"
+import Chartist from "../components/charts/ChartistCharts/Chartist"
+import Chartsjs from "../components/charts/Chartsjs/Chartsjs"
+import GoogleCharts from "../components/charts/GoogleCharts/GoogleCharts"
+import KnobChart from "../components/charts/KnobChart/KnobChart"
 
 // Maps
 import GoogleMap from '../components/map/GoogleMap'
@@ -172,44 +172,44 @@ import MdeEditor from '../components/editor/MdeEditor'
 
 // Blog
 import BlogDetail from '../components/blog/BlogDetail'
-import BlogSingle from '../components/blog/BlogSingle'
 import BlogPost from '../components/blog/BlogPost'
+import BlogSingle from '../components/blog/BlogSingle'
 
 // Learning
 
+import LearningDeatil from "../components/learning/Learning-deatil"
 import Learninglist from '../components/learning/Learning-list'
-import LearningDeatil from "../components/learning/Learning-deatil";
 
 
 // Pricing
 import Pricing from '../components/price/Pricing'
 
 // Sample page 
-import Sample from "../components/sample/Sample";
+import Sample from "../components/sample/Sample"
 
 
 // Search page 
-import Search from "../components/search/Search";
+import Search from "../components/search/Search"
 
 // FAQ page 
-import FaqComponent from "../components/faq/FaqComponent";
+import FaqComponent from "../components/faq/FaqComponent"
 
 // knowledgebase page 
-import KnowledgebaseComponent from "../components/knowledgebase/KnowledgebaseComponent";
+import KnowledgebaseComponent from "../components/knowledgebase/KnowledgebaseComponent"
 
 // Support Ticket
-import SupportTicket from "../components/support-ticket/supportTicket";
-import UserList from '../components/user_management/UserList'
-import RoleList from '../components/user_management/RoleList'
-import GarageList from '../components/garage_management/GarageList'
 import AutomobileCategoryList from '../components/automobile_management/AutomobileCategoryList'
+import AutomobileFuelTypeList from '../components/automobile_management/AutomobileFuelTypeList'
 import AutomobileMakeList from '../components/automobile_management/AutomobileMakeList'
 import AutomobileModelList from '../components/automobile_management/AutomobileModelList'
 import AutomobileModelVariantList from '../components/automobile_management/AutomobileModelVariantList'
-import AutomobileFuelTypeList from '../components/automobile_management/AutomobileFuelTypeList'
-import ServiceList from '../components/service_management/ServiceList'
 import GarageCreate from '../components/garage_management/GarageCreate'
+import GarageList from '../components/garage_management/GarageList'
+import ServiceList from '../components/service_management/ServiceList'
 import SubServiceList from '../components/service_management/SubServiceList'
+import SupportTicket from "../components/support-ticket/supportTicket"
+import RoleList from '../components/user_management/RoleList'
+import UserList from '../components/user_management/UserList'
 
 export const routes = [
 
@@ -219,9 +219,6 @@ export const routes = [
   { path: "/garages/list" ,Component: GarageList},
   { path: "/garages/create" ,Component: GarageCreate},
   { path: "/garages/update/:id" ,Component: RoleList},
-
-
-
 
 
   { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
@@ -235,13 +232,6 @@ export const routes = [
   { path: "/services/list" ,Component: ServiceList},
 
   { path: "/services/single/:id"  ,Component: SubServiceList},
-
-
-
-
-
-
-
 
   { path: '/dashboard/default', Component: Default },
   { path: "/dashboard/hospital",Component: Hospital },
