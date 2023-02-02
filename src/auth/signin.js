@@ -156,7 +156,7 @@ const Logins = (props) => {
     <div className="page-wrapper d-flex justify-content-center min-vh-100 w-100 align-items-center">
       <Container fluid={true} className="w-50">
         <Form className="theme-form">
-          <h4>{LOGIN}</h4>
+          <h3 className="text-center font-weight-bold text-primary">{LOGIN}</h3>
           <FormGroup>
             <Label className="col-form-label pt-0">{YourName}</Label>
             <Input className="form-control" type="text" onChange={e => setEmail(e.target.value)} defaultValue={email} required="" />
@@ -170,7 +170,7 @@ const Logins = (props) => {
             <Label for="checkbox1">{RememberMe}</Label>
           </div>
           <div>
-            Haven't Any Account? <span role="button" onClick={() => { history.push(`${process.env.PUBLIC_URL}/registration`) }}>Create Account.</span>
+            Haven't Any Account? <span role="button" className='text-primary' onClick={() => { history.push(`${process.env.PUBLIC_URL}/registration`) }}>Create Account.</span>
           </div>
           <FormGroup className="form-row mt-3 mb-0">
             {loading ?

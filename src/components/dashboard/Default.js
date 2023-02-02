@@ -1,60 +1,59 @@
-import React, {useState, useEffect,Fragment } from 'react'
-import BreadCrumb from '../../layout/Breadcrumb'
-import { DollarSign, TrendingUp, Calendar, Volume2, Phone, Pause, Coffee, Clock, Droplet, Users } from 'react-feather'
-import {Container, Row, Col, Card, CardBody, CardHeader, ButtonGroup, Button, Table, CardFooter,Modal, ModalHeader, ModalBody } from 'reactstrap'
+import React, { Fragment, useEffect, useState } from 'react';
 import ChartistGraph from 'react-chartist';
 import { Line } from 'react-chartjs-2';
-import { Map as LeafletMap, GeoJSON, Marker, Popup } from 'react-leaflet';
-import WorldData from 'world-map-geojson';
-import {topCardState} from './data'
-import { roundedChart, roundedChartOptions, roundedChartListener, callChart, callChartOptions, callChartListener, smallChart, smallChartOptions, smallChartListener } from './chartsData/chartist'
-import {lineChartData, lineChartOptions} from './chartsData/chartJs'
-import tc1 from '../../assets/images/dashboard/sale-product-1.png'
-import tc2 from '../../assets/images/dashboard/sale-product-2.png'
-import tc3 from '../../assets/images/dashboard/sale-product-3.png'
-import tc4 from '../../assets/images/dashboard/sale-product-4.png'
-import tc5 from '../../assets/images/user/2.png'
-import tc6 from '../../assets/images/user/3.jpg'
-import tc7 from '../../assets/images/user/4.jpg'
-import tc8 from '../../assets/images/user/5.jpg'
-import u1 from '../../assets/images/dashboard/call-chat-1.png'
-import u2 from '../../assets/images/dashboard/call-chat-2.png'
-import wp from '../../assets/images/dashboard/work-plan.png'
+import { Calendar, Clock, Coffee, DollarSign, Droplet, Pause, Phone, TrendingUp, Users, Volume2 } from 'react-feather';
+import { GeoJSON, Map as LeafletMap, Marker, Popup } from 'react-leaflet';
 import { toast } from 'react-toastify';
-import {Loading,SalesByCategory,SalesOverview,Hours,Day,Week,Month,FromDate,ToDate,Profit,Edit,WorkPlan,TotalNewUser,TotalInvest,BounceDate,SessionDuartion,Live,ViewMoreReports,Session,OurBestSeller,GetStarted,Location,OurGrowth} from '../../constant'
+import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Col, Container, Modal, ModalBody, ModalHeader, Row, Table } from 'reactstrap';
+import WorldData from 'world-map-geojson';
+import u1 from '../../assets/images/dashboard/call-chat-1.png';
+import u2 from '../../assets/images/dashboard/call-chat-2.png';
+import tc1 from '../../assets/images/dashboard/sale-product-1.png';
+import tc2 from '../../assets/images/dashboard/sale-product-2.png';
+import tc3 from '../../assets/images/dashboard/sale-product-3.png';
+import tc4 from '../../assets/images/dashboard/sale-product-4.png';
+import wp from '../../assets/images/dashboard/work-plan.png';
+import tc5 from '../../assets/images/user/2.png';
+import tc6 from '../../assets/images/user/3.jpg';
+import tc7 from '../../assets/images/user/4.jpg';
+import tc8 from '../../assets/images/user/5.jpg';
+import { BounceDate, Day, Edit, FromDate, GetStarted, Hours, Live, Loading, Location, Month, OurBestSeller, OurGrowth, Profit, SalesByCategory, SalesOverview, Session, SessionDuartion, ToDate, TotalInvest, TotalNewUser, ViewMoreReports, Week, WorkPlan } from '../../constant';
+import BreadCrumb from '../../layout/Breadcrumb';
+import { callChart, callChartListener, callChartOptions, roundedChart, roundedChartListener, roundedChartOptions, smallChart, smallChartListener, smallChartOptions } from './chartsData/chartist';
+import { lineChartData, lineChartOptions } from './chartsData/chartJs';
+import { topCardState } from './data';
 
 var Knob = require('knob')
 
 const Default = () => {
 
+  // eslint-disable-next-line 
+  const [stateOptions, setStateValues] = useState(topCardState);
+  const [modal, setModal] = useState(false);
 
-    // eslint-disable-next-line 
-    const [stateOptions, setStateValues] = useState(topCardState);
-    const [modal, setModal] = useState(false);
-    
-    const toggle = () => {
-      setModal(!modal)
-      localStorage.setItem("isUser",null)
+  const toggle = () => {
+    setModal(!modal)
+    localStorage.setItem("isUser", null)
+  }
+
+  useEffect(() => {
+
+    const LoadingMsg = () => (
+      <div>
+        <i className="fa fa-bell-o" ></i><strong className="ml-2">{Loading}</strong>    {"page Do not close this page..."}
+      </div>
+    )
+    if (localStorage.getItem("isUser") === "true") {
+      setModal(true)
+      toast(<LoadingMsg />, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
+    } else {
+      setModal(false)
     }
 
-    useEffect(() => {
-      
-      const LoadingMsg = () => (
-        <div>
-         <i className="fa fa-bell-o" ></i><strong className="ml-2">{Loading}</strong>    {"page Do not close this page..."}
-        </div>
-      )
-      if(localStorage.getItem("isUser") === "true"){
-        setModal(true)
-        toast(<LoadingMsg />, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 3000,
-          });
-      }else{
-        setModal(false)
-      }
-      
-      var profit = Knob({
+    var profit = Knob({
       width: 230,
       height: 230,
       thickness: .060,
@@ -64,14 +63,14 @@ const Default = () => {
       lineCap: 'round'
     })
     document.getElementById('profit').appendChild(profit);
-     
+
   }, []);
-  
+
   return (
     <Fragment>
 
-      <BreadCrumb parent="Home" subparent="Dashboard" title="Default"/>
-      
+      <BreadCrumb parent="Home" subparent="Dashboard" title="Default" />
+
       <Container fluid={true}>
         <Row>
           <Col lg="12" className="xl-100">
@@ -85,13 +84,24 @@ const Default = () => {
                           <div className="media-body">
                             <p className={`mb-0 ${data.color === 'light' ? 'font-light' : ''}`}>{data.title}</p>
                             <h3 className="mt-0 mb-0 f-w-600"><DollarSign /><span className="counter">{data.scorr}</span><span><TrendingUp /></span></h3>
-                          </div><span className={`badge flat-badge-${data.color} ${data.bdgeFont}`}>{data.bdgeValue}<i className="fa fa-caret-up"></i></span>
+                          </div>
+                          <span className={`badge flat-badge-${data.color} ${data.bdgeFont}`}>
+                            {data.bdgeValue}
+                            <i className="fa fa-caret-up"></i>
+                          </span>
                         </div>
                         <div className="progress sm-progress-bar progress-animate">
                           <div className={`progress-gradient-${data.color}`} role="progressbar" style={{ 'width': data.progress }} aria-valuenow="75"
                             aria-valuemin="0" aria-valuemax="100">
-                            <span className={`font-${data.color}`}>{data.progress}</span><span className="animate-circle"></span></div>
-                        </div><span className={`tag-content-${data.color} tag-hover-effect ${data.color === 'light' ? 'tag-light' : ''}`}><TrendingUp /></span>
+                            <span className={`font-${data.color}`}>
+                              {data.progress}
+                            </span>
+                            <span className="animate-circle"></span>
+                          </div>
+                        </div>
+                        <span className={`tag-content-${data.color} tag-hover-effect ${data.color === 'light' ? 'tag-light' : ''}`}>
+                          <TrendingUp />
+                        </span>
                       </div>
                     </CardBody>
                   </Card>
@@ -141,25 +151,25 @@ const Default = () => {
                       <Table borderless>
                         <tbody>
                           <tr>
-                            <td><img className="img-fluid" src={tc1} alt=""/></td>
+                            <td><img className="img-fluid" src={tc1} alt="" /></td>
                             <td><span>{"Latest"} </span><span className="d-block">{"Niky Black shoes"}</span></td>
                             <td><span className="badge badge-pill pill-badge-secondary">{"21,562"}</span></td>
                             <td><span>{"28.21%"}</span></td>
                           </tr>
                           <tr>
-                            <td><img className="img-fluid" src={tc2} alt=""/></td>
+                            <td><img className="img-fluid" src={tc2} alt="" /></td>
                             <td><span>{"Latest Men"} </span><span className="d-block">{"Shirt"}</span></td>
                             <td><span>{"15,102"}</span></td>
                             <td><span>{"18.00%"}</span></td>
                           </tr>
                           <tr>
-                            <td><img className="img-fluid" src={tc3} alt=""/></td>
+                            <td><img className="img-fluid" src={tc3} alt="" /></td>
                             <td><span>{"Latest Women "}</span><span className="d-block">{"Purse"}</span></td>
                             <td><span>{"9562"}</span></td>
                             <td><span>{"08.54%"}</span></td>
                           </tr>
                           <tr>
-                            <td><img className="img-fluid" src={tc4} alt=""/></td>
+                            <td><img className="img-fluid" src={tc4} alt="" /></td>
                             <td><span>{"Latest"} </span><span className="d-block">{"Women Sandals"}</span></td>
                             <td><span>{"1002"}</span></td>
                             <td><span>{"01.33%"}</span></td>
@@ -232,7 +242,7 @@ const Default = () => {
                   </CardHeader>
                   <CardBody className="p-0">
                     <div className="sales-product-table table-responsive">
-                    <Table borderless>
+                      <Table borderless>
                         <thead>
                           <tr>
                             <th scope="col">{"Number"}</th>
@@ -247,7 +257,7 @@ const Default = () => {
                           <tr>
                             <td>{"01"}</td>
                             <td>
-                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc5} alt=""/>
+                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc5} alt="" />
                                 <div className="d-inline-block">
                                   <h6 className="f-w-600">{"Nick Stone"}</h6>
                                 </div>
@@ -261,7 +271,7 @@ const Default = () => {
                           <tr>
                             <td>{"02"}</td>
                             <td>
-                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc6} alt=""/>
+                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc6} alt="" />
                                 <div className="d-inline-block">
                                   <h6 className="f-w-600">{"Milano Esco"}</h6>
                                 </div>
@@ -275,7 +285,7 @@ const Default = () => {
                           <tr>
                             <td>{"03"}</td>
                             <td>
-                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc7} alt=""/>
+                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc7} alt="" />
                                 <div className="d-inline-block">
                                   <h6 className="f-w-600">{"Wiltor Noice"}</h6>
                                 </div>
@@ -289,7 +299,7 @@ const Default = () => {
                           <tr>
                             <td>{"04"}</td>
                             <td>
-                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc8} alt=""/>
+                              <div className="d-inline-block align-middle"><img className="img-radius img-30 align-top m-r-15 rounded-circle" src={tc8} alt="" />
                                 <div className="d-inline-block">
                                   <h6 className="f-w-600">{"Anna Strong"}</h6>
                                 </div>
@@ -314,32 +324,32 @@ const Default = () => {
                         <div className="setting-bg pull-right"><i className="fa fa-spin fa-cog"></i></div>
                       </div>
                       <div className="call-images">
-                        <img className="img-fluid" src={u1} alt=""/>
-                        <img className="img-fluid" src={u2} alt=""/></div>
+                        <img className="img-fluid" src={u1} alt="" />
+                        <img className="img-fluid" src={u2} alt="" /></div>
                       <h5 className="f-w-600">{"11:36"}</h5>
                       <div className="call-chart-height">
                         <div className="call-chart">
-                        <ChartistGraph data={callChart} listener={callChartListener} options={callChartOptions} type={'Bar'} />
+                          <ChartistGraph data={callChart} listener={callChartListener} options={callChartOptions} type={'Bar'} />
                         </div>
                       </div>
                       <div className="call-chat-bottom">
                         <div className="text-center">
-                          <div className="d-inline-block"><Pause/></div>
-                          <div className="d-inline-block"><a href="#!" className="bg-secondary call-receive"><Phone/></a></div>
-                          <div className="d-inline-block"><Volume2/></div>
+                          <div className="d-inline-block"><Pause /></div>
+                          <div className="d-inline-block"><a href="#!" className="bg-secondary call-receive"><Phone /></a></div>
+                          <div className="d-inline-block"><Volume2 /></div>
                         </div>
                       </div>
                     </div>
                   </CardBody>
                 </Card>
               </Col>
-              <Col xl="5"className="xl-100 box-col-12">
+              <Col xl="5" className="xl-100 box-col-12">
                 <Card>
                   <CardHeader>
                     <h5>{WorkPlan}</h5>
                   </CardHeader>
                   <CardBody>
-                    <div className="work-plan text-center"><img className="img-fluid" src={wp} alt=""/>
+                    <div className="work-plan text-center"><img className="img-fluid" src={wp} alt="" />
                       <h6>{"10:00 AM"}</h6>
                       <h5 className="f-w-600">{"5 Year Celebration"}</h5>
                       <p>{"Discussion About our new project and etc...."}</p>
@@ -368,58 +378,58 @@ const Default = () => {
                   <CardBody>
                     <Row className="dashboard-map">
                       <Col md="8">
-                      <div id="gmap-simple" >
-                                    <LeafletMap
-                                        center={[50, 10]}
-                                        zoom={1}
-                                        maxZoom={1}
-                                        attributionControl={true}
-                                        zoomControl={true}
-                                        doubleClickZoom={true}
-                                        scrollWheelZoom={true}
-                                        dragging={true}
-                                        animate={true}
-                                        easeLinearity={0.35}
-                                    >
-                                        <GeoJSON
-                                            data={WorldData}
-                                            style={() => ({
-                                                color: '#4a83ec',
-                                                weight: 0.5,
-                                                fillColor: "#1a1d62",
-                                                fillOpacity: 1,
-                                            })}
-                                        />
-                                        <Marker position={[50, 10]}>
-                                            <Popup>
-                                                {"Popup for any custom information."}
-                                              </Popup>
-                                        </Marker>
-                                    </LeafletMap>
-                                </div>
+                        <div id="gmap-simple" >
+                          <LeafletMap
+                            center={[50, 10]}
+                            zoom={1}
+                            maxZoom={1}
+                            attributionControl={true}
+                            zoomControl={true}
+                            doubleClickZoom={true}
+                            scrollWheelZoom={true}
+                            dragging={true}
+                            animate={true}
+                            easeLinearity={0.35}
+                          >
+                            <GeoJSON
+                              data={WorldData}
+                              style={() => ({
+                                color: '#4a83ec',
+                                weight: 0.5,
+                                fillColor: "#1a1d62",
+                                fillOpacity: 1,
+                              })}
+                            />
+                            <Marker position={[50, 10]}>
+                              <Popup>
+                                {"Popup for any custom information."}
+                              </Popup>
+                            </Marker>
+                          </LeafletMap>
+                        </div>
                       </Col>
                       <Col md="4">
                         <div className="map-right-box">
                           <div className="media">
-                            <div className="map-box bg-warning box-color-warning"><Users/></div>
+                            <div className="map-box bg-warning box-color-warning"><Users /></div>
                             <div className="media-body"><span>{TotalNewUser}</span>
                               <h5>{"53,952,718"}</h5>
                             </div>
                           </div>
                           <div className="media">
-                            <div className="map-box bg-primary box-color-primary"><Droplet/></div>
+                            <div className="map-box bg-primary box-color-primary"><Droplet /></div>
                             <div className="media-body"><span>{BounceDate}</span>
                               <h5>{"96%"}</h5>
                             </div>
                           </div>
                           <div className="media">
-                            <div className="map-box bg-secondary box-color-secondary"><Clock/></div>
+                            <div className="map-box bg-secondary box-color-secondary"><Clock /></div>
                             <div className="media-body"><span>{SessionDuartion}</span>
                               <h5>{"06:12:56"}</h5>
                             </div>
                           </div>
                           <div className="media">
-                            <div className="map-box bg-success box-color-success"><Coffee/></div>
+                            <div className="map-box bg-success box-color-success"><Coffee /></div>
                             <div className="media-body"><span>{Session}</span>
                               <h5>{"06:12:56"}</h5>
                             </div>
@@ -433,27 +443,27 @@ const Default = () => {
             </Row>
           </Col>
         </Row>
-          <Modal  isOpen={modal} className="welcome-popup modal-dialog-centered ">
-            <button  onClick={toggle} className="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <ModalBody>
-              <ModalHeader></ModalHeader>
-              <div className="contain p-50">
-                <div className="text-center">
-                  <h3>{"Welcome to creative admin"}</h3>
-                  <p>{"start your project with developer friendly admin"} </p>
-                  <button 
-                    onClick={toggle}
-                    className="btn btn-primary btn-lg txt-white" 
-                    type="button" data-dismiss="modal" 
-                    aria-label="Close">{GetStarted}</button>
-                </div>
+        <Modal isOpen={modal} className="welcome-popup modal-dialog-centered ">
+          <button onClick={toggle} className="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ModalBody>
+            <ModalHeader></ModalHeader>
+            <div className="contain p-50">
+              <div className="text-center">
+                <h3>{"Welcome to creative admin"}</h3>
+                <p>{"start your project with developer friendly admin"} </p>
+                <button
+                  onClick={toggle}
+                  className="btn btn-primary btn-lg txt-white"
+                  type="button" data-dismiss="modal"
+                  aria-label="Close">{GetStarted}</button>
               </div>
-            </ModalBody>
-          </Modal>
+            </div>
+          </ModalBody>
+        </Modal>
       </Container>
-     
-      </Fragment>
-    
+
+    </Fragment>
+
   )
 }
 

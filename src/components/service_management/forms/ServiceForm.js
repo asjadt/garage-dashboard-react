@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap'
-import SweetAlert from 'sweetalert2'
+import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import SweetAlert from 'sweetalert2';
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
 
@@ -16,7 +16,7 @@ const ServiceForm = ({toggleModal,fetchData,perPage,type,serviceUpdateData}) => 
     useEffect(() => {
       loadAutomobileCategories()
         console.log(serviceUpdateData)
-        if(type == "update") {
+        if(type === "update") {
           const fields = ['id','name','description','image','automobile_category_id'];
           fields.forEach(field => setValue(field, serviceUpdateData[field]));
          console.log("serviceUpdateData",serviceUpdateData)
@@ -36,7 +36,7 @@ console.log(response.data)
 setAutomobileCategories(response.data)
         })
         .catch(error => {
-           if(error.response?.status == 401) {
+           if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           }
           else {
@@ -48,7 +48,7 @@ setAutomobileCategories(response.data)
   const onSubmit = data => {
     setLoading(true)
     setServerSideErrors(null)
-    if(type == "update") {
+    if(type === "update") {
       apiClient().put(`${BACKEND_API}/v1.0/services`,data)
       .then(response => {
           console.log(response.data)
@@ -62,13 +62,13 @@ setAutomobileCategories(response.data)
       .catch(error => {
           setLoading(false)
           console.log("error",error.response)
-          if(error.response?.status == 422) {
+          if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
               // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-         else if(error.response?.status == 401) {
+         else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           }
           else {
@@ -77,7 +77,7 @@ setAutomobileCategories(response.data)
       })
   
     }
-    if(type == "create") {
+    if(type === "create") {
       apiClient().post(`${BACKEND_API}/v1.0/services`,data)
       .then(response => {
           console.log(response.data)
@@ -91,13 +91,13 @@ setAutomobileCategories(response.data)
       .catch(error => {
           setLoading(false)
           console.log("error",error.response)
-          if(error.response?.status == 422) {
+          if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
               // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-       else if(error.response?.status == 401) {
+       else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           } 
           else {

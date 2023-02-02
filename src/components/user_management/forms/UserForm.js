@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import {
+  // State, 
+  City, Country
+} from 'country-state-city';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap'
-import SweetAlert from 'sweetalert2'
+import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
+import SweetAlert from 'sweetalert2';
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
-import { Country, State, City }  from 'country-state-city';
 
 const UserForm = ({toggleModal,fetchData,perPage,type,userUpdateData}) => {
     const { register, handleSubmit,setValue, errors,setError , watch } = useForm();

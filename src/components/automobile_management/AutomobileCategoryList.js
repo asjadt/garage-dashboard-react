@@ -1,33 +1,26 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from "reactstrap"
-import { HorizontalBorders, VerticalBorders, BothBordeds, BorderlessTable, DefaultTableBorder, DoubleBorder, BorderBottomColor, DottedBorder, DashedBorder, SolidBorder } from "../../constant";
-import { BACKEND_API, http } from '../../utils/backend';
-import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
-import { ClipLoader } from 'react-spinners';
+import React, { Fragment, useEffect, useState } from 'react';
+import DatePicker from "react-datepicker";
+import { Delete, Edit, Eye } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
+import SweetAlert from 'sweetalert2';
+import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIEW } from '../../constant/permissions';
+import BreadCrumb from '../../layout/Breadcrumb';
+import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
+import { apiClient } from '../../utils/apiClient';
+import { BACKEND_API } from '../../utils/backend';
+import { checkPermissions } from '../../utils/helperFunctions';
 import setLinksView from '../../utils/pagination';
 import AutomobileCategoryForm from './forms/AutomobileCategoryForm';
-import SweetAlert from 'sweetalert2'
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
 import AutomobileCategoryView from './vews/AutomobileCategoryView';
-import DatePicker from "react-datepicker";
-import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIEW } from '../../constant/permissions';
-import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
-import { checkPermissions } from '../../utils/helperFunctions';
-import { Link } from 'react-router-dom';
 
 
 
 
 const AutomobileCategoryList = () => {
- 
-let permissions = JSON.parse(localStorage.getItem("permissions"));
+    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
-
-    
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [perPage, setPerPage] = useState(9)
@@ -37,26 +30,26 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [startDate,setstartDate] = useState(new Date(
+    const [startDate, setstartDate] = useState(new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
         1))
-    const [endDate,setendDate] = useState(new Date())
+    const [endDate, setendDate] = useState(new Date())
 
-   
+
     const setStartDate = date => {
         setstartDate(date);
-      let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-      let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-      };
-      const setEndDate = date => {
+        let startDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+    };
+    const setEndDate = date => {
         setendDate(date);
-        let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
-        let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-       
-       };
+        let startDataFinal = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/automobile-categories/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+
+    };
     // modal
     const [automobileCategoryCreateModal, setAutomobileCategoryCreateModal] = useState(false);
     const automobileCategoryCreateModaltoggle = () => setAutomobileCategoryCreateModal(!automobileCategoryCreateModal);
@@ -72,7 +65,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [automobileCategoryViewData, setAutomobileCategoryViewData] = useState(null);
     const [automobileCategoryViewModal, setAutomobileCategoryViewModal] = useState(false);
     const automobileCategoryViewModaltoggle = () => setAutomobileCategoryViewModal(!automobileCategoryViewModal);
-    
+
     const viewForm = (el) => {
         automobileCategoryViewModaltoggle()
         setAutomobileCategoryViewData(el)
@@ -173,34 +166,30 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   `;
 
 
-  if(!permissions.includes(AUTOMOBILE_VIEW)) {
-return <><Error401Unauthorized></Error401Unauthorized></>
-  }
+    if (!permissions.includes(AUTOMOBILE_VIEW)) {
+        return <><Error401Unauthorized></Error401Unauthorized></>
+    }
 
     return (
         <Fragment>
 
             <BreadCrumb parent="Home" subparent="Automobile Management / Category" title="Manage Automobile Categories" />
             <Container fluid={true}>
-                <Row className='mb-3'>
-                    <Col sm="9">
-                    </Col>
-                    <Col sm="3" >
-                    {checkPermissions([AUTOMOBILE_CREATE],permissions)?(<Button color="primary" onClick={automobileCategoryCreateModaltoggle}>Create Automobile Category</Button>):(null)} 
-                        
-                    </Col>
-
-                </Row>
-
                 <Row>
 
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Automobile Category Management</h5><span> Manage your Automobile Category </span>
+                                <div className='d-flex justify-content-between align-items-center'>
+                                    <dir>
+                                        <h5>Automobile Category Management</h5><span> Manage your Automobile Category </span>
+                                    </dir>
+
+                                    {checkPermissions([AUTOMOBILE_CREATE], permissions) ? (<Button color="primary" onClick={automobileCategoryCreateModaltoggle}>Create Automobile Category</Button>) : (null)}
+                                </div>
                             </CardHeader>
                             <Row>
-                                
+
                                 <Col sm="6">
                                     <CardHeader>
                                         <Form className="search-form">
@@ -215,138 +204,95 @@ return <><Error401Unauthorized></Error401Unauthorized></>
 
                                 </Col>
                                 <Col sm={4}>
-                                <CardHeader>
-                               <Row  className="date-range">
-                                <Col sm="6">
-                                <DatePicker className="form-control digits"
-                                selected={startDate}
-                                onChange={setStartDate}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                              />
-                                </Col>
-                                <Col sm="6">
-                                <DatePicker className="form-control digits ml-2"
-                                selected={endDate}
-                                onChange={setEndDate}
-                                selectsEnd
-                                endDate={endDate}
-                                minDate={startDate}
-                              />
-                                </Col>
-                               </Row>
-                               
-                            
-                                        {/* <Form className="search-form">
-                                            <FormGroup className="m-0">
-                                                <Label className="sr-only">Search</Label>
-                                                <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
-                                            </FormGroup>
-
-                                        </Form> */}
-
+                                    <CardHeader>
+                                        <Row className="date-range">
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits"
+                                                    selected={startDate}
+                                                    onChange={setStartDate}
+                                                    selectsStart
+                                                    startDate={startDate}
+                                                    endDate={endDate}
+                                                />
+                                            </Col>
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits ml-2"
+                                                    selected={endDate}
+                                                    onChange={setEndDate}
+                                                    selectsEnd
+                                                    endDate={endDate}
+                                                    minDate={startDate}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </CardHeader>
-                              
-                          
                                 </Col>
                             </Row>
-{/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
-            {
-                loading ? <ClipLoader loading={loading} css={override} size={150} >loading</ClipLoader> : <h3 className="display-3" >
-                    No Data to show
-                </h3>
-            }
 
-        </div>):(null)} */}
-                          
                             <div className="table-responsive">
                                 <Table>
                                     <thead>
                                         <tr className="Dashed">
-                                            <th scope="col">{"#"}</th>
-                                            <th scope="col">{"name"}</th>
-                                            <th scope="col">{"actions"}</th>
+                                            <th scope="col" className="col-1">{"#"}</th>
+                                            <th scope="col" className="col-md-9 col-8">{"name"}</th>
+                                            <th scope="col" className="col-md-2 col-3">{"actions"}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map(el => {
+                                        {data.map((el,i) => {
                                             return (<tr className="Dashed" key={el.id}>
-                                                <th scope="row">{el.id}</th>
+                                                <th scope="row">{i+1}</th>
                                                 <td>{el.name}</td>
-                                             
                                                 <td>
+                                                    {checkPermissions([AUTOMOBILE_VIEW], permissions) ? (
+                                                        <Link to={`${process.env.PUBLIC_URL}/automobile-category/single/${el.id}`}>
+                                                            <Eye
+                                                                className='mr-1'
+                                                                color="#51bb25" size={18} style={{ cursor: "pointer" }}
+                                                            // onClick={() => viewForm(el)}
+                                                            >
 
-            {checkPermissions([AUTOMOBILE_VIEW],permissions)?(
-            <Link to={`${process.env.PUBLIC_URL}/automobile-category/single/${el.id}`}>
-             <Eye 
-                                                    className='mr-1'
-                                                    color="#51bb25" size={18} style={{ cursor: "pointer" }}
-                                                        // onClick={() => viewForm(el)}
-                                                    >
-
-                                                    </Eye>
-            </Link>
-           ):(null)} 
-            {checkPermissions([AUTOMOBILE_UPDATE],permissions)?( <Edit 
-                                                    className='mr-1'
-                                                    color="#007bff" size={18} style={{ cursor: "pointer" }}
+                                                            </Eye>
+                                                        </Link>
+                                                    ) : (null)}
+                                                    {checkPermissions([AUTOMOBILE_UPDATE], permissions) ? (<Edit
+                                                        className='mr-1'
+                                                        color="#007bff" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => editForm(el)}
-                                                    ></Edit>):(null)} 
-                                                   
-            {checkPermissions([AUTOMOBILE_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
+                                                    ></Edit>) : (null)}
 
-                                                   
-
+                                                    {checkPermissions([AUTOMOBILE_DELETE], permissions) ? (<Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
+                                                        onClick={() => deleteFunc(el.id)}></Delete>) : (null)}
                                                 </td>
                                             </tr>)
                                         })}
-
-
                                     </tbody>
                                 </Table>
                             </div>
                             <Row className='mt-5'>
                                 <Col sm="2" className='text-center'>
-
                                     <div className="items">
                                         <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
                                             <option value={6}>6</option>
                                             <option value={9}>9</option>
                                             <option value={12}>12</option>
                                             <option value={15}>15</option>
-
                                         </select>
                                     </div>
-
-
-
-
                                 </Col>
                                 <Col sm="2">   <div className="number">{from} - {to} of {total}</div></Col>
                                 <Col sm="8" className='text-center'>
-
                                     <Pagination aria-label="Page navigation example" className="pagination-primary">
-
-
                                         {
                                             links ? links.map((el, index, arr) => setLinksView(el, index, arr, fetchData, current_page, lastPage)) : null
                                         }
-
                                     </Pagination>
-
                                 </Col>
-
                             </Row>
-
-
                         </Card>
                     </Col>
-
                 </Row>
             </Container>
-
             <Modal isOpen={automobileCategoryCreateModal} toggle={automobileCategoryCreateModaltoggle} size="lg">
                 <ModalHeader toggle={automobileCategoryCreateModaltoggle} className="text-center">
                     Automobile Category
@@ -375,7 +321,6 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     </AutomobileCategoryView>
                 </ModalBody>
             </Modal>
-
         </Fragment>
     );
 };

@@ -93,7 +93,7 @@ const GarageCreate = ({ history }) => {
         loadServices(makes)
       })
       .catch(error => {
-        if (error.response?.status == 401) {
+        if (error.response?.status === 401) {
           SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
         }
         else {
@@ -115,7 +115,7 @@ const GarageCreate = ({ history }) => {
 
       })
       .catch(error => {
-        if (error.response?.status == 401) {
+        if (error.response?.status === 401) {
           SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
         }
         else {
@@ -144,7 +144,7 @@ const GarageCreate = ({ history }) => {
         setService(tempServices)
       })
       .catch(error => {
-        if (error.response?.status == 401) {
+        if (error.response?.status === 401) {
           SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
         }
         else {
@@ -406,7 +406,17 @@ const GarageCreate = ({ history }) => {
 
     // If the current step is the last step, then render the "submit" button
     if (currentStep > 2) {
-      return <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>;
+      return (
+        <>
+          {
+            loading ?
+              <Button color="primary float-right" type='button' disabled>Loading..</Button>
+              :
+              <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>
+          }
+        </>
+
+      )
     }
     // ...else render nothing
     return null;

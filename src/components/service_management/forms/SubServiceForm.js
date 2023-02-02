@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap'
-import SweetAlert from 'sweetalert2'
+import { Button, Card, CardBody, CardHeader, Col, Form, Input, Label, Row } from 'reactstrap';
+import SweetAlert from 'sweetalert2';
 import { apiClient } from '../../../utils/apiClient';
 import { BACKEND_API } from '../../../utils/backend';
-import { Country, State, City }  from 'country-state-city';
 
 const SubServiceForm = ({toggleModal,fetchData,perPage,type,
   service,
@@ -18,7 +17,7 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
     useEffect(() => {
 
         console.log(subServiceUpdateData)
-        if(type == "update") {
+        if(type === "update") {
           const fields = ['id','name', 'description',];
           fields.forEach(field => setValue(field, subServiceUpdateData[field]));
        
@@ -34,7 +33,7 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
   const onSubmit = data => {
     setLoading(true)
     setServerSideErrors(null)
-    if(type == "update") {
+    if(type === "update") {
       apiClient().put(`${BACKEND_API}/v1.0/sub-services`,data)
       .then(response => {
           console.log(response.data)
@@ -48,13 +47,13 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
       .catch(error => {
           setLoading(false)
           console.log("error",error.response)
-          if(error.response?.status == 422) {
+          if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
               // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-         else if(error.response?.status == 401) {
+         else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           }
           else {
@@ -63,7 +62,7 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
       })
   
     }
-    if(type == "create") {
+    if(type === "create") {
       apiClient().post(`${BACKEND_API}/v1.0/sub-services`,data)
       .then(response => {
           console.log(response.data)
@@ -77,13 +76,13 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
       .catch(error => {
           setLoading(false)
           console.log("error",error.response)
-          if(error.response?.status == 422) {
+          if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
               // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
               // alert(error.response.data.message)
           }
-       else if(error.response?.status == 401) {
+       else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
           } 
           else {
