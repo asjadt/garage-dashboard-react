@@ -21,6 +21,7 @@ import { BACKEND_API } from "../utils/backend";
 
 export default function SignUp() {
     const history = useHistory()
+
     const [state, setState] = useState({
         currentStep: 1,
     })
@@ -89,7 +90,6 @@ export default function SignUp() {
                 loadServices(makes)
             })
             .catch(error => {
-
                 if (error.response?.status === 401) {
                     SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
                 }
@@ -112,7 +112,7 @@ export default function SignUp() {
 
             })
             .catch(error => {
-                if (error.response?.status == 401) {
+                if (error.response?.status === 401) {
                     SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
                 }
                 else {
@@ -132,15 +132,30 @@ export default function SignUp() {
                 console.log(tempServices)
                 tempServices[0] = {
                     ...tempServices[0],
-                    services: [...services],
-                    automobile_makes: makes
+
+                    services: [...services.map(el => {
+                        el.checked = true;
+                        el.sub_services.map(sub_el => {
+                            sub_el.checked = true;
+                            return sub_el;
+                        })
+                        return el;
+                    })],
+                    automobile_makes: [...makes.map(el => {
+                        el.checked = true;
+                        el.models.map(model => {
+                            model.checked = true;
+                            return model;
+                        })
+                        return el;
+                    })]
 
                 };
 
                 setService(tempServices)
             })
             .catch(error => {
-                if (error.response?.status == 401) {
+                if (error.response?.status === 401) {
                     SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
                 }
                 else {
@@ -151,7 +166,6 @@ export default function SignUp() {
 
     const [serverSideErrors, setServerSideErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
     const addCategory = () => {
         let tempServices = JSON.parse(JSON.stringify(service))
@@ -162,8 +176,6 @@ export default function SignUp() {
             automobile_makes: [
             ]
         });
-        // console.log(service)
-        // console.log(tempServices)
         setService(tempServices)
     }
 
@@ -184,9 +196,12 @@ export default function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // const { email, username, password } = state;
+        // alert(`Your registration detail: \n 
+        //   Email: ${email} \n 
+        //   Username: ${username} \n
+        //   Password: ${password}`);
     };
-
-
 
     const _next = () => {
         let currentStep = state.currentStep;
@@ -246,7 +261,17 @@ export default function SignUp() {
 
         // If the current step is the last step, then render the "submit" button
         if (currentStep > 2) {
-            return <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>;
+            return (
+                <>
+                    {
+                        loading ?
+                            <Button color="primary float-right" type='button' disabled>Loading..</Button>
+                            :
+                            <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>
+                    }
+                </>
+
+            )
         }
         // ...else render nothing
         return null;
@@ -271,19 +296,13 @@ export default function SignUp() {
         let makeIndex = name.split("-")[3];
 
         let tempServices = JSON.parse(JSON.stringify(service))
-        console.log(tempServices)
-
-
-
-
 
         tempServices[index].automobile_makes[makeIndex].checked = !tempServices[index].automobile_makes[makeIndex].checked;
 
         tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
-            element.checked = true;
+            element.checked = tempServices[index].automobile_makes[makeIndex].checked;
             return element
         });
-
 
         setService(tempServices)
     }
@@ -295,7 +314,6 @@ export default function SignUp() {
         let modelIndex = name.split("-")[5];
 
         let tempServices = JSON.parse(JSON.stringify(service))
-        console.log(tempServices)
 
         tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked = !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked;
         setService(tempServices)
@@ -307,12 +325,10 @@ export default function SignUp() {
         let serviceIndex = name.split("-")[3];
 
         let tempServices = JSON.parse(JSON.stringify(service))
-        console.log(tempServices)
-
 
         tempServices[index].services[serviceIndex].checked = !tempServices[index].services[serviceIndex].checked;
         tempServices[index].services[serviceIndex].sub_services.forEach(element => {
-            element.checked = true;
+            element.checked = tempServices[index].services[serviceIndex].checked;
             return element
         });
         setService(tempServices)
@@ -331,6 +347,38 @@ export default function SignUp() {
         setService(tempServices)
     }
 
+    const handleServiceChangeAll = (e) => {
+        const { checked } = e.target
+        let tempServices = JSON.parse(JSON.stringify(service))
+        tempServices.map(services => {
+            services.services.map(service => {
+                service.checked = checked;
+                service.sub_services.map(sub_service => {
+                    sub_service.checked = checked
+                    return sub_service;
+                })
+                return service;
+            })
+            return services;
+        })
+        setService(tempServices)
+    }
+
+    const handleMakeChangeAll = (e) => {
+        const { checked } = e.target
+        let tempServices = JSON.parse(JSON.stringify(service))
+        tempServices.map(automobile_makes => {
+            automobile_makes.automobile_makes.map(make => {
+                make.checked = checked;
+                make.models.map(model => {
+                    model.checked = checked;
+                    return model;
+                })
+                return make;
+            })
+        })
+        setService(tempServices)
+    }
 
 
     // HANDLE FORM SUBMISSION 
@@ -343,12 +391,11 @@ export default function SignUp() {
         }).then(res => {
             localStorage.setItem('token', res?.data?.user?.token);
             SweetAlert.fire({ title: "Success", text: "Garage Registered Successfully!", icon: "success" })
-            .then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `${process.env.PUBLIC_URL}/login`;
-                }
-              });
-            
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `${process.env.PUBLIC_URL}/login`;
+                    }
+                });
         }).catch(error => {
             setLoading(false)
             if (error.response?.status === 422) {
@@ -466,6 +513,7 @@ export default function SignUp() {
             console.log("garage_err", error)
         })
     };
+
     return (
         <Fragment>
             <Container fluid={true}>
@@ -487,6 +535,7 @@ export default function SignUp() {
                                         data={user}
                                         serverSideErrors={serverSideErrors}
                                     />
+
                                     <GarageStep
                                         currentStep={state.currentStep}
                                         handleChange={handleGarageChange}
@@ -495,6 +544,8 @@ export default function SignUp() {
                                     />
 
                                     <ServiceStep
+                                        handleMakeChangeAll={handleMakeChangeAll}
+                                        handleServiceChangeAll={handleServiceChangeAll}
                                         currentStep={state.currentStep}
                                         handleChange={handleUserChange}
                                         data={service}

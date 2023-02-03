@@ -136,8 +136,23 @@ const GarageCreate = ({ history }) => {
         console.log(tempServices)
         tempServices[0] = {
           ...tempServices[0],
-          services: [...services],
-          automobile_makes: makes
+
+          services: [...services.map(el => {
+            el.checked = true;
+            el.sub_services.map(sub_el => {
+              sub_el.checked = true;
+              return sub_el;
+            })
+            return el;
+          })],
+          automobile_makes: [...makes.map(el => {
+            el.checked = true;
+            el.models.map(model => {
+              model.checked = true;
+              return model;
+            })
+            return el;
+          })]
 
         };
 
@@ -201,8 +216,196 @@ const GarageCreate = ({ history }) => {
     //   Username: ${username} \n
     //   Password: ${password}`);
   };
-  const handleSubmitStep = () => {
+  
 
+  const _next = () => {
+    let currentStep = state.currentStep;
+
+    currentStep = currentStep >= 2 ? 3 : currentStep + 1;
+
+    setState({
+      ...state,
+      currentStep: currentStep
+    });
+
+
+
+
+  }
+
+  const _prev = () => {
+    let currentStep = state.currentStep;
+    // If the current step is 2 or 3, then subtract one on "previous" button click
+    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    setState({
+      ...state,
+      currentStep: currentStep
+    });
+  }
+  const previousButton = () => {
+    let currentStep = state.currentStep;
+
+    // If the current step is not 1, then render the "previous" button
+    if (currentStep !== 1) {
+      return (
+        <Button color="secondary float-left" onClick={_prev}>
+          Previous
+        </Button>
+      );
+    }
+
+    // ...else return nothing
+    return null;
+  }
+
+  const nextButton = () => {
+    let currentStep = state.currentStep;
+    // If the current step is not 3, then render the "next" button
+    if (currentStep < 3) {
+      return (
+        <Button color="primary float-right" onClick={handleSubmitStep}>
+          Next
+        </Button>
+      );
+    }
+    // ...else render nothing
+    return null;
+  }
+  const submitButton = () => {
+    let currentStep = state.currentStep;
+
+    // If the current step is the last step, then render the "submit" button
+    if (currentStep > 2) {
+      return (
+        <>
+          {
+            loading ?
+              <Button color="primary float-right" type='button' disabled>Loading..</Button>
+              :
+              <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>
+          }
+        </>
+
+      )
+    }
+    // ...else render nothing
+    return null;
+  }
+
+  const handleCategoryChange = (e) => {
+    let index = e.target.name.split("-")[1];
+    let name = e.target.name.split("-")[2];
+
+    let tempServices = JSON.parse(JSON.stringify(service))
+    console.log(tempServices, index, name)
+    tempServices[index] = {
+      ...tempServices[index],
+      [name]: e.target.value
+    };
+    setService(tempServices)
+  }
+
+  const handleMakeChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let makeIndex = name.split("-")[3];
+
+    let tempServices = JSON.parse(JSON.stringify(service))
+
+    tempServices[index].automobile_makes[makeIndex].checked = !tempServices[index].automobile_makes[makeIndex].checked;
+
+    tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
+      element.checked = tempServices[index].automobile_makes[makeIndex].checked;
+      return element
+    });
+
+    setService(tempServices)
+  }
+
+  const handleModelChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let makeIndex = name.split("-")[3];
+    let modelIndex = name.split("-")[5];
+
+    let tempServices = JSON.parse(JSON.stringify(service))
+
+    tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked = !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked;
+    setService(tempServices)
+  }
+
+  const handleServiceChange = (e) => {
+    const { name } = e.target
+    let index = name.split("-")[1];
+    let serviceIndex = name.split("-")[3];
+
+    let tempServices = JSON.parse(JSON.stringify(service))
+
+    tempServices[index].services[serviceIndex].checked = !tempServices[index].services[serviceIndex].checked;
+    tempServices[index].services[serviceIndex].sub_services.forEach(element => {
+      element.checked = tempServices[index].services[serviceIndex].checked;
+      return element
+    });
+    setService(tempServices)
+  }
+
+  const handleSubServiceChange = (e) => {
+    const { name } = e.target;
+    let index = name.split("-")[1];
+    let serviceIndex = name.split("-")[3];
+    let subServiceIndex = name.split("-")[5];
+
+    let tempServices = JSON.parse(JSON.stringify(service));
+    console.log(subServiceIndex);
+    console.log("test", tempServices[index].services[serviceIndex].sub_services[subServiceIndex]);
+    tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked = !tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked;
+    setService(tempServices)
+  }
+
+  const handleServiceChangeAll = (e) => {
+    const { checked } = e.target
+    let tempServices = JSON.parse(JSON.stringify(service))
+    tempServices.map(services => {
+      services.services.map(service => {
+        service.checked = checked;
+        service.sub_services.map(sub_service => {
+          sub_service.checked = checked
+          return sub_service;
+        })
+        return service;
+      })
+      return services;
+    })
+    setService(tempServices)
+  }
+
+  const handleMakeChangeAll = (e) => {
+    const { checked } = e.target
+    let tempServices = JSON.parse(JSON.stringify(service))
+    tempServices.map(automobile_makes => {
+      automobile_makes.automobile_makes.map(make => {
+        make.checked = checked;
+        make.models.map(model => {
+          model.checked = checked;
+          return model;
+        })
+        return make;
+      })
+    })
+    setService(tempServices)
+  }
+
+
+
+
+
+
+
+
+
+
+
+  const handleSubmitStep = () => {
     let currentStep = state.currentStep;
 
     apiClient()
@@ -331,10 +534,6 @@ const GarageCreate = ({ history }) => {
             _next()
           }
 
-
-          // setError('', { type: 'custom', message: 'custom message' })
-
-          // alert(error.response.data.message)
         }
         else if (error.response?.status == 401) {
           SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
@@ -347,168 +546,12 @@ const GarageCreate = ({ history }) => {
       })
 
   };
-
-  const _next = () => {
-    let currentStep = state.currentStep;
-
-    currentStep = currentStep >= 2 ? 3 : currentStep + 1;
-
-    setState({
-      ...state,
-      currentStep: currentStep
-    });
-
-
-
-
-  }
-
-  const _prev = () => {
-    let currentStep = state.currentStep;
-    // If the current step is 2 or 3, then subtract one on "previous" button click
-    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
-    setState({
-      ...state,
-      currentStep: currentStep
-    });
-  }
-  const previousButton = () => {
-    let currentStep = state.currentStep;
-
-    // If the current step is not 1, then render the "previous" button
-    if (currentStep !== 1) {
-      return (
-        <Button color="secondary float-left" onClick={_prev}>
-          Previous
-        </Button>
-      );
-    }
-
-    // ...else return nothing
-    return null;
-  }
-
-  const nextButton = () => {
-    let currentStep = state.currentStep;
-    // If the current step is not 3, then render the "next" button
-    if (currentStep < 3) {
-      return (
-        <Button color="primary float-right" onClick={handleSubmitStep}>
-          Next
-        </Button>
-      );
-    }
-    // ...else render nothing
-    return null;
-  }
-  const submitButton = () => {
-    let currentStep = state.currentStep;
-
-    // If the current step is the last step, then render the "submit" button
-    if (currentStep > 2) {
-      return (
-        <>
-          {
-            loading ?
-              <Button color="primary float-right" type='button' disabled>Loading..</Button>
-              :
-              <Button color="primary float-right" type='button' onClick={handleSubmitStep}>Submit</Button>
-          }
-        </>
-
-      )
-    }
-    // ...else render nothing
-    return null;
-  }
-
-  const handleCategoryChange = (e) => {
-    let index = e.target.name.split("-")[1];
-    let name = e.target.name.split("-")[2];
-
-    let tempServices = JSON.parse(JSON.stringify(service))
-    console.log(tempServices, index, name)
-    tempServices[index] = {
-      ...tempServices[index],
-      [name]: e.target.value
-    };
-    setService(tempServices)
-  }
-
-  const handleMakeChange = (e) => {
-    const { name } = e.target
-    let index = name.split("-")[1];
-    let makeIndex = name.split("-")[3];
-
-    let tempServices = JSON.parse(JSON.stringify(service))
-    console.log(tempServices)
-
-
-
-
-
-    tempServices[index].automobile_makes[makeIndex].checked = !tempServices[index].automobile_makes[makeIndex].checked;
-
-    tempServices[index].automobile_makes[makeIndex].models.forEach(element => {
-      element.checked = true;
-      return element
-    });
-
-
-    setService(tempServices)
-  }
-
-  const handleModelChange = (e) => {
-    const { name } = e.target
-    let index = name.split("-")[1];
-    let makeIndex = name.split("-")[3];
-    let modelIndex = name.split("-")[5];
-
-    let tempServices = JSON.parse(JSON.stringify(service))
-    console.log(tempServices)
-
-    tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked = !tempServices[index].automobile_makes[makeIndex].models[modelIndex].checked;
-    setService(tempServices)
-  }
-
-  const handleServiceChange = (e) => {
-    const { name } = e.target
-    let index = name.split("-")[1];
-    let serviceIndex = name.split("-")[3];
-
-    let tempServices = JSON.parse(JSON.stringify(service))
-    console.log(tempServices)
-
-
-    tempServices[index].services[serviceIndex].checked = !tempServices[index].services[serviceIndex].checked;
-    tempServices[index].services[serviceIndex].sub_services.forEach(element => {
-      element.checked = true;
-      return element
-    });
-    setService(tempServices)
-  }
-
-  const handleSubServiceChange = (e) => {
-    const { name } = e.target;
-    let index = name.split("-")[1];
-    let serviceIndex = name.split("-")[3];
-    let subServiceIndex = name.split("-")[5];
-
-    let tempServices = JSON.parse(JSON.stringify(service));
-    console.log(subServiceIndex);
-    console.log("test", tempServices[index].services[serviceIndex].sub_services[subServiceIndex]);
-    tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked = !tempServices[index].services[serviceIndex].sub_services[subServiceIndex].checked;
-    setService(tempServices)
-  }
   return (
     <Fragment>
 
       <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
       <Container fluid={true}>
-
-
         <Row>
-
           <Col sm="12">
             <Form onSubmit={handleSubmit}>
               <Card>
@@ -516,14 +559,6 @@ const GarageCreate = ({ history }) => {
                   <h5>Garage Management</h5><span> Create Garage </span>
                 </CardHeader>
                 <CardBody>
-                  {/* <StepZilla 
-                                steps={steps} 
-                                showSteps={true} 
-                                showNavigation={true} 
-                                stepsNavigation={true}
-                                prevBtnOnLastStep={true}
-                              /> */}
-
                   <CardTitle>
                     <MultiStepProgressBar currentStep={state.currentStep} />
                   </CardTitle>
@@ -543,6 +578,8 @@ const GarageCreate = ({ history }) => {
                   />
 
                   <ServiceStep
+                    handleMakeChangeAll={handleMakeChangeAll}
+                    handleServiceChangeAll={handleServiceChangeAll}
                     currentStep={state.currentStep}
                     handleChange={handleUserChange}
                     data={service}
