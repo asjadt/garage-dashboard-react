@@ -14,7 +14,6 @@ const ServiceStep = props => {
 
   return (
     <>
-      <h2 className="text-center">Which of these services do the garage offer?</h2>
       <div className="d-flex justify-content-center align-items-center my-3">
         <div className={`w-50 w-xm-100 h-25 border border-primary px-2 pt-2 d-flex align-item-center rounded`}>
           <Label className="d-block" for={`category-all-select`} >

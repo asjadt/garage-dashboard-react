@@ -50,6 +50,7 @@
     "react-dropzone-uploader": "^2.11.0",
     "react-feather": "^2.0.3",
     "react-geocode": "^0.2.1",
+    "react-google-autocomplete": "^2.7.2",
     "react-google-charts": "^3.0.15",
     "react-google-maps": "^9.4.5",
     "react-hook-form": "^5.1.3",

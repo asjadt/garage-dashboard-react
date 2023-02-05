@@ -1,5 +1,5 @@
 import { default as React, Fragment, useEffect, useState } from "react";
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Container, Form, Row } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, Col, Container, Form, Row } from "reactstrap";
 import SweetAlert from 'sweetalert2';
 
 
@@ -20,6 +20,11 @@ import { BACKEND_API } from "../utils/backend";
 
 
 export default function SignUp() {
+    const [placeAutoComplete, setPlaceAutoComplete] = useState({});
+    const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
+
+
+
     const history = useHistory()
 
     const [state, setState] = useState({
@@ -33,11 +38,11 @@ export default function SignUp() {
         password_confirmation: '',
         phone: '',
         image: '',
-        address_line_1: '',
-        address_line_2: '',
-        country: '',
-        city: '',
-        postcode: '',
+        address_line_1: 'N/A',
+        address_line_2: 'N/A',
+        country: 'N/A',
+        city: 'N/A',
+        postcode: 'N/A',
     })
     const [garage, setGarage] = useState({
         name: '',
@@ -58,6 +63,29 @@ export default function SignUp() {
         average_time_slot: '',
     })
 
+    // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
+    useEffect(() => {
+        console.log({ placeAutoComplete })
+        setGarage({
+            ...garage,
+            city: placeAutoComplete?.locality,
+            country: placeAutoComplete?.country,
+            address_line_1: placeAutoComplete?.full_address,
+            postcode: placeAutoComplete?.postal_code
+        })
+    }, [placeAutoComplete])
+
+    // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
+    useEffect(() => {
+        setGarage({
+            ...garage,
+            address_line_2: placeAutoComplete2?.full_address
+        })
+    }, [placeAutoComplete2])
+
+
+
+
     const [automobileCategories, setAutomobileCategories] = useState([]);
 
     const [service, setService] = useState([
@@ -76,17 +104,6 @@ export default function SignUp() {
             .then(response => {
                 console.log("makes", response.data)
                 let makes = response.data
-                // setAutomobileCategories(categories)
-
-                // let tempServices = JSON.parse(JSON.stringify(service))
-
-                // tempServices[0] = {
-                // ...tempServices[0],
-                // services:[...tempServices[0].services],
-                // automobile_makes:[...makes]
-                // };
-
-                // setService(tempServices)
                 loadServices(makes)
             })
             .catch(error => {
@@ -109,7 +126,6 @@ export default function SignUp() {
                 console.log(response.data)
                 let categories = response.data
                 setAutomobileCategories(categories)
-
             })
             .catch(error => {
                 if (error.response?.status === 401) {
@@ -525,18 +541,20 @@ export default function SignUp() {
                                     <h3 className="text-center font-weight-bold text-primary">Create Account</h3>
                                 </CardHeader>
                                 <CardBody>
-                                    <CardTitle>
+                                    <div className='px-5 mb-5 my-1'>
                                         <MultiStepProgressBar currentStep={state.currentStep} />
-                                    </CardTitle>
+                                    </div>
                                     <CardText />
+
                                     <UserStep
                                         currentStep={state.currentStep}
                                         handleChange={handleUserChange}
                                         data={user}
                                         serverSideErrors={serverSideErrors}
                                     />
-
                                     <GarageStep
+                                        setPlaceAutoComplete2={setPlaceAutoComplete2}
+                                        setPlaceAutoComplete={setPlaceAutoComplete}
                                         currentStep={state.currentStep}
                                         handleChange={handleGarageChange}
                                         data={garage}
@@ -558,12 +576,8 @@ export default function SignUp() {
                                         handleServiceChange={handleServiceChange}
                                         handleSubServiceChange={handleSubServiceChange}
                                     />
-                                    <div>
-                                        Already Have An Account? <span role="button" className='text-primary' onClick={() => { history.push(`${process.env.PUBLIC_URL}/login`) }}>Login.</span>
-                                    </div>
                                 </CardBody>
                                 <CardFooter>
-
                                     {previousButton()}
                                     {nextButton()}
                                     {submitButton()}

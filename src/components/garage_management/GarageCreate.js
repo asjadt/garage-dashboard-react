@@ -1,12 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Container, Form, Row } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, Col, Container, Form, Row } from "reactstrap";
 import SweetAlert from 'sweetalert2';
 import BreadCrumb from '../../layout/Breadcrumb';
 
 import { apiClient } from '../../utils/apiClient';
 import { BACKEND_API } from '../../utils/backend';
-
-
 
 import { withRouter } from 'react-router-dom';
 import { GARAGE_CREATE } from '../../constant/permissions';
@@ -23,10 +21,15 @@ import MultiStepProgressBar from './utils/MultiStepProgressBar';
 
 
 const GarageCreate = ({ history }) => {
+  const [placeAutoComplete, setPlaceAutoComplete] = useState({});
+  const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
+
+
 
   const [state, setState] = useState({
     currentStep: 1,
   })
+
   const [user, setUser] = useState({
     first_Name: '',
     last_Name: '',
@@ -35,12 +38,13 @@ const GarageCreate = ({ history }) => {
     password_confirmation: '',
     phone: '',
     image: '',
-    address_line_1: '',
-    address_line_2: '',
-    country: '',
-    city: '',
-    postcode: '',
+    address_line_1: 'N/A',
+    address_line_2: 'N/A',
+    country: 'N/A',
+    city: 'N/A',
+    postcode: 'N/A',
   })
+
   const [garage, setGarage] = useState({
     name: '',
     about: '',
@@ -61,6 +65,28 @@ const GarageCreate = ({ history }) => {
   })
 
 
+  // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
+  useEffect(() => {
+    console.log({placeAutoComplete})
+    setGarage({
+      ...garage , 
+      city:placeAutoComplete?.locality,
+      country:placeAutoComplete?.country,
+      address_line_1:placeAutoComplete?.full_address,
+      postcode: placeAutoComplete?.postal_code
+    })
+  }, [placeAutoComplete])
+
+    // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
+  useEffect(() => {
+    setGarage({
+      ...garage , 
+      address_line_2:placeAutoComplete2?.full_address
+    })
+  }, [placeAutoComplete2])
+
+
+
   const [automobileCategories, setAutomobileCategories] = useState([]);
 
   const [service, setService] = useState([
@@ -74,22 +100,12 @@ const GarageCreate = ({ history }) => {
       ]
     }
   ])
+
   const loadAutomobileMakes = () => {
     apiClient().get(`${BACKEND_API}/v1.0/automobile-makes-all/${1}`)
       .then(response => {
         console.log("makes", response.data)
         let makes = response.data
-        // setAutomobileCategories(categories)
-
-        // let tempServices = JSON.parse(JSON.stringify(service))
-
-        // tempServices[0] = {
-        // ...tempServices[0],
-        // services:[...tempServices[0].services],
-        // automobile_makes:[...makes]
-        // };
-
-        // setService(tempServices)
         loadServices(makes)
       })
       .catch(error => {
@@ -101,6 +117,7 @@ const GarageCreate = ({ history }) => {
         }
       })
   }
+
   useEffect(() => {
     loadAutomobileCategories()
     loadAutomobileMakes()
@@ -123,7 +140,6 @@ const GarageCreate = ({ history }) => {
         }
       })
   }
-
 
   const loadServices = (makes) => {
     apiClient().get(`${BACKEND_API}/v1.0/services-all/${1}`)
@@ -168,12 +184,9 @@ const GarageCreate = ({ history }) => {
       })
   }
 
-
-
   const [serverSideErrors, setServerSideErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   let permissions = JSON.parse(localStorage.getItem("permissions"));
-
 
   const addCategory = () => {
     let tempServices = JSON.parse(JSON.stringify(service))
@@ -184,8 +197,7 @@ const GarageCreate = ({ history }) => {
       automobile_makes: [
       ]
     });
-    // console.log(service)
-    // console.log(tempServices)
+
     setService(tempServices)
   }
 
@@ -203,6 +215,7 @@ const GarageCreate = ({ history }) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   }
+
   const handleGarageChange = (e) => {
     const { name, value } = e.target;
     setGarage({ ...garage, [name]: value });
@@ -210,27 +223,16 @@ const GarageCreate = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const { email, username, password } = state;
-    // alert(`Your registration detail: \n 
-    //   Email: ${email} \n 
-    //   Username: ${username} \n
-    //   Password: ${password}`);
   };
-  
+
 
   const _next = () => {
     let currentStep = state.currentStep;
-
     currentStep = currentStep >= 2 ? 3 : currentStep + 1;
-
     setState({
       ...state,
       currentStep: currentStep
     });
-
-
-
-
   }
 
   const _prev = () => {
@@ -242,6 +244,7 @@ const GarageCreate = ({ history }) => {
       currentStep: currentStep
     });
   }
+
   const previousButton = () => {
     let currentStep = state.currentStep;
 
@@ -271,6 +274,7 @@ const GarageCreate = ({ history }) => {
     // ...else render nothing
     return null;
   }
+
   const submitButton = () => {
     let currentStep = state.currentStep;
 
@@ -394,16 +398,6 @@ const GarageCreate = ({ history }) => {
     })
     setService(tempServices)
   }
-
-
-
-
-
-
-
-
-
-
 
   const handleSubmitStep = () => {
     let currentStep = state.currentStep;
@@ -546,9 +540,9 @@ const GarageCreate = ({ history }) => {
       })
 
   };
+
   return (
     <Fragment>
-
       <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
       <Container fluid={true}>
         <Row>
@@ -559,9 +553,9 @@ const GarageCreate = ({ history }) => {
                   <h5>Garage Management</h5><span> Create Garage </span>
                 </CardHeader>
                 <CardBody>
-                  <CardTitle>
+                  <div className='px-5 mb-5 my-1'>
                     <MultiStepProgressBar currentStep={state.currentStep} />
-                  </CardTitle>
+                  </div>
                   <CardText />
 
                   <UserStep
@@ -571,6 +565,8 @@ const GarageCreate = ({ history }) => {
                     serverSideErrors={serverSideErrors}
                   />
                   <GarageStep
+                    setPlaceAutoComplete2={setPlaceAutoComplete2}
+                    setPlaceAutoComplete={setPlaceAutoComplete}
                     currentStep={state.currentStep}
                     handleChange={handleGarageChange}
                     data={garage}
