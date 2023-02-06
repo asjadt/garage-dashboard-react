@@ -7,7 +7,7 @@ import { BACKEND_API } from '../../../utils/backend';
 
 
 const ServiceForm = ({toggleModal,fetchData,perPage,type,serviceUpdateData}) => {
-    const { register, handleSubmit,setValue, errors,setError , watch } = useForm();
+    const { register, handleSubmit,setValue, errors , watch } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
     const [automobileCategories,setAutomobileCategories] = useState([]);

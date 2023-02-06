@@ -7,16 +7,16 @@ import styles from "./UserStep.module.css";
 const UserStep = props => {
   if (props.currentStep !== 1) {
     return null;
-  }
+  } 
   return (
     <>
       <div className="form-row mb-2">
         <Input className="form-control" name="id" type="hidden" />
 
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="first_Name">First Name</Label>
+          <Label className='' htmlFor="first_Name">First Name*</Label>
           <Input className="form-control" name="first_Name" type="text"
-            placeholder="First name"
+            // placeholder="First name"
             onChange={props.handleChange}
             value={props.data.first_Name}
           />
@@ -31,11 +31,11 @@ const UserStep = props => {
 
         </Col>
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="last_Name">Last Name</Label>
+          <Label className='' htmlFor="last_Name">Last Name*</Label>
           <Input className="form-control" name="last_Name" type="text"
             onChange={props.handleChange}
             value={props.data.last_Name}
-            placeholder="Last name"
+            // placeholder="Last name"
           />
 
 
@@ -47,7 +47,7 @@ const UserStep = props => {
             : (null)}
         </Col>
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="validationCustomUsername">Email</Label>
+          <Label className='' htmlFor="validationCustomUsername">Email*</Label>
           <InputGroup>
             <InputGroupAddon addonType="prepend">
               <InputGroupText>{"@"}</InputGroupText>
@@ -55,7 +55,7 @@ const UserStep = props => {
             <Input className="form-control" name="email" type="text"
               onChange={props.handleChange}
               value={props.data.email}
-              placeholder="email"
+              // placeholder="email"
             />
 
 
@@ -68,11 +68,11 @@ const UserStep = props => {
           </InputGroup>
         </Col>
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="phone">Phone</Label>
+          <Label className='' htmlFor="phone">Phone Number*</Label>
           <Input className={`${styles.numberField} form-control`} name="phone" type="number"
             onChange={props.handleChange}
             value={props.data.phone}
-            placeholder="phone"
+            // placeholder="phone"
 
           />
 
@@ -87,11 +87,11 @@ const UserStep = props => {
 
       <div className="form-row mb-2">
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="password">Password</Label>
+          <Label className='' htmlFor="password">Password* <small><small>( password must have minimum 8 character )</small></small></Label>
           <Input className="form-control" name="password" type="password"
             onChange={props.handleChange}
             value={props.data.password}
-            placeholder="password"
+            // placeholder="password must have minimum 8 character"
           />
 
           {props.serverSideErrors ? (
@@ -102,11 +102,11 @@ const UserStep = props => {
             : (null)}
         </Col>
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="password_confirmation">Confirm Password</Label>
+          <Label className='' htmlFor="password_confirmation">Confirm Password*</Label>
           <Input className="form-control" id="password_confirmation" name="password_confirmation" type="password"
             onChange={props.handleChange}
             value={props.data.password_confirmation}
-            placeholder="confirm password"
+            // placeholder="confirm password"
           />
 
           {props.serverSideErrors ? (

@@ -13,10 +13,10 @@ const GarageStep = props => {
         <Input className="form-control" name="id" type="hidden" />
         {/* GARAGE NAME FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="name">garage Name</Label>
+          <Label className='' htmlFor="name">Garage Name*</Label>
           <Input className="form-control" name="name" type="text"
             data-testid="registration_garage_name"
-            placeholder="Garage name"
+            // placeholder="Garage name"
             onChange={props.handleChange}
             value={props.data.name}
           />
@@ -30,7 +30,7 @@ const GarageStep = props => {
 
         {/* EMAIL FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="validationCustomUsername">Email</Label>
+          <Label className='' htmlFor="validationCustomUsername">Email*</Label>
           <InputGroup>
             <InputGroupAddon addonType="prepend">
               <InputGroupText>{"@"}</InputGroupText>
@@ -39,7 +39,7 @@ const GarageStep = props => {
               data-testid="registration_garage_email"
               onChange={props.handleChange}
               value={props.data.email}
-              placeholder="email"
+              // placeholder="email"
             />
             {props.serverSideErrors && (
               !props.serverSideErrors["garage.email"] ? (
@@ -52,12 +52,12 @@ const GarageStep = props => {
 
         {/* PHONE FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="phone">Phone</Label>
+          <Label className='' htmlFor="phone">Phone Number*</Label>
           <Input className="form-control" name="phone" type="text"
             data-testid="registration_garage_phone"
             onChange={props.handleChange}
             value={props.data.phone}
-            placeholder="phone"
+            // placeholder="phone"
           />
 
           {props.serverSideErrors && (
@@ -70,24 +70,15 @@ const GarageStep = props => {
 
         {/* ADDRESS LINE 1 FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="phone">Address Line 1</Label>
+          <Label className='' htmlFor="phone">Address Line 1*</Label>
 
           <AutoComplete
             setPlaceAutoComplete={props.setPlaceAutoComplete}
             class_Name={'form-control'}
             name='address_line_1'
             id={'address'}
-            placeholder="address line 1"
+            // placeholder="address line 1"
           />
-
-          {/* <Input className="form-control"
-            data-testid="registration_garage_address1"
-            name="address_line_1"
-            type="text"
-            placeholder="address line 1"
-            onChange={props.handleChange}
-            value={props.data.address_line_1}
-          /> */}
 
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.address_line_1"] ? (
@@ -103,13 +94,13 @@ const GarageStep = props => {
 
         {/* ADDRESS LINE 2 FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="phone">Address Line 2</Label>
+          <Label className='' htmlFor="phone">Address Line 2</Label>
           <AutoComplete
             setPlaceAutoComplete={props.setPlaceAutoComplete2}
             class_Name={'form-control'}
             name='address_line_1'
             id={'address'}
-            placeholder="address line 2"
+            // placeholder="address line 2"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.address_line_2"] ? (
@@ -121,14 +112,14 @@ const GarageStep = props => {
 
         {/* POST CODE FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="postcode" >Postcode</Label>
+          <Label className='' htmlFor="postcode" >Postcode*</Label>
           <Input className="form-control"
             data-testid="registration_garage_postcode"
             name="postcode"
             type="text"
             onChange={props.handleChange}
             value={props.data.postcode}
-            placeholder="postcode"
+            // placeholder="postcode"
           />
 
           {props.serverSideErrors && (
@@ -142,7 +133,7 @@ const GarageStep = props => {
         {/* COUNTRY FIELD  */}
         <Col md="6 mb-3">
           <FormGroup>
-            <Label className='text-uppercase' htmlFor="country">COUNTRY</Label>
+            <Label className='' htmlFor="country">Country*</Label>
             <Input type="select" className="custom-select"
               data-testid="registration_garage_country"
               name="country"
@@ -168,7 +159,7 @@ const GarageStep = props => {
         {/* CITY FIELD  */}
         <Col md="6 mb-3">
           <FormGroup>
-            <Label className='text-uppercase' htmlFor="city">CITY</Label>
+            <Label className='' htmlFor="city">City*</Label>
             <Input type="select"
               data-testid="registration_garage_city"
               className="custom-select"
@@ -195,12 +186,12 @@ const GarageStep = props => {
       <div className='form-row mb-2'>
         {/* ABOUT FIELD  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="about">About</Label>
+          <Label className='' htmlFor="about">About</Label>
           <Input className="form-control" name="about" type="textarea"
             data-testid="registration_garage_about"
             onChange={props.handleChange}
             value={props.data.about}
-            placeholder="about"
+            // placeholder="about"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.about"] ? (
@@ -212,12 +203,12 @@ const GarageStep = props => {
 
         {/* ADDITIONAL INFORMATION  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="additional_information">Additional Information</Label>
+          <Label className='' htmlFor="additional_information">Additional Information</Label>
           <Input className="form-control" name="additional_information" type="textarea"
             data-testid="registration_garage_additional_information"
             onChange={props.handleChange}
             value={props.data.additional_information}
-            placeholder="additional information"
+            // placeholder="additional information"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.additional_information"] ? (
@@ -231,12 +222,12 @@ const GarageStep = props => {
       <div className="form-row mb-2">
         {/* WEB PAGE  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="web_page">Web Page</Label>
+          <Label className='' htmlFor="web_page">Web Page</Label>
           <Input className="form-control" name="web_page" type="text"
             data-testid="registration_garage_web_page"
             onChange={props.handleChange}
             value={props.data.web_page}
-            placeholder="web page"
+            // placeholder="web page"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.web_page"] ? (
@@ -250,7 +241,7 @@ const GarageStep = props => {
         {/* MOBILE GARAGE FIELD  */}
         <Input className="form-control" name="id" type="hidden" />
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="is_mobile_garage">Mobile Garage</Label>
+          <Label className='' htmlFor="is_mobile_garage">Mobile Garage</Label>
           <Input className="form-control"
             data-testid="registration_garage_is_mobile_garage"
             name="is_mobile_garage"
@@ -278,7 +269,7 @@ const GarageStep = props => {
 
         {/* WIFI AVAILABLE  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="wifi_available">Wifi Available</Label>
+          <Label className='' htmlFor="wifi_available">Wifi Available</Label>
           <Input className="form-control"
             data-testid="registration_garage_wifi_available"
             name="wifi_available"
@@ -302,12 +293,12 @@ const GarageStep = props => {
 
         {/* LABOUR RATE  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="labour_rate">labour_rate</Label>
+          <Label className='' htmlFor="labour_rate">Labour Rate</Label>
           <Input className="form-control"
             data-testid="registration_garage_labour_rate"
             name="labour_rate"
             type="text"
-            placeholder="labour rate"
+            // placeholder="labour rate"
             onChange={props.handleChange}
             value={props.data.labour_rate}
           />
@@ -321,12 +312,12 @@ const GarageStep = props => {
 
         {/* AVERAGE TIME SLOT  */}
         <Col md="6 mb-3">
-          <Label className='text-uppercase' htmlFor="average_time_slot">Average Time Slot</Label>
+          <Label className='' htmlFor="average_time_slot">Average Time Slot</Label>
           <Input className="form-control"
             data-testid="registration_garage_average_time_slot"
             name="average_time_slot"
             type="text"
-            placeholder="time"
+            // placeholder="time"
             onChange={props.handleChange}
             value={props.data.average_time_slot}
           />

@@ -64,10 +64,6 @@ const Root = (props) => {
     const [authenticated, setAuthenticated] = useState(false);
     const [jwt_token, set_jwt_token] = useState(localStorage.getItem('token'))
 
-    useEffect(() => {
-        console.log(currentUser, authenticated)
-
-    }, [])
 
     useEffect(() => {
         const requestOptions = { method: 'GET', headers: authHeader() };
@@ -77,7 +73,6 @@ const Root = (props) => {
 
         apiClient().get(`${BACKEND_API}/v1.0/user`)
             .then(response => {
-                console.log(response.data)
                 setCurrentUser(response.data)
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data));
@@ -140,7 +135,7 @@ const Root = (props) => {
                             <Route path={`${process.env.PUBLIC_URL}/pages/comingsoonVideo`} component={ComingsoonVideo}></Route>
 
                             <Route path={`${process.env.PUBLIC_URL}/callback`} render={() => <Callback />} />
-                            {console.log("jwt_token", jwt_token)}
+
                             {jwt_token ?
                                 <App>
 

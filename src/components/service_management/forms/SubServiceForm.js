@@ -8,23 +8,18 @@ import { BACKEND_API } from '../../../utils/backend';
 const SubServiceForm = ({toggleModal,fetchData,perPage,type,
   service,
   subServiceUpdateData}) => {
-    const { register, handleSubmit,setValue, errors,setError , watch } = useForm();
+    const { register, handleSubmit,setValue, errors } = useForm();
     const [serverSideErrors,setServerSideErrors] = useState(null);
     const [loading,setLoading] = useState(false);
-    const [roles,setRoles] = useState([]);
-    const formValues = watch(); 
-   
+
     useEffect(() => {
 
         console.log(subServiceUpdateData)
         if(type === "update") {
           const fields = ['id','name', 'description',];
           fields.forEach(field => setValue(field, subServiceUpdateData[field]));
-       
-      
         }
         return () => {
-            
         };
     }, []);
 
@@ -49,9 +44,7 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
           console.log("error",error.response)
           if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
-              // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-              // alert(error.response.data.message)
           }
          else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});
@@ -78,9 +71,7 @@ const SubServiceForm = ({toggleModal,fetchData,perPage,type,
           console.log("error",error.response)
           if(error.response?.status === 422) {
               setServerSideErrors(error.response.data.errors)
-              // setError('', { type: 'custom', message: 'custom message' })
               SweetAlert.fire({title:error.response.data.message, text:"Please Try Again", icon:"warning"});
-              // alert(error.response.data.message)
           }
        else if(error.response?.status === 401) {
             SweetAlert.fire({title:error.response.data.message, text:"Hello!!! You do not have permission.", icon:"warning"});

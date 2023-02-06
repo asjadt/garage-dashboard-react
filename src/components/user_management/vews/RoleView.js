@@ -1,26 +1,14 @@
-import { Country } from 'country-state-city';
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
-import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap'
-import SweetAlert from 'sweetalert2'
-import { apiClient } from '../../../utils/apiClient';
-import { BACKEND_API } from '../../../utils/backend';
 
-const RoleView = ({toggleModal,roleViewData,initialRolePermissions}) => {
-  
- 
+import React from 'react';
 
-    useEffect(() => {
-        console.log(roleViewData)
-        return () => {  
-        };
-    }, []);
+import { Card, CardBody, CardHeader, Col, Input, Label, Row } from 'reactstrap';
+
+const RoleView = ({roleViewData,initialRolePermissions}) => {
     const tempPermissions = [];
     roleViewData.permissions.map(el => {
       tempPermissions.push(el.name)
     })
 
- 
 
   return (
     <>

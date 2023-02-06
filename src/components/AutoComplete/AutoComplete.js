@@ -46,6 +46,7 @@ export default function AutoComplete({ setPlaceAutoComplete, class_Name, name, i
             name={name}
             className={class_Name}
             type="text"
-            placeholder={placeholder} />
+            // placeholder={placeholder} 
+            />
     );
 }

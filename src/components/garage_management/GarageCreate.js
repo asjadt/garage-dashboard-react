@@ -9,10 +9,7 @@ import { BACKEND_API } from '../../utils/backend';
 import { withRouter } from 'react-router-dom';
 import { GARAGE_CREATE } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
-import Registration from '../forms/form-layout/form-wizard-1/registration';
 
-import Birthdate from '../forms/form-layout/form-wizard-1/birthdate';
-import Emails from '../forms/form-layout/form-wizard-1/email';
 import GarageStep from './forms/GarageStep';
 import ServiceStep from './forms/ServiceStep';
 import UserStep from './forms/UserStep';
@@ -27,7 +24,7 @@ const GarageCreate = ({ history }) => {
 
 
   const [state, setState] = useState({
-    currentStep: 1,
+    currentStep: 3,
   })
 
   const [user, setUser] = useState({
@@ -67,21 +64,20 @@ const GarageCreate = ({ history }) => {
 
   // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
   useEffect(() => {
-    console.log({placeAutoComplete})
     setGarage({
-      ...garage , 
-      city:placeAutoComplete?.locality,
-      country:placeAutoComplete?.country,
-      address_line_1:placeAutoComplete?.full_address,
+      ...garage,
+      city: placeAutoComplete?.locality,
+      country: placeAutoComplete?.country,
+      address_line_1: placeAutoComplete?.full_address,
       postcode: placeAutoComplete?.postal_code
     })
   }, [placeAutoComplete])
 
-    // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
+  // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
   useEffect(() => {
     setGarage({
-      ...garage , 
-      address_line_2:placeAutoComplete2?.full_address
+      ...garage,
+      address_line_2: placeAutoComplete2?.full_address
     })
   }, [placeAutoComplete2])
 
@@ -104,7 +100,6 @@ const GarageCreate = ({ history }) => {
   const loadAutomobileMakes = () => {
     apiClient().get(`${BACKEND_API}/v1.0/automobile-makes-all/${1}`)
       .then(response => {
-        console.log("makes", response.data)
         let makes = response.data
         loadServices(makes)
       })
@@ -144,7 +139,6 @@ const GarageCreate = ({ history }) => {
   const loadServices = (makes) => {
     apiClient().get(`${BACKEND_API}/v1.0/services-all/${1}`)
       .then(response => {
-        console.log("services", response.data)
         let services = response.data
         // setAutomobileCategories(categories)
         let tempServices = JSON.parse(JSON.stringify(service))
@@ -204,12 +198,6 @@ const GarageCreate = ({ history }) => {
   if (!permissions.includes(GARAGE_CREATE)) {
     return <><Error401Unauthorized></Error401Unauthorized></>
   }
-
-  const steps = [
-    { name: 'Step 1', component: <Registration /> },
-    { name: 'Step 2', component: <Emails /> },
-    { name: 'Step 3', component: <Birthdate /> },
-  ]
 
   const handleUserChange = (e) => {
     const { name, value } = e.target;
@@ -406,7 +394,7 @@ const GarageCreate = ({ history }) => {
       .post(`${BACKEND_API}/v1.0/auth/register-with-garage`, {
         user: user,
         garage: garage,
-        service: currentStep == 3 ? service[0] : null
+        service: currentStep === 3 ? service : null
       })
       .then(res => {
         SweetAlert.fire({ title: "Success", text: "Garage Registered Successfully!", icon: "success" });
@@ -416,7 +404,7 @@ const GarageCreate = ({ history }) => {
       .catch(error => {
         setLoading(false)
         console.log("error", error.response)
-        if (error.response?.status == 422) {
+        if (error.response?.status === 422) {
           const { errors } = error.response.data
           setServerSideErrors(errors)
           if (
@@ -444,7 +432,6 @@ const GarageCreate = ({ history }) => {
               errors["user.city"]
               ||
               errors["user.postcode"]
-
             )
           ) {
 
@@ -562,16 +549,15 @@ const GarageCreate = ({ history }) => {
                     currentStep={state.currentStep}
                     handleChange={handleUserChange}
                     data={user}
-                    serverSideErrors={serverSideErrors}
-                  />
+                    serverSideErrors={serverSideErrors} />
+                    
                   <GarageStep
                     setPlaceAutoComplete2={setPlaceAutoComplete2}
                     setPlaceAutoComplete={setPlaceAutoComplete}
                     currentStep={state.currentStep}
                     handleChange={handleGarageChange}
                     data={garage}
-                    serverSideErrors={serverSideErrors}
-                  />
+                    serverSideErrors={serverSideErrors} />
 
                   <ServiceStep
                     handleMakeChangeAll={handleMakeChangeAll}
@@ -586,8 +572,7 @@ const GarageCreate = ({ history }) => {
                     handleMakeChange={handleMakeChange}
                     handleModelChange={handleModelChange}
                     handleServiceChange={handleServiceChange}
-                    handleSubServiceChange={handleSubServiceChange}
-                  />
+                    handleSubServiceChange={handleSubServiceChange} />
                 </CardBody>
                 <CardFooter>
                   {previousButton()}

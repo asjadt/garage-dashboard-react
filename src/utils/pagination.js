@@ -15,7 +15,7 @@ const setLinksView = (el, index, arr, fetchData, current_page, lastPage) => {
       return <PaginationItem key={index} className="page-item disabled"><button className="page-link"  >Previous</button></PaginationItem>
     }
   }
-  else if (el.label == "Next &raquo;") {
+  else if (el.label === "Next &raquo;") {
     if (el.url) {
       return <PaginationItem key={index} className={`page-item ${el.active ? "active" : ""}`}><button onClick={() =>
         fetchData(el.url)} className="page-link" >Next</button></PaginationItem>

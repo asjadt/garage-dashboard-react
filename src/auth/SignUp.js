@@ -15,6 +15,7 @@ import UserStep from "../components/garage_management/forms/UserStep";
 import MultiStepProgressBar from "../components/garage_management/utils/MultiStepProgressBar";
 import { apiClient } from "../utils/apiClient";
 import { BACKEND_API } from "../utils/backend";
+import { getPermissions } from "../utils/helperFunctions";
 
 
 
@@ -22,8 +23,6 @@ import { BACKEND_API } from "../utils/backend";
 export default function SignUp() {
     const [placeAutoComplete, setPlaceAutoComplete] = useState({});
     const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
-
-
 
     const history = useHistory()
 
@@ -91,12 +90,8 @@ export default function SignUp() {
     const [service, setService] = useState([
         {
             automobile_category_id: "1",
-            services: [
-
-            ],
-            automobile_makes: [
-
-            ]
+            services: [],
+            automobile_makes: []
         }
     ])
     const loadAutomobileMakes = () => {
@@ -403,13 +398,16 @@ export default function SignUp() {
         apiClient().post(`${BACKEND_API}/v1.0/auth/user-register-with-garage`, {
             user: user,
             garage: garage,
-            service: currentStep === 3 ? service[0] : null
+            service: currentStep === 3 ? service : null
         }).then(res => {
             localStorage.setItem('token', res?.data?.user?.token);
             SweetAlert.fire({ title: "Success", text: "Garage Registered Successfully!", icon: "success" })
                 .then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = `${process.env.PUBLIC_URL}/login`;
+                        localStorage.setItem('user', JSON.stringify(res.data.user));
+                        localStorage.setItem('permissions', JSON.stringify(getPermissions(res.data.user)));
+                        window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
+                        // window.location.href = `${process.env.PUBLIC_URL}/login`;
                     }
                 });
         }).catch(error => {

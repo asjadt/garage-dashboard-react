@@ -36,7 +36,6 @@ const AutomobileCategoryList = () => {
         1))
     const [endDate, setendDate] = useState(new Date())
 
-
     const setStartDate = date => {
         setstartDate(date);
         let startDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
@@ -70,7 +69,6 @@ const AutomobileCategoryList = () => {
         automobileCategoryViewModaltoggle()
         setAutomobileCategoryViewData(el)
     }
-
     // end modal
 
     const deleteFunc = (id) => {
@@ -87,7 +85,7 @@ const AutomobileCategoryList = () => {
                 if (result.value) {
                     apiClient().delete(`${BACKEND_API}/v1.0/automobile-categories/${id}`)
                         .then(response => {
-                            if (response.status == 200 && response.data.ok) {
+                            if (response.status === 200 && response.data.ok) {
                                 fetchData(perPage);
                                 SweetAlert.fire(
                                     'Deleted!',
@@ -249,7 +247,6 @@ const AutomobileCategoryList = () => {
                                                             <Eye
                                                                 className='mr-1'
                                                                 color="#51bb25" size={18} style={{ cursor: "pointer" }}
-                                                            // onClick={() => viewForm(el)}
                                                             >
 
                                                             </Eye>
