@@ -52,7 +52,7 @@ const GarageStep = props => {
 
         {/* PHONE FIELD  */}
         <Col md="6 mb-3">
-          <Label className='' htmlFor="phone">Phone Number*</Label>
+          <Label className='' htmlFor="phone">Phone Number</Label>
           <Input className="form-control" name="phone" type="text"
             data-testid="registration_garage_phone"
             onChange={props.handleChange}
@@ -79,7 +79,7 @@ const GarageStep = props => {
             id={'address'}
             // placeholder="address line 1"
           />
-
+          {props?.distanceError !== ''&& <div className="invalid-feedback" style={{ display: "block" }}>{props?.distanceError}</div>}
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.address_line_1"] ? (
               <div className="valid-feedback" style={{ display: "block" }}>{"Looks good!"}</div>

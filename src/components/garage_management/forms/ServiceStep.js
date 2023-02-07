@@ -21,6 +21,11 @@ const ServiceStep = props => {
   return (
     <>
       <h2 className="text-center">Which of these services do this garage offer?</h2>
+      {props.serverSideErrors && (
+        !props.serverSideErrors["service.0.services"] ? (
+          <div className="valid-feedback text-center" style={{ display: "block" }}>{"Looks good!"}</div>
+        ) : (<div className="invalid-feedback text-center" style={{ display: "block" }}>{props.serverSideErrors["service.0.services"][0]} service</div>)
+      )}
       <div className="d-flex justify-content-center align-items-center my-3">
         <div sm={`w-100`} className={`w-50 w-xm-100 h-25 border border-primary px-2 pt-2 d-flex align-item-center rounded`}>
           <Label className="d-block" for={`category-all-select`} >
@@ -98,6 +103,11 @@ const ServiceStep = props => {
 
               <>
                 <h2 className="text-center">Which of these make do this garage offer?</h2>
+                {props.serverSideErrors && (
+                  !props.serverSideErrors["service.0.automobile_makes"] ? (
+                    <div className="valid-feedback text-center" style={{ display: "block" }}>{"Looks good!"}</div>
+                  ) : (<div className="invalid-feedback text-center" style={{ display: "block" }}>{props.serverSideErrors["service.0.automobile_makes"][0]} make</div>)
+                )}
                 <div className="d-flex justify-content-center align-items-center my-3">
                   <div className="w-50 w-xm-100 h-25 border border-primary px-2 pt-2 d-flex align-item-center rounded">
                     <Label className="d-block" for={`category-all-select`} >

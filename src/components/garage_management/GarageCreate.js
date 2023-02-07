@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { GARAGE_CREATE } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 
+import useGeoLocation from '../../hooks/useGeoLocation';
 import GarageStep from './forms/GarageStep';
 import ServiceStep from './forms/ServiceStep';
 import UserStep from './forms/UserStep';
@@ -20,13 +21,10 @@ import MultiStepProgressBar from './utils/MultiStepProgressBar';
 const GarageCreate = ({ history }) => {
   const [placeAutoComplete, setPlaceAutoComplete] = useState({});
   const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
-
-
-
+  const location = useGeoLocation()
   const [state, setState] = useState({
-    currentStep: 3,
+    currentStep: 1,
   })
-
   const [user, setUser] = useState({
     first_Name: '',
     last_Name: '',
@@ -41,7 +39,6 @@ const GarageCreate = ({ history }) => {
     city: 'N/A',
     postcode: 'N/A',
   })
-
   const [garage, setGarage] = useState({
     name: '',
     about: '',
@@ -60,26 +57,6 @@ const GarageCreate = ({ history }) => {
     labour_rate: '',
     average_time_slot: '',
   })
-
-
-  // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
-  useEffect(() => {
-    setGarage({
-      ...garage,
-      city: placeAutoComplete?.locality,
-      country: placeAutoComplete?.country,
-      address_line_1: placeAutoComplete?.full_address,
-      postcode: placeAutoComplete?.postal_code
-    })
-  }, [placeAutoComplete])
-
-  // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
-  useEffect(() => {
-    setGarage({
-      ...garage,
-      address_line_2: placeAutoComplete2?.full_address
-    })
-  }, [placeAutoComplete2])
 
 
 
@@ -181,6 +158,50 @@ const GarageCreate = ({ history }) => {
   const [serverSideErrors, setServerSideErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   let permissions = JSON.parse(localStorage.getItem("permissions"));
+  const [distanceError, setDistanceError] = useState('')
+
+  // CALCULATE THE DISTANCE BETWEEN ADDRESS AND LIVE LOCATION
+  function distance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return Math.round(d * 1000);
+  }
+
+  // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
+  useEffect(() => {
+    console.log(distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng))
+    if ((distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng) < 500 || distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng) === NaN)) {
+      setGarage({
+        ...garage,
+        city: placeAutoComplete?.locality,
+        country: placeAutoComplete?.country,
+        address_line_1: placeAutoComplete?.full_address,
+        postcode: placeAutoComplete?.postal_code
+      })
+      setDistanceError('')
+    } else {
+      placeAutoComplete?.full_address && setDistanceError('You are in a wrong place.')
+    }
+  }, [placeAutoComplete])
+
+  // AUTO COMPLETE ADDRESS LINE @ CHANGE THEN IT SHOULD REPLACE THE ADDRESS LINE 2
+  useEffect(() => {
+    setGarage({
+      ...garage,
+      address_line_2: placeAutoComplete2?.full_address
+    })
+  }, [placeAutoComplete2])
+
+
+
+
+
 
   const addCategory = () => {
     let tempServices = JSON.parse(JSON.stringify(service))
@@ -387,6 +408,7 @@ const GarageCreate = ({ history }) => {
     setService(tempServices)
   }
 
+
   const handleSubmitStep = () => {
     let currentStep = state.currentStep;
 
@@ -407,6 +429,7 @@ const GarageCreate = ({ history }) => {
         if (error.response?.status === 422) {
           const { errors } = error.response.data
           setServerSideErrors(errors)
+          console.log({ errors })
           if (
             (currentStep >= 1)
             &&
@@ -480,7 +503,6 @@ const GarageCreate = ({ history }) => {
               errors["garage.average_time_slot"]
             )
           ) {
-
             setState({
               ...state,
               currentStep: 2
@@ -490,16 +512,17 @@ const GarageCreate = ({ history }) => {
             return
           }
           else if (
-
             (currentStep >= 3)
             &&
             (
               errors["service.makes"]
               ||
               errors["service.services"]
-
+              ||
+              errors["service.0.automobile_makes"]
+              ||
+              errors["service.0.services"]
             )
-
           ) {
             setState({
               ...state,
@@ -516,16 +539,13 @@ const GarageCreate = ({ history }) => {
           }
 
         }
-        else if (error.response?.status == 401) {
+        else if (error.response?.status === 401) {
           SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
         }
         else {
           SweetAlert.fire({ title: "something went wrong!!", text: "Please Try Again", icon: "warning" });
         }
-
-        console.log("garage_err", error)
       })
-
   };
 
   return (
@@ -537,7 +557,7 @@ const GarageCreate = ({ history }) => {
             <Form onSubmit={handleSubmit}>
               <Card>
                 <CardHeader>
-                  <h5>Garage Management</h5><span> Create Garage </span>
+                  <h5>Garage Management</h5><span> Create Garage </span> <br />
                 </CardHeader>
                 <CardBody>
                   <div className='px-5 mb-5 my-1'>
@@ -550,8 +570,9 @@ const GarageCreate = ({ history }) => {
                     handleChange={handleUserChange}
                     data={user}
                     serverSideErrors={serverSideErrors} />
-                    
+
                   <GarageStep
+                    distanceError={distanceError}
                     setPlaceAutoComplete2={setPlaceAutoComplete2}
                     setPlaceAutoComplete={setPlaceAutoComplete}
                     currentStep={state.currentStep}

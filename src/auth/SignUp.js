@@ -18,9 +18,9 @@ import { BACKEND_API } from "../utils/backend";
 import { getPermissions } from "../utils/helperFunctions";
 
 
-
-
 export default function SignUp() {
+
+
     const [placeAutoComplete, setPlaceAutoComplete] = useState({});
     const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
 
@@ -81,8 +81,6 @@ export default function SignUp() {
             address_line_2: placeAutoComplete2?.full_address
         })
     }, [placeAutoComplete2])
-
-
 
 
     const [automobileCategories, setAutomobileCategories] = useState([]);
@@ -401,15 +399,27 @@ export default function SignUp() {
             service: currentStep === 3 ? service : null
         }).then(res => {
             localStorage.setItem('token', res?.data?.user?.token);
-            SweetAlert.fire({ title: "Success", text: "Garage Registered Successfully!", icon: "success" })
-                .then((result) => {
-                    if (result.isConfirmed) {
-                        localStorage.setItem('user', JSON.stringify(res.data.user));
-                        localStorage.setItem('permissions', JSON.stringify(getPermissions(res.data.user)));
-                        window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
-                        // window.location.href = `${process.env.PUBLIC_URL}/login`;
-                    }
-                });
+            SweetAlert.fire({
+                title: "Success",
+                html: `
+                    <div style="display:flex;justify-content:center;align-items:center;width:100%;flex-direction:column;" >
+                        <h2 style="font-weight:bold">Congratulation!</h2>
+                        <p style="text-align:center">
+                            Your account is created successfully. We send a email to: <strong> ${user?.email}</strong>. You have to verify your email address to active your account.<br>
+                            <span style="color:#ff8787;">
+                                NOTE: If you can't find the email in your inbox then please check to the spam folder.
+                            </span>
+                        </p>
+                    </div>
+                    `,
+                icon: "success"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.setItem('user', JSON.stringify(res.data.user));
+                    localStorage.setItem('permissions', JSON.stringify(getPermissions(res.data.user)));
+                    window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
+                }
+            });
         }).catch(error => {
             setLoading(false)
             if (error.response?.status === 422) {

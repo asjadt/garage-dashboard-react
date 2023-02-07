@@ -22,12 +22,11 @@ const UserStep = props => {
           />
 
 
-          {props.serverSideErrors ? (
+          {props.serverSideErrors && (
             !props.serverSideErrors["user.first_Name"] ? (
               <div className="valid-feedback" style={{ display: "block" }}>{"Looks good!"}</div>
             ) : (<div className="invalid-feedback" style={{ display: "block" }}>{props.serverSideErrors["user.first_Name"][0]}</div>)
-          )
-            : (null)}
+          )}
 
         </Col>
         <Col md="6 mb-3">
