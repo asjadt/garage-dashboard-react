@@ -405,7 +405,7 @@ export default function SignUp() {
                     <div style="display:flex;justify-content:center;align-items:center;width:100%;flex-direction:column;" >
                         <h2 style="font-weight:bold">Congratulation!</h2>
                         <p style="text-align:center">
-                            Your account is created successfully. We send a email to: <strong> ${user?.email}</strong>. You have to verify your email address to active your account.<br>
+                            Your account is created successfully. We send a email to: <strong> ${user?.email}</strong>. Please active your account by verifing your email address.<br>
                             <span style="color:#ff8787;">
                                 NOTE: If you can't find the email in your inbox then please check to the spam folder.
                             </span>

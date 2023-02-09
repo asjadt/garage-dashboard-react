@@ -11,6 +11,7 @@ import { GARAGE_CREATE } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 
 import useGeoLocation from '../../hooks/useGeoLocation';
+import { topCardState } from '../dashboard/data';
 import GarageStep from './forms/GarageStep';
 import ServiceStep from './forms/ServiceStep';
 import UserStep from './forms/UserStep';
@@ -19,6 +20,8 @@ import MultiStepProgressBar from './utils/MultiStepProgressBar';
 
 
 const GarageCreate = ({ history }) => {
+  // eslint-disable-next-line 
+  const [stateOptions, setStateValues] = useState(topCardState);
   const [placeAutoComplete, setPlaceAutoComplete] = useState({});
   const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
   const location = useGeoLocation()
@@ -175,8 +178,8 @@ const GarageCreate = ({ history }) => {
 
   // AUTO COMPLETE ADDRESS LINE 1 CHANGE THEN IT SHOULD REPLACE THE POSTCODE AND THE ADDRESS LINE 1
   useEffect(() => {
-    console.log(distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng))
-    if ((distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng) < 500 || distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng) === NaN)) {
+    const dis = distance(location?.coordinates.lat, location?.coordinates.lon, placeAutoComplete?.coordinates?.lat, placeAutoComplete?.coordinates?.lng)
+    if ((dis < 500 || isNaN(dis) || JSON.parse(localStorage.getItem('user'))?.roles[0]?.name === 'superadmin')) {
       setGarage({
         ...garage,
         city: placeAutoComplete?.locality,
@@ -200,9 +203,6 @@ const GarageCreate = ({ history }) => {
 
 
 
-
-
-
   const addCategory = () => {
     let tempServices = JSON.parse(JSON.stringify(service))
     tempServices.push({
@@ -214,10 +214,6 @@ const GarageCreate = ({ history }) => {
     });
 
     setService(tempServices)
-  }
-
-  if (!permissions.includes(GARAGE_CREATE)) {
-    return <><Error401Unauthorized></Error401Unauthorized></>
   }
 
   const handleUserChange = (e) => {
@@ -548,6 +544,11 @@ const GarageCreate = ({ history }) => {
       })
   };
 
+
+  // IF HAVE NO PERMISSION OF CREATE GARAGE 
+  if (!permissions.includes(GARAGE_CREATE)) {
+    return <><Error401Unauthorized></Error401Unauthorized></>
+  }
   return (
     <Fragment>
       <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
@@ -557,7 +558,11 @@ const GarageCreate = ({ history }) => {
             <Form onSubmit={handleSubmit}>
               <Card>
                 <CardHeader>
-                  <h5>Garage Management</h5><span> Create Garage </span> <br />
+                  <div>
+                    <div>
+                      <h5>Garage Management</h5><span> Create Garage </span>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardBody>
                   <div className='px-5 mb-5 my-1'>

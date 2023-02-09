@@ -1,20 +1,15 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from "reactstrap"
-import { HorizontalBorders, VerticalBorders, BothBordeds, BorderlessTable, DefaultTableBorder, DoubleBorder, BorderBottomColor, DottedBorder, DashedBorder, SolidBorder } from "../../constant";
-import { BACKEND_API, http } from '../../utils/backend';
-import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
-import { ClipLoader } from 'react-spinners';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
+import BreadCrumb from '../../layout/Breadcrumb';
+import { apiClient } from '../../utils/apiClient';
+import { BACKEND_API } from '../../utils/backend';
 import setLinksView from '../../utils/pagination';
 
-import SweetAlert from 'sweetalert2'
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
+import { Delete, Edit, Eye } from 'react-feather';
+import SweetAlert from 'sweetalert2';
 
-import DatePicker from "react-datepicker";
-import { ROLE_CREATE, ROLE_DELETE, ROLE_UPDATE, ROLE_VIEW,} from '../../constant/permissions';
+import { ROLE_CREATE, ROLE_DELETE, ROLE_UPDATE, ROLE_VIEW } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
 import RoleForm from './forms/RoleForm';
@@ -24,11 +19,11 @@ import RoleView from './vews/RoleView';
 
 
 const RoleList = () => {
- 
-let permissions = JSON.parse(localStorage.getItem("permissions"));
+
+    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
 
-    
+
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [perPage, setPerPage] = useState(9)
@@ -38,12 +33,12 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [initialRolePermissions,setInitialRolePermission] = useState(null);
-   
+    const [initialRolePermissions, setInitialRolePermission] = useState(null);
 
 
-   
- 
+
+
+
     // modal
     const [roleCreateModal, setRoleCreateModal] = useState(false);
     const roleCreateModaltoggle = () => setRoleCreateModal(!roleCreateModal);
@@ -59,7 +54,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [roleViewData, setRoleViewData] = useState(null);
     const [roleViewModal, setRoleViewModal] = useState(false);
     const roleViewModaltoggle = () => setRoleViewModal(!roleViewModal);
-    
+
     const viewForm = (el) => {
         roleViewModaltoggle()
         setRoleViewData(el)
@@ -111,22 +106,22 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         console.log(newValue)
         fetchData(newValue)
     }
- const fetchInitialRolePermissions = () => {
-    apiClient().get(`${BACKEND_API}/v1.0/initial-role-permissions`)
-    .then(response => {
-        console.log('initial.....',response.data)
-        setInitialRolePermission(response.data)
-    })
-    .catch(error => {
-        console.log(error.response)
-    })
- }
+    const fetchInitialRolePermissions = () => {
+        apiClient().get(`${BACKEND_API}/v1.0/initial-role-permissions`)
+            .then(response => {
+                console.log('initial.....', response.data)
+                setInitialRolePermission(response.data)
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+    }
     const fetchData = (urlOrPerPage, useLoading = true) => {
-     
+
         if (useLoading) {
             setLoading(true)
         }
-  
+
         //  setData(null)
         let url;
         if (typeof urlOrPerPage === "string") {
@@ -136,7 +131,7 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
         } else {
             url = `${BACKEND_API}/v1.0/roles/${urlOrPerPage}`
         }
-        
+
         apiClient().get(url)
             .then(response => {
                 setLoading(false)
@@ -153,8 +148,8 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
             .catch(err => {
                 setLoading(false)
                 // console.log(err)
-                 console.log(err.response)
-                
+                console.log(err.response)
+
             })
     }
     const [searchKey, setSearchKey] = useState("");
@@ -175,140 +170,120 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   `;
 
 
-  if(!permissions.includes(ROLE_VIEW)) {
-return <><Error401Unauthorized></Error401Unauthorized></>
-  }
+    if (!permissions.includes(ROLE_VIEW)) {
+        return <><Error401Unauthorized></Error401Unauthorized></>
+    }
 
     return (
         <Fragment>
-
             <BreadCrumb parent="Home" subparent="User Management / Roles" title="Manage Roles" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">
                     </Col>
                     <Col sm="3" >
-                    {checkPermissions([ROLE_CREATE],permissions)?(<Button color="primary" onClick={roleCreateModaltoggle}>Create Role</Button>):(null)} 
-                        
+
                     </Col>
-
                 </Row>
-
                 <Row>
-
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Role Management</h5><span> Manage your Roles </span>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5>Role Management</h5>
+                                        <span> Manage your Roles </span>
+                                    </div>
+                                    {
+                                        checkPermissions([ROLE_CREATE], permissions) &&
+                                        (
+                                            <Button color="primary" onClick={roleCreateModaltoggle}>Create Role</Button>
+                                        )
+                                    }
+                                </div>
                             </CardHeader>
                             <Row>
-                                
-                                <Col sm="6">
+                                <Col sm="7">
                                     <CardHeader>
                                         <Form className="search-form">
                                             <FormGroup className="m-0">
                                                 <Label className="sr-only">Search</Label>
                                                 <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
                                             </FormGroup>
-
                                         </Form>
-
                                     </CardHeader>
-
                                 </Col>
-                                
                             </Row>
-{/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
-            {
-                loading ? <ClipLoader loading={loading} css={override} size={150} >loading</ClipLoader> : <h3 className="display-3" >
-                    No Data to show
-                </h3>
-            }
 
-        </div>):(null)} */}
-                          
-                            <div className="table-responsive">
+                            <div className="table-responsive  px-4">
                                 <Table>
                                     <thead>
                                         <tr className="Dashed">
-                                            <th scope="col">{"#"}</th>
-                                            <th scope="col">{"Name"}</th>
-                                            <th scope="col">{"actions"}</th>
+                                            <th className="col1" scope="col">{"#"}</th>
+                                            <th className="col-md-9 col-8" scope="col">{"Name"}</th>
+                                            <th className="col-md-2 col-3" scope="col">{"actions"}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map(el => {
-                                            return (<tr className="Dashed" key={el.id}>
-                                                <th scope="row">{el.id}</th>
+                                        {data.map((el, index) => {
+                                            return (
+                                            <tr className="Dashed" key={el.id}>
+                                                <th scope="row">{index+1}</th>
                                                 <td>{el.name}</td>
-                                              
                                                 <td>
+                                                    {checkPermissions([ROLE_VIEW], permissions) && (
+                                                        <Eye
+                                                            className='mr-1'
+                                                            color="#51bb25" size={18} style={{ cursor: "pointer" }}
+                                                            onClick={() => viewForm(el)}
+                                                        ></Eye>
+                                                    )}
+                                                    {checkPermissions([ROLE_UPDATE], permissions) && (
+                                                        <Edit
+                                                            className='mr-1'
+                                                            color="#007bff" size={18} style={{ cursor: "pointer" }}
+                                                            onClick={() => editForm(el)}
+                                                        ></Edit>
+                                                    )}
 
-                                                ,
-            {checkPermissions([ROLE_VIEW],permissions)?(<Eye 
-                                                    className='mr-1'
-                                                    color="#51bb25" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => viewForm(el)}
-                                                    ></Eye>):(null)} 
-            {checkPermissions([ROLE_UPDATE],permissions)?( <Edit 
-                                                    className='mr-1'
-                                                    color="#007bff" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => editForm(el)}
-                                                    ></Edit>):(null)} 
-                                                   
-            {checkPermissions([ROLE_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
-
-                                                   
-
+                                                    {checkPermissions([ROLE_DELETE], permissions) && (
+                                                        <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }} onClick={() => deleteFunc(el.id)}></Delete>
+                                                    )}
                                                 </td>
                                             </tr>)
                                         })}
-
-
                                     </tbody>
                                 </Table>
                             </div>
                             <Row className='mt-5'>
                                 <Col sm="2" className='text-center'>
-
                                     <div className="items">
                                         <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
                                             <option value={6}>6</option>
                                             <option value={9}>9</option>
                                             <option value={12}>12</option>
                                             <option value={15}>15</option>
-
                                         </select>
                                     </div>
-
-
-
-
                                 </Col>
                                 <Col sm="2">   <div className="number">{from} - {to} of {total}</div></Col>
                                 <Col sm="8" className='text-center'>
-
                                     <Pagination aria-label="Page navigation example" className="pagination-primary">
-
-
                                         {
                                             links ? links.map((el, index, arr) => setLinksView(el, index, arr, fetchData, current_page, lastPage)) : null
                                         }
-
                                     </Pagination>
-
                                 </Col>
-
                             </Row>
-
-
                         </Card>
                     </Col>
-
                 </Row>
             </Container>
 
+
+            {/* ============================================ ALL MODALS ============================================  */}
+
+            {/* USER CREATE MODAL  */}
             <Modal isOpen={roleCreateModal} toggle={roleCreateModaltoggle} size="lg">
                 <ModalHeader toggle={roleCreateModaltoggle} className="text-center">
                     Role
@@ -317,6 +292,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                     <RoleForm toggleModal={roleCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create" initialRolePermissions={initialRolePermissions}></RoleForm>
                 </ModalBody>
             </Modal>
+
+            {/* USER UPDATE MODAL  */}
             <Modal isOpen={roleUpdateModal} toggle={roleUpdateModaltoggle} size="lg">
                 <ModalHeader toggle={roleUpdateModaltoggle} className="text-center">
                     Role
@@ -326,6 +303,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </ModalBody>
             </Modal>
 
+
+            {/* ROLE VIEW MODAL  */}
             <Modal isOpen={roleViewModal} toggle={roleViewModaltoggle} size="lg">
                 <ModalHeader toggle={roleViewModaltoggle} className="text-center">
                     Role
@@ -335,8 +314,7 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                         toggleModal={roleViewModaltoggle}
                         roleViewData={roleViewData}
                         initialRolePermissions={initialRolePermissions}
-                        >
-                       
+                    >
                     </RoleView>
                 </ModalBody>
             </Modal>

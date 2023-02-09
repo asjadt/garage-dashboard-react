@@ -129,8 +129,8 @@ const ServiceStep = props => {
                     return (
                       <Accordion stayOpen md="card-body border  rounded " key={`${makeIndex}`}>
                         <Card className="shadow" >
-                          <CardHeader className="p-0 pt-1 w-100 bg-dark">
-                            <Accordion.Toggle as={Card.Header} className="btn pt-2 pe-none text-light h-100 d-flex w-100" color="default" eventKey={`${makeIndex}`}>
+                          <CardHeader className="p-0 pt-1 w-100">
+                            <Accordion.Toggle as={Card.Header} className="btn pt-2 pe-none h-100 d-flex w-100" color="default" eventKey={`${makeIndex}`}>
                               <Label className="card-title" for={`category-${index}-make-${makeIndex}`} >
                                 <Input
                                   className="checkbox_animated"

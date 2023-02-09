@@ -37,7 +37,7 @@ const Default = () => {
   }
 
   useEffect(() => {
-
+    console.log({ option: stateOptions })
     const LoadingMsg = () => (
       <div>
         <i className="fa fa-bell-o" ></i><strong className="ml-2">{Loading}</strong>    {"page Do not close this page..."}
@@ -63,7 +63,6 @@ const Default = () => {
       lineCap: 'round'
     })
     document.getElementById('profit').appendChild(profit);
-
   }, []);
 
   return (

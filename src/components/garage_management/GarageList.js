@@ -1,33 +1,29 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from "reactstrap"
+import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
+import BreadCrumb from '../../layout/Breadcrumb';
 
-import { BACKEND_API } from '../../utils/backend';
-import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
+import { apiClient } from '../../utils/apiClient';
+import { BACKEND_API } from '../../utils/backend';
 
 import setLinksView from '../../utils/pagination';
 
-import SweetAlert from 'sweetalert2'
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
-import GarageView from './vews/GarageView';
 import DatePicker from "react-datepicker";
+import { Delete, Edit, Eye } from 'react-feather';
+import { Link } from 'react-router-dom';
+import SweetAlert from 'sweetalert2';
 import { GARAGE_CREATE, GARAGE_DELETE, GARAGE_UPDATE, GARAGE_VIEW } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { checkPermissions } from '../../utils/helperFunctions';
-import { Link } from 'react-router-dom';
+import GarageView from './vews/GarageView';
 
 
 
 
 const GarageList = () => {
- 
-let permissions = JSON.parse(localStorage.getItem("permissions"));
 
+    let permissions = JSON.parse(localStorage.getItem("permissions"));
 
-    
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [perPage, setPerPage] = useState(9)
@@ -37,35 +33,36 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [startDate,setstartDate] = useState(new Date(
+
+    const [startDate, setstartDate] = useState(new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
         1))
-    const [endDate,setendDate] = useState(new Date())
 
-   
+    const [endDate, setendDate] = useState(new Date())
+
     const setStartDate = date => {
         setstartDate(date);
-      let startDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-      let endDataFinal =   new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-         fetchData(`${BACKEND_API}/v1.0/garages/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-      };
-      const setEndDate = date => {
+        let startDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/garages/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+    };
+    const setEndDate = date => {
         setendDate(date);
-        let startDataFinal =   new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
-        let endDataFinal =   new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-           fetchData(`${BACKEND_API}/v1.0/garages/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
-       
-       };
+        let startDataFinal = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
+        let endDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+        fetchData(`${BACKEND_API}/v1.0/garages/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+
+    };
     // modal
 
-  
+
 
 
     const [garageViewData, setGarageViewData] = useState(null);
     const [garageViewModal, setGarageViewModal] = useState(false);
     const garageViewModaltoggle = () => setGarageViewModal(!garageViewModal);
-    
+
     const viewForm = (el) => {
         garageViewModaltoggle()
         setGarageViewData(el)
@@ -166,39 +163,32 @@ let permissions = JSON.parse(localStorage.getItem("permissions"));
   `;
 
 
-  if(!permissions.includes(GARAGE_VIEW)) {
-return <><Error401Unauthorized></Error401Unauthorized></>
-  }
+    if (!permissions.includes(GARAGE_VIEW)) {
+        return <><Error401Unauthorized></Error401Unauthorized></>
+    }
 
     return (
         <Fragment>
 
             <BreadCrumb parent="Home" subparent="Garage Management / Garages" title="Manage Garages" />
             <Container fluid={true}>
-                <Row className='mb-3'>
-                    <Col sm="9">
-                    </Col>
-                    <Col sm="3" >
-                    {checkPermissions([GARAGE_CREATE],permissions)?(
-                        <Link to={`${process.env.PUBLIC_URL}/garages/create`}>
-                             <Button color="primary" >Create Garage</Button>
-                        </Link>
-                   
-                    ):(null)} 
-                        
-                    </Col>
-
-                </Row>
 
                 <Row>
-
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <h5>Garage Management</h5><span> Manage your Garages </span>
+                                <div  className='d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <h5>Garage Management</h5><span> Manage your Garages </span>
+                                    </div>
+                                    {checkPermissions([GARAGE_CREATE], permissions) && (
+                                        <Link to={`${process.env.PUBLIC_URL}/garages/create`}>
+                                            <Button color="primary" >Create Garage</Button>
+                                        </Link>
+                                    )}
+                                </div>
                             </CardHeader>
                             <Row>
-                                
                                 <Col sm="6">
                                     <CardHeader>
                                         <Form className="search-form">
@@ -206,58 +196,36 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                                 <Label className="sr-only">Search</Label>
                                                 <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
                                             </FormGroup>
-
                                         </Form>
-
                                     </CardHeader>
-
                                 </Col>
                                 <Col sm={4}>
-                                <CardHeader>
-                               <Row  className="date-range">
-                                <Col sm="6">
-                                <DatePicker className="form-control digits"
-                                selected={startDate}
-                                onChange={setStartDate}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                              />
-                                </Col>
-                                <Col sm="6">
-                                <DatePicker className="form-control digits ml-2"
-                                selected={endDate}
-                                onChange={setEndDate}
-                                selectsEnd
-                                endDate={endDate}
-                                minDate={startDate}
-                              />
-                                </Col>
-                               </Row>
-                               
-                            
-                                        {/* <Form className="search-form">
-                                            <FormGroup className="m-0">
-                                                <Label className="sr-only">Search</Label>
-                                                <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
-                                            </FormGroup>
-
-                                        </Form> */}
+                                    <CardHeader>
+                                        <Row className="date-range">
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits"
+                                                    selected={startDate}
+                                                    onChange={setStartDate}
+                                                    selectsStart
+                                                    startDate={startDate}
+                                                    endDate={endDate}
+                                                />
+                                            </Col>
+                                            <Col sm="6">
+                                                <DatePicker className="form-control digits ml-2"
+                                                    selected={endDate}
+                                                    onChange={setEndDate}
+                                                    selectsEnd
+                                                    endDate={endDate}
+                                                    minDate={startDate}
+                                                />
+                                            </Col>
+                                        </Row>
 
                                     </CardHeader>
-                              
-                          
                                 </Col>
                             </Row>
-{/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
-            {
-                loading ? <ClipLoader loading={loading} css={override} size={150} >loading</ClipLoader> : <h3 className="display-3" >
-                    No Data to show
-                </h3>
-            }
 
-        </div>):(null)} */}
-                          
                             <div className="table-responsive">
                                 <Table>
                                     <thead>
@@ -272,34 +240,32 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map(el => {
+                                        {data.map((el, index) => {
                                             return (<tr className="Dashed" key={el.id}>
-                                                <th scope="row">{el.id}</th>
+                                                <th scope="row">{index + 1}</th>
                                                 <td>{el.name}</td>
                                                 <td>{el.email}</td>
                                                 <td>{el.phone}</td>
                                                 <td>{`${el.owner.first_Name} ${el.owner.last_Name}`}</td>
                                                 <td>{el.owner.email}</td>
                                                 <td>
-
-                                                ,
-            {checkPermissions([GARAGE_VIEW],permissions)?(<Eye 
-                                                    className='mr-1'
-                                                    color="#51bb25" size={18} style={{ cursor: "pointer" }}
+                                                    {checkPermissions([GARAGE_VIEW], permissions) ? (<Eye
+                                                        className='mr-1'
+                                                        color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
-                                                    ></Eye>):(null)} 
-            {checkPermissions([GARAGE_UPDATE],permissions)?(  <Link to={`${process.env.PUBLIC_URL}/garages/update/${el.id}`}>
-            <Edit 
-                                                    className='mr-1'
-                                                    color="#007bff" size={18} style={{ cursor: "pointer" }}
-               
-                                                    ></Edit>
-                        </Link>):(null)} 
-                                                   
-            {checkPermissions([GARAGE_DELETE],permissions)?(  <Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
-                                                        onClick={() => deleteFunc(el.id)}></Delete>):(null)} 
+                                                    ></Eye>) : (null)}
+                                                    {checkPermissions([GARAGE_UPDATE], permissions) ? (<Link to={`${process.env.PUBLIC_URL}/garages/update/${el.id}`}>
+                                                        <Edit
+                                                            className='mr-1'
+                                                            color="#007bff" size={18} style={{ cursor: "pointer" }}
 
-                                                   
+                                                        ></Edit>
+                                                    </Link>) : (null)}
+
+                                                    {checkPermissions([GARAGE_DELETE], permissions) ? (<Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
+                                                        onClick={() => deleteFunc(el.id)}></Delete>) : (null)}
+
+
 
                                                 </td>
                                             </tr>)
@@ -349,8 +315,8 @@ return <><Error401Unauthorized></Error401Unauthorized></>
                 </Row>
             </Container>
 
-          
-           
+
+
 
             <Modal isOpen={garageViewModal} toggle={garageViewModaltoggle} size="lg">
                 <ModalHeader toggle={garageViewModaltoggle} className="text-center">

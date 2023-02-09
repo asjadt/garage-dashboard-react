@@ -190,7 +190,6 @@ const UserList = () => {
 
                             </CardHeader>
                             <Row>
-
                                 <Col sm="6">
                                     <CardHeader>
                                         <Form className="search-form">
@@ -198,17 +197,14 @@ const UserList = () => {
                                                 <Label className="sr-only">Search</Label>
                                                 <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
                                             </FormGroup>
-
                                         </Form>
-
                                     </CardHeader>
-
                                 </Col>
-                                <Col sm={4}>
+                                <Col sm={"4"}>
                                     <CardHeader>
                                         <Row className="date-range">
                                             <Col sm="6">
-                                                <DatePicker className="form-control digits"
+                                             <DatePicker className="form-control digits mx-2"
                                                     selected={startDate}
                                                     onChange={setStartDate}
                                                     selectsStart
@@ -217,7 +213,7 @@ const UserList = () => {
                                                 />
                                             </Col>
                                             <Col sm="6">
-                                                <DatePicker className="form-control digits ml-2"
+                                                <DatePicker className="form-control digits mx-2"
                                                     selected={endDate}
                                                     onChange={setEndDate}
                                                     selectsEnd
@@ -226,31 +222,12 @@ const UserList = () => {
                                                 />
                                             </Col>
                                         </Row>
-
-
-                                        {/* <Form className="search-form">
-                                            <FormGroup className="m-0">
-                                                <Label className="sr-only">Search</Label>
-                                                <Input className="form-control-plaintext" type="search" placeholder="Search.." onChange={searchFunc} value={searchKey} autoFocus />
-                                            </FormGroup>
-
-                                        </Form> */}
-
                                     </CardHeader>
-
-
                                 </Col>
                             </Row>
-                            {/* {!data?.length?(<div className="d-flex align-items-center justify-content-center">
-            {
-                loading ? <ClipLoader loading={loading} css={override} size={150} >loading</ClipLoader> : <h3 className="display-3" >
-                    No Data to show
-                </h3>
-            }
 
-        </div>):(null)} */}
 
-                            <div className="table-responsive">
+                            <div className="table-responsive px-4">
                                 <Table>
                                     <thead>
                                         <tr className="Dashed">
@@ -264,9 +241,9 @@ const UserList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map(el => {
+                                        {data.map((el, i) => {
                                             return (<tr className="Dashed" key={el.id}>
-                                                <th scope="row">{el.id}</th>
+                                                <th scope="row">{i + 1}</th>
                                                 <td>{el.first_Name}</td>
                                                 <td>{el.last_Name}</td>
                                                 <td>{el.email}</td>
@@ -275,8 +252,6 @@ const UserList = () => {
                                                     return <span key={el2.id}>{el2.name} </span>
                                                 })}</td>
                                                 <td>
-
-                                                    ,
                                                     {checkPermissions([USER_VIEW], permissions) ? (<Eye
                                                         className='mr-1'
                                                         color="#51bb25" size={18} style={{ cursor: "pointer" }}
@@ -290,57 +265,49 @@ const UserList = () => {
 
                                                     {checkPermissions([USER_DELETE], permissions) ? (<Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => deleteFunc(el.id)}></Delete>) : (null)}
-
-
-
                                                 </td>
                                             </tr>)
                                         })}
-
-
                                     </tbody>
                                 </Table>
                             </div>
-                            <Row className='mt-5'>
-                                <Col sm="2" className='text-center'>
-
-                                    <div className="items">
-                                        <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
-                                            <option value={6}>6</option>
-                                            <option value={9}>9</option>
-                                            <option value={12}>12</option>
-                                            <option value={15}>15</option>
-
-                                        </select>
-                                    </div>
 
 
 
+                            <CardHeader>
+                                <Row className=''>
+                                    <Col sm="3" className='text-center my-1'>
+                                        <div className="items">
+                                            <label>Item per page</label> <select onChange={handlePerPage} value={perPage}>
+                                                <option value={6}>6</option>
+                                                <option value={9}>9</option>
+                                                <option value={12}>12</option>
+                                                <option value={15}>15</option>
+                                            </select>
+                                        </div>
+                                    </Col>
 
-                                </Col>
-                                <Col sm="2">   <div className="number">{from} - {to} of {total}</div></Col>
-                                <Col sm="8" className='text-center'>
-
-                                    <Pagination aria-label="Page navigation example" className="pagination-primary">
-
-
-                                        {
-                                            links ? links.map((el, index, arr) => setLinksView(el, index, arr, fetchData, current_page, lastPage)) : null
-                                        }
-
-                                    </Pagination>
-
-                                </Col>
-
-                            </Row>
-
-
+                                    <Col sm="6" className='d-flex justify-content-center align-items-center'>
+                                        <Pagination aria-label="Page navigation example" className="pagination-primary">
+                                            {
+                                                links && links.map((el, index, arr) => setLinksView(el, index, arr, fetchData, current_page, lastPage))
+                                            }
+                                        </Pagination>
+                                    </Col>
+                                    <Col sm="3 text-center my-1">
+                                        <div className="number">{from} - {to} of {total}</div>
+                                    </Col>
+                                </Row>
+                            </CardHeader>
                         </Card>
                     </Col>
-
                 </Row>
             </Container>
 
+
+
+
+            {/* =========================== ALL MODALS =============================  */}
             <Modal isOpen={userCreateModal} toggle={userCreateModaltoggle} size="lg">
                 <ModalHeader toggle={userCreateModaltoggle} className="text-center">
                     User
@@ -369,7 +336,6 @@ const UserList = () => {
                     </UserView>
                 </ModalBody>
             </Modal>
-
         </Fragment>
     );
 };
