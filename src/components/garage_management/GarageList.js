@@ -177,7 +177,7 @@ const GarageList = () => {
                     <Col sm="12">
                         <Card>
                             <CardHeader>
-                                <div  className='d-flex justify-content-between align-items-center'>
+                                <div className='d-flex justify-content-between align-items-center'>
                                     <div>
                                         <h5>Garage Management</h5><span> Manage your Garages </span>
                                     </div>
@@ -254,19 +254,17 @@ const GarageList = () => {
                                                         color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => viewForm(el)}
                                                     ></Eye>) : (null)}
-                                                    {checkPermissions([GARAGE_UPDATE], permissions) ? (<Link to={`${process.env.PUBLIC_URL}/garages/update/${el.id}`}>
-                                                        <Edit
-                                                            className='mr-1'
-                                                            color="#007bff" size={18} style={{ cursor: "pointer" }}
+                                                    {checkPermissions([GARAGE_UPDATE], permissions) && (
+                                                        <Link to={`${process.env.PUBLIC_URL}/garages/update/${el.id}`}>
+                                                            <Edit
+                                                                className='mr-1'
+                                                                color="#007bff" size={18} style={{ cursor: "pointer" }}
 
-                                                        ></Edit>
-                                                    </Link>) : (null)}
-
+                                                            ></Edit>
+                                                        </Link>
+                                                    )}
                                                     {checkPermissions([GARAGE_DELETE], permissions) ? (<Delete color="#ff3f70" size={18} style={{ cursor: "pointer" }}
                                                         onClick={() => deleteFunc(el.id)}></Delete>) : (null)}
-
-
-
                                                 </td>
                                             </tr>)
                                         })}

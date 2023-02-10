@@ -203,8 +203,10 @@ import AutomobileFuelTypeList from '../components/automobile_management/Automobi
 import AutomobileMakeList from '../components/automobile_management/AutomobileMakeList'
 import AutomobileModelList from '../components/automobile_management/AutomobileModelList'
 import AutomobileModelVariantList from '../components/automobile_management/AutomobileModelVariantList'
+import FuelStationList from '../components/fuel_station_management/FuelStationList'
 import GarageCreate from '../components/garage_management/GarageCreate'
 import GarageList from '../components/garage_management/GarageList'
+import GarageUpdate from '../components/garage_management/GarageUpdate'
 import ServiceList from '../components/service_management/ServiceList'
 import SubServiceList from '../components/service_management/SubServiceList'
 import SupportTicket from "../components/support-ticket/supportTicket"
@@ -212,26 +214,45 @@ import RoleList from '../components/user_management/RoleList'
 import UserList from '../components/user_management/UserList'
 
 export const routes = [
-
   { path: "/users/list" ,Component: UserList},
   { path: "/roles/list" ,Component: RoleList},
 
+
+
   { path: "/garages/list" ,Component: GarageList},
   { path: "/garages/create" ,Component: GarageCreate},
-  { path: "/garages/update/:id" ,Component: RoleList},
+  { path: "/garages/update/:id" ,Component: GarageUpdate},
+
 
 
   { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
-
   { path: "/automobile-category/single/:id"  ,Component: AutomobileMakeList},
   { path: "/automobile-make/single/:id"  ,Component: AutomobileModelList},
   { path: "/automobile-model/single/:id"  ,Component: AutomobileModelVariantList},
   { path: "/automobile-model-variant/single/:id"  ,Component: AutomobileFuelTypeList},
 
   
-  { path: "/services/list" ,Component: ServiceList},
 
+  { path: "/services/list" ,Component: ServiceList},
   { path: "/services/single/:id"  ,Component: SubServiceList},
+  
+
+
+  { path: "/fuel_station/list"  ,Component: FuelStationList},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   { path: '/dashboard/default', Component: Default },
   { path: "/dashboard/hospital",Component: Hospital },

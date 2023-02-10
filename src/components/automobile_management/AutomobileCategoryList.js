@@ -98,7 +98,6 @@ const AutomobileCategoryList = () => {
                             console.log(error.response)
                             SweetAlert.fire({ title: error.response.data.message, text: "Please Try Again", icon: "warning" });
                         })
-
                 }
                 else {
                     SweetAlert.fire(

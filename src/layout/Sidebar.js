@@ -1,14 +1,14 @@
-import logo from '../assets/images/creative-logo.png'
-import logo_light from '../assets/images/creative-logo1.png'
-import React, { Fragment, useState, useEffect } from 'react';
-import {useSelector} from 'react-redux'
+import React, { Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import logo from '../assets/images/creative-logo.png';
+import logo_light from '../assets/images/creative-logo1.png';
 import logo_compact from '../assets/images/logo/compact-logo.png';
-import { MENUITEMS } from './sidebar/menu';
-import {Link} from 'react-router-dom'
 import configDB from '../data/customizer/config';
+import { MENUITEMS } from './sidebar/menu';
 
 const Sidebar = () => {
-  
+
     const [mainmenu, setMainMenu] = useState(MENUITEMS);
     const switchToggle = useSelector(state => state.Common.switchToggle)
     const [margin, setMargin] = useState(0);
@@ -22,10 +22,10 @@ const Sidebar = () => {
     const sidebar_background_color = configDB.data.settings.sidebar_background_setting;
 
 
-    useEffect(() => {        
+    useEffect(() => {
         window.addEventListener('resize', handleResize)
         handleResize();
-      
+
         const currentUrl = window.location.pathname;
         mainmenu.filter(items => {
             if (items.path === currentUrl)
@@ -36,11 +36,11 @@ const Sidebar = () => {
                     setNavActive(subItems)
                 if (!subItems.children) return false
                 subItems.children.filter(subSubItems => {
-                    if (subSubItems.path === currentUrl){
+                    if (subSubItems.path === currentUrl) {
                         setNavActive(subSubItems)
                         return true
                     }
-                    else{
+                    else {
                         return false
                     }
                 })
@@ -52,7 +52,7 @@ const Sidebar = () => {
         const timeout = setTimeout(() => {
             const elmnt = document.getElementById("myDIV");
             const menuWidth = elmnt.offsetWidth;
-            if (menuWidth > window.innerWidth || menuWidth < window.innerWidth ) {
+            if (menuWidth > window.innerWidth || menuWidth < window.innerWidth) {
                 setHideRightArrow(false);
                 setHideLeftArrowRTL(false);
             } else {
@@ -71,9 +71,9 @@ const Sidebar = () => {
     }, []);
 
     const handleResize = () => {
-        
+
         setWidth(window.innerWidth - 500);
-        
+
     }
 
     const setNavActive = (item) => {
@@ -89,7 +89,7 @@ const Sidebar = () => {
                         submenuItems.active = true
                         return true
                     }
-                    else{
+                    else {
                         return false
                     }
                 })
@@ -100,7 +100,7 @@ const Sidebar = () => {
         setMainMenu({ mainmenu: MENUITEMS })
     }
 
-    const toggletNavActive = (item) => {        
+    const toggletNavActive = (item) => {
         if (!item.active) {
             MENUITEMS.forEach(a => {
                 if (MENUITEMS.includes(item))
@@ -150,7 +150,7 @@ const Sidebar = () => {
 
 
     const scrollToLeftRTL = () => {
-        
+
         if (margin < -width) {
             setMargin(margin => margin += -width);
             setHideLeftArrowRTL(true);
@@ -163,7 +163,7 @@ const Sidebar = () => {
 
     const scrollToRightRTL = () => {
         const temp = width + margin
-        
+
         if (temp === 0) {
             setMargin(temp);
             setHideRightArrowRTL(true);
@@ -174,16 +174,16 @@ const Sidebar = () => {
             setHideLeftArrowRTL(false);
         }
     }
-  
+
     return (
         <Fragment>
-            <div className={`page-sidebar ${switchToggle? 'open': sidebar_background_color}`}>
+            <div className={`page-sidebar ${switchToggle ? 'open' : sidebar_background_color}`}>
                 <div className="main-header-left d-none d-lg-block">
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                            <img className="blur-up lazyloaded light" src={logo_light}  alt="" />
-                            <img className="blur-up lazyloaded compactlogo" src={logo_compact}  alt="" />
-                            <img className="blur-up lazyloaded logo" src={logo}  alt="" />
+                            <img className="blur-up lazyloaded light" src={logo_light} alt="" />
+                            <img className="blur-up lazyloaded compactlogo" src={logo_compact} alt="" />
+                            <img className="blur-up lazyloaded logo" src={logo} alt="" />
                         </Link>
                     </div>
                 </div>
@@ -192,28 +192,27 @@ const Sidebar = () => {
                         className="sidebar-menu"
                         id="myDIV"
                         style={wrapper === 'horizontal_sidebar' ? layout === 'rtl' ?
-                        { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }}
+                            { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }}
                     >
-                         <li className={`left-arrow ${layout === 'rtl' ? hideLeftArrowRTL ? 'd-none' : '' : hideLeftArrow ? 'd-none' : ''}`}
+                        <li className={`left-arrow ${layout === 'rtl' ? hideLeftArrowRTL ? 'd-none' : '' : hideLeftArrow ? 'd-none' : ''}`}
                             onClick={(wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToLeftRTL : scrollToLeft}><i className="fa fa-angle-left"></i></li>
-                         {
+                        {
                             MENUITEMS.map((menuItem, i) => {
-                               
-                             return   menuItem.show?(<li className={`${menuItem.active ? 'active' : ''}`} key={i}>
+
+                                return menuItem.show ? (<li className={`${menuItem.active ? 'active' : ''}`} key={i}>
                                     {(menuItem.sidebartitle) ? <div className="sidebar-title">{menuItem.sidebartitle}</div>
                                         : ''}
                                     {(menuItem.type === 'sub') ?
-                                        <a className="sidebar-header" href="#javascript" onClick={() => toggletNavActive(menuItem)}>
+                                        <a title={`${menuItem.title}`} className="sidebar-header" href="#javascript" onClick={() => toggletNavActive(menuItem)}>
                                             <menuItem.icon />
-                                    <span>{menuItem.title}</span>
+                                            <span >{menuItem.title.length > 14 ? `${menuItem.title.substr(0, 14)}...` : menuItem.title.substr(0, 14)}</span>
                                             <i className="fa fa-angle-right pull-right"></i>
                                         </a>
                                         : ''}
                                     {(menuItem.type === 'link') ?
-                                        <Link className={`sidebar-header ${menuItem.active ? 'active' :''}`}  onClick={() => toggletNavActive(menuItem)} to={menuItem.path}>
-                                            <menuItem.icon /><span>{menuItem.title}</span>
-                                            {menuItem.children ?
-                                                <i className="fa fa-angle-right pull-right"></i> : ''}
+                                        <Link title={`${menuItem.title}`} className={`sidebar-header ${menuItem.active ? 'active' : ''}`} onClick={() => toggletNavActive(menuItem)} to={menuItem.path}>
+                                            <menuItem.icon /><span>{menuItem.title.length > 14 ? `${menuItem.title.substr(0, 14)}...` : menuItem.title.substr(0, 14)}</span>
+                                            {menuItem.children ? <i className="fa fa-angle-right pull-right"></i> : ''}
                                         </Link>
                                         : ''}
                                     {menuItem.children ?
@@ -221,48 +220,49 @@ const Sidebar = () => {
                                             className={`sidebar-submenu ${menuItem.active ? 'menu-open' : ''}`}
                                             style={menuItem.active ? { opacity: 1, transition: 'opacity 500ms ease-in' } : {}}
                                         >
-                                            {menuItem.children.map((childrenItem, index) =>
-                                                {
-                                                return childrenItem.show?(<li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
+                                            {menuItem.children.map((childrenItem, index) => {
+                                                return childrenItem.show ? (<li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
                                                     {(childrenItem.type === 'sub') ?
                                                         <a href={childrenItem.path} onClick={() => toggletNavActive(childrenItem)} >
                                                             <i className="fa fa-circle"></i>{childrenItem.title} <i className="fa fa-angle-down pull-right"></i></a>
-                                                    : ''}
+                                                        : ''}
 
                                                     {(childrenItem.type === 'link') ?
-                                                        <Link className={childrenItem.active ? 'active' : ''} onClick={() => toggletNavActive(childrenItem)} to={childrenItem.path}>
+                                                        <Link title={childrenItem.title} className={childrenItem.active ? 'active' : ''} onClick={() => toggletNavActive(childrenItem)} to={childrenItem.path}>
                                                             <i className="fa fa-circle"></i>{childrenItem.title}
                                                         </Link>
-                                                    : ''}
-                                                    
+                                                        : ''}
+
                                                     {childrenItem.children ?
                                                         <ul className={`sidebar-submenu ${childrenItem.active ? 'menu-open' : 'active'}`}>
-                                                            {childrenItem.children.map((childrenSubItem, key) =>
-                                                                {return childrenSubItem.show?(<li className={childrenSubItem.active ? 'active' : ''} key={key}>
+                                                            {childrenItem.children.map((childrenSubItem, key) => {
+                                                                return childrenSubItem.show ? (<li className={childrenSubItem.active ? 'active' : ''} key={key}>
                                                                     {(childrenSubItem.type === 'link') ?
-                                                                        <Link  className={childrenSubItem.active ? 'active' : ''}
+                                                                        <Link className={childrenSubItem.active ? 'active' : ''}
                                                                             onClick={() => toggletNavActive(childrenSubItem)} to={childrenSubItem.path} >
                                                                             <i className="fa fa-circle"></i>{childrenSubItem.title}
                                                                         </Link>
                                                                         : ''}
-                                                                </li>):(null)}
+                                                                </li>) : (null)
+                                                            }
                                                             )}
                                                         </ul>
-                                                    : ''}
-                                                </li>):(null)
-                                                
+                                                        : ''}
+                                                </li>) : (null)
+
                                             }
                                             )}
-                                            
+
                                         </ul>
-                                        : ''}   
+                                        : ''}
                                 </li>
-                            ):(null)}
+                                ) : (null)
+                            }
                             )
                         }
-                         <li className={`right-arrow ${layout === 'rtl' ? hideRightArrowRTL ? 'd-none' : '' : hideRightArrow ? 'd-none' : ''}`}
+                        <li className={`right-arrow ${layout === 'rtl' ? hideRightArrowRTL ? 'd-none' : '' : hideRightArrow ? 'd-none' : ''}`}
                             onClick={(wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToRightRTL : scrollToRight}><i className="fa fa-angle-right"></i></li>
-                   </ul>
+                    </ul>
                 </div>
             </div>
         </Fragment>

@@ -10,9 +10,6 @@ const ServiceStep = props => {
   useEffect(() => {
     props.data.map((el, index) => { setCollapseId(el?.automobile_makes.map((make, makeIndex) => { return { id: makeIndex, status: false } })) })
   }, [])
-  useEffect(() => {
-    console.log(collapseId)
-  }, [collapseId])
 
 
   if (props.currentStep !== 3) {
@@ -50,13 +47,12 @@ const ServiceStep = props => {
               <div className="card-columns" >
                 {el.services.map((service, serviceIndex) => {
                   return (
-                    <Accordion stayOpen md="card-body border border-primary rounded " key={`${serviceIndex}`}>
+                    <Accordion md="card-body border border-primary rounded " key={`${serviceIndex}`}>
                       <Card className="shadow" >
                         <CardHeader className="p-0 pt-1 w-100">
                           <Accordion.Toggle as={Card.Header} className="btn pt-2  h-100 d-flex w-100" color="default" eventKey={`${serviceIndex}`}>
                             <Label className="d-block" for={`category-${index}-service-${serviceIndex}`} >
                               <Input
-                                defaultChecked={allTick}
                                 data-testid={`category-${index}-service-${serviceIndex}`}
                                 className="checkbox_animated"
                                 id={`category-${index}-service-${serviceIndex}`}
@@ -75,7 +71,7 @@ const ServiceStep = props => {
                               service.sub_services.map((sub_service, subServiceIndex) => {
                                 return (
                                   <Col md="12" key={subServiceIndex}>
-                                    <Label className="d-block  pl-4" for="chk-ani">
+                                    <Label className="d-block pl-4" for="chk-ani">
                                       <Input
                                         data-testid={`category-${index}-service-${serviceIndex}-sub_service-${subServiceIndex}`}
                                         className="checkbox_animated"
@@ -127,10 +123,10 @@ const ServiceStep = props => {
                 <div className="card-columns" >
                   {el.automobile_makes.map((make, makeIndex) => {
                     return (
-                      <Accordion stayOpen md="card-body border  rounded " key={`${makeIndex}`}>
+                      <Accordion md="card-body border rounded" key={`${makeIndex}`}>
                         <Card className="shadow" >
-                          <CardHeader className="p-0 pt-1 w-100">
-                            <Accordion.Toggle as={Card.Header} className="btn pt-2 pe-none h-100 d-flex w-100" color="default" eventKey={`${makeIndex}`}>
+                          <CardHeader className="p-0 pt-2 w-100">
+                            <Accordion.Toggle as={Card.Header} className="btn pt-2  h-100 d-flex w-100" color="default" eventKey={`${makeIndex}`}>
                               <Label className="card-title" for={`category-${index}-make-${makeIndex}`} >
                                 <Input
                                   className="checkbox_animated"
@@ -146,7 +142,7 @@ const ServiceStep = props => {
                           </CardHeader>
 
 
-                          <Accordion.Collapse className="d-none" eventKey={`${makeIndex}`}>
+                          <Accordion.Collapse className="" eventKey={`${makeIndex}`}>
                             <CardBody>
                               {
                                 make.models.map((model, modelIndex) => {

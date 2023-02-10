@@ -1,11 +1,11 @@
-import React, {useState,useEffect} from 'react'
-import {useAuth0} from '@auth0/auth0-react'
-import man from '../../assets/images/dashboard/user.png'
-import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import {Users,MessageSquare,FileText,Settings,LogOut} from 'react-feather'
-import {firebase_app} from '../../data/config'
-import { Admin,WebDesigner,Profile,Inbox,Taskboard,Setting,LogOuts } from "../../constant";
-import {withRouter} from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react';
+import React, { useEffect, useState } from 'react';
+import { FileText, LogOut, MessageSquare, Settings, Users } from 'react-feather';
+import { Link, withRouter } from 'react-router-dom';
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
+import man from '../../assets/images/dashboard/user.png';
+import { Admin, Inbox, LogOuts, Profile, Setting, Taskboard } from "../../constant";
+import { firebase_app } from '../../data/config';
 
 const UserActivity = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,6 +13,8 @@ const UserActivity = (props) => {
 
     const [profile, setProfile] = useState('');
     const [name, setName] = useState('')
+    const [role, setRole] = useState('');
+    
 
     // auth0 profile
     const {logout} = useAuth0()
@@ -23,6 +25,7 @@ const UserActivity = (props) => {
     useEffect(() => {
         setProfile(localStorage.getItem('profileURL' || man));
         setName(localStorage.getItem('Name'))
+        setRole(JSON.parse(localStorage.getItem('user')).roles[0]?.name)
     },[]);
 
     const Logout_From_Firebase = () => {
@@ -51,13 +54,13 @@ const UserActivity = (props) => {
     <DropdownMenu className="p-0">
     <ul className="profile-dropdown">
             <li className="gradient-primary-1">
-              <h6 className="mb-0">{name}</h6><span>{WebDesigner}</span>
+              <h6 className="mb-0">{name}</h6><span>{role}</span>
             </li>
-            <li><Users/>{Profile}</li>
-            <li><MessageSquare/>{Inbox}</li>
-            <li><FileText/>{Taskboard}</li>
-            <li><Settings/>{Setting}</li>
-            <li onClick={authenticated ? Logout_From_Auth0 : Logout_From_Firebase}><LogOut/>{LogOuts}</li>
+            <li><Link to={'/'}><Users/>{Profile}</Link></li>
+            <li><Link to={'/'}><MessageSquare/>{Inbox}</Link></li>
+            <li><Link to={'/'}><FileText/>{Taskboard}</Link></li>
+            <li><Link to={'/'}><Settings/>{Setting}</Link></li>
+            <li><Link to={''} onClick={authenticated ? Logout_From_Auth0 : Logout_From_Firebase}><LogOut/>{LogOuts}</Link></li>
       </ul>
     </DropdownMenu>
     </Dropdown>

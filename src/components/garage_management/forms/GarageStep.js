@@ -39,7 +39,7 @@ const GarageStep = props => {
               data-testid="registration_garage_email"
               onChange={props.handleChange}
               value={props.data.email}
-              // placeholder="email"
+            // placeholder="email"
             />
             {props.serverSideErrors && (
               !props.serverSideErrors["garage.email"] ? (
@@ -57,7 +57,6 @@ const GarageStep = props => {
             data-testid="registration_garage_phone"
             onChange={props.handleChange}
             value={props.data.phone}
-            // placeholder="phone"
           />
 
           {props.serverSideErrors && (
@@ -73,13 +72,14 @@ const GarageStep = props => {
           <Label className='' htmlFor="phone">Address Line 1*</Label>
 
           <AutoComplete
+            defaultValue={props.data?.address_line_1}
             setPlaceAutoComplete={props.setPlaceAutoComplete}
             class_Name={'form-control'}
             name='address_line_1'
             id={'address'}
-            // placeholder="address line 1"
+          // placeholder="address line 1"
           />
-          {props?.distanceError !== ''&& <div className="invalid-feedback" style={{ display: "block" }}>{props?.distanceError}</div>}
+          {props?.distanceError !== '' && <div className="invalid-feedback" style={{ display: "block" }}>{props?.distanceError}</div>}
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.address_line_1"] ? (
               <div className="valid-feedback" style={{ display: "block" }}>{"Looks good!"}</div>
@@ -96,11 +96,12 @@ const GarageStep = props => {
         <Col md="6 mb-3">
           <Label className='' htmlFor="phone">Address Line 2</Label>
           <AutoComplete
+            defaultValue={props.data?.address_line_2}
             setPlaceAutoComplete={props.setPlaceAutoComplete2}
             class_Name={'form-control'}
             name='address_line_1'
             id={'address'}
-            // placeholder="address line 2"
+          // placeholder="address line 2"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.address_line_2"] ? (
@@ -119,7 +120,7 @@ const GarageStep = props => {
             type="text"
             onChange={props.handleChange}
             value={props.data.postcode}
-            // placeholder="postcode"
+          // placeholder="postcode"
           />
 
           {props.serverSideErrors && (
@@ -137,13 +138,12 @@ const GarageStep = props => {
             <Input type="select" className="custom-select"
               data-testid="registration_garage_country"
               name="country"
-              defaultValue={"GB"}
-              value={props.data.country}
+              value={props.data.country ? props.data.country : "GB"}
               onChange={props.handleChange} >
               <option value="">{"SELECT COUNTRY"}</option>
-              {Country.getAllCountries().map(el => {
+              {Country.getAllCountries().map((el, i) => {
                 return (
-                  <option value={el.isoCode} key={el.id}  >{el.name}</option>
+                  <option value={el.isoCode} key={i}>{el.name}</option>
                 )
               })}
             </Input>
@@ -167,9 +167,9 @@ const GarageStep = props => {
               value={props.data.city}
               onChange={props.handleChange}>
               <option value="">{"SELECT CITY"}</option>
-              {City.getCitiesOfCountry(props.data.country).map(el => {
+              {City.getCitiesOfCountry(props.data.country).map((el, i) => {
                 return (
-                  <option value={el.name} key={el.id}>{el.name}</option>
+                  <option value={el.name} key={i}>{el.name}</option>
                 )
               })}
             </Input>
@@ -190,8 +190,8 @@ const GarageStep = props => {
           <Input className="form-control" name="about" type="textarea"
             data-testid="registration_garage_about"
             onChange={props.handleChange}
-            value={props.data.about}
-            // placeholder="about"
+            value={props.data.about ? props.data.about : ""}
+          // placeholder="about"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.about"] ? (
@@ -207,8 +207,8 @@ const GarageStep = props => {
           <Input className="form-control" name="additional_information" type="textarea"
             data-testid="registration_garage_additional_information"
             onChange={props.handleChange}
-            value={props.data.additional_information}
-            // placeholder="additional information"
+            value={props.data.additional_information ? props.data.additional_information : ''}
+          // placeholder="additional information"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.additional_information"] ? (
@@ -227,7 +227,7 @@ const GarageStep = props => {
             data-testid="registration_garage_web_page"
             onChange={props.handleChange}
             value={props.data.web_page}
-            // placeholder="web page"
+          // placeholder="web page"
           />
           {props.serverSideErrors && (
             !props.serverSideErrors["garage.web_page"] ? (

@@ -21,7 +21,7 @@ const Logins = (props) => {
     localStorage.getItem('Name')
   );
 
-  const [isuser, setisuser] = useState(localStorage.getItem("isUser"));
+  const isuser = useState(localStorage.getItem("isUser"));
 
   useEffect(() => {
     localStorage.setItem('profileURL', value);

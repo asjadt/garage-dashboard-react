@@ -1,20 +1,20 @@
-import React,{Fragment,useState} from 'react'
-import BreadCrumb from '../../layout/Breadcrumb'
+import React, { Fragment, useState } from 'react';
+import Chart from 'react-apexcharts';
 import ChartistGraph from 'react-chartist';
 import { Line } from 'react-chartjs-2';
-import Chart from 'react-apexcharts'
 import CKEditor from "react-ckeditor-component";
-import { ArrowRight, Paperclip, DollarSign, MoreVertical, User, CreditCard, Settings, FileText, LogOut } from 'react-feather'
-import { Container, Row, Col, Card, CardBody, CardHeader, Button, CardFooter, Table, Input, FormGroup } from 'reactstrap'
-import { graphRounded, graphRoundedOptions, graphRoundedListener, lineAreaFullChart, lineAreaFullChartOptions, lineAreaFullChartListener } from './chartsData/chartist'
-import {crmlineChartData, crmlineChartDataOption,newProjectLineChartData, newProjectLineChartOption} from './chartsData/chartJs'
-import { category, clients, task } from './data'
-import { apexTotalUsers, crmSmallChart, doneProjectChart } from './chartsData/apexChart'
-import user from '../../assets/images/user/2.jpg'
-import user1 from '../../assets/images/user/11.png'
-import user2 from '../../assets/images/user/12.jpg'
+import { ArrowRight, CreditCard, DollarSign, FileText, LogOut, MoreVertical, Paperclip, Settings, User } from 'react-feather';
 import Slider from "react-slick";
-import { TotalProject,SeptemberTotal,ViewFullChart,TotalUsers,Profile,Message,DoneProject,OurClient,Hours,Day,Week,Month,ProjectIncome,TotalIncome,NewProject,TotalNewProject,QuickMail,Send,Admin,YourAccount,InvoicesAndPayments,Setting,YourServices,MyTask,Chat,RecentActivities,LogOuts } from "../../constant";
+import { Button, Card, CardBody, CardFooter, CardHeader, Col, Container, FormGroup, Input, Row, Table } from 'reactstrap';
+import user1 from '../../assets/images/user/11.png';
+import user2 from '../../assets/images/user/12.jpg';
+import user from '../../assets/images/user/2.jpg';
+import { Admin, Chat, Day, DoneProject, Hours, InvoicesAndPayments, LogOuts, Message, Month, MyTask, NewProject, OurClient, Profile, ProjectIncome, QuickMail, RecentActivities, Send, SeptemberTotal, Setting, TotalIncome, TotalNewProject, TotalProject, TotalUsers, ViewFullChart, Week, YourAccount, YourServices } from "../../constant";
+import BreadCrumb from '../../layout/Breadcrumb';
+import { apexTotalUsers, crmSmallChart, doneProjectChart } from './chartsData/apexChart';
+import { graphRounded, graphRoundedListener, graphRoundedOptions, lineAreaFullChart, lineAreaFullChartListener, lineAreaFullChartOptions } from './chartsData/chartist';
+import { crmlineChartData, crmlineChartDataOption, newProjectLineChartData, newProjectLineChartOption } from './chartsData/chartJs';
+import { category, clients, task } from './data';
 
 const Crm = () => {
 
@@ -325,7 +325,8 @@ const Crm = () => {
               <div className="profile-round profile-round-semi-small animation-round-5"></div>
               <div className="profile-round profile-round-small animation-round-6"></div>
               <div className="profile-details">
-                <div className="media"><img className="img-90 rounded-circle" src={user1} alt=""/>
+                <div className="media">
+                  <img className="img-90 rounded-circle" src={user1} alt=""/>
                   <div className="media-body">
                     <h5>{"Alex Goldmine"}</h5><span className="f-12 d-block">{"Alexgoldmine_98@gmail.com"}</span><span className="badge badge-pill bg-white font-info">{Admin}</span>
                   </div>
