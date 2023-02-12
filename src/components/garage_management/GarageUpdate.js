@@ -86,7 +86,9 @@ const GarageUpdate = ({ history }) => {
         setIsLoading(true)
         apiClient().get(`${BACKEND_API}/v1.0/garages/single/${id}`).then(response => {
             // GET AND SET USER INFO TO THE STATE
+            console.log({ response })
             setUser({
+                id: response.data.garage.owner.id,
                 first_Name: response.data.garage.owner.first_Name,
                 last_Name: response.data.garage.owner.last_Name,
                 email: response.data.garage.owner.email,
@@ -102,6 +104,7 @@ const GarageUpdate = ({ history }) => {
             })
 
             setGarage({
+                id: response.data.garage.id,
                 name: response.data.garage.name,
                 about: response.data.garage.about,
                 web_page: (response.data.garage.web_page === null) ? "" : response.data.garage.web_page,
@@ -177,46 +180,48 @@ const GarageUpdate = ({ history }) => {
                 tempServices[0] = {
                     ...tempServices[0],
                     services: [...services.map(el => {
+                        let checked = false
                         updateServiceData.map(el2 => {
-                            el.checked = (el2.service_id === el.id) ? true : false;
-                            if ((el2.service_id === el.id)) {
-                                el2.garage_sub_services.map(sub_el2 => {
-                                    el.sub_services.map(sub_el => {
-                                        sub_el.checked = (sub_el2.sub_service_id === sub_el.id) ? true : false;
-                                        return sub_el;
-                                    })
-                                    return el;
-                                })
-                                return el;
-                            } else {
+                            if (!checked) {
+                                checked = (el2.service_id === el.id) ? true : false;
+                            }
+                            if (checked) {
+
                                 el.sub_services.map(sub_el => {
-                                    sub_el.checked = false;
+                                    let sub_checked = false
+                                    el2.garage_sub_services.map(sub_el2 => {
+                                        if (!sub_checked) {
+                                            sub_checked = (sub_el2.sub_service_id === sub_el.id) ? true : false;
+                                        }
+                                    })
+                                    sub_el.checked = sub_checked
                                     return sub_el;
                                 })
-                                return el;
                             }
                         })
+                        el.checked = checked
                         return el;
                     })],
                     automobile_makes: [...makes.map(el => {
+                        let checked = false
                         updateMakeData.map(el2 => {
-                            el.checked = (el.id === el2.automobile_make_id) ? true : false;
-
-                            if ((el.id === el2.automobile_make_id)) {
+                            if (!checked) {
+                                checked = (el.id === el2.automobile_make_id) ? true : false;
+                            }
+                            if (checked) {
                                 el.models.map(model => {
+                                let mod_checked = false
                                     el2.garage_automobile_models.map(model2 => {
-                                        model.checked = (model.id === model2.automobile_model_id) ? true : false;
-                                        return model;
+                                        if (!mod_checked) {
+                                            mod_checked = (model.id === model2.automobile_model_id) ? true : false;
+                                        }
                                     })
-                                    return model;
-                                })
-                            } else {
-                                el.models.map(model => {
-                                    model.checked = false;
+                                    model.checked = mod_checked;
                                     return model;
                                 })
                             }
                         })
+                        el.checked = checked
                         return el;
                     })]
                 };

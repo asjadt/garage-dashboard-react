@@ -61,7 +61,7 @@ const ServiceStep = props => {
                                 type="checkbox"
                                 name={`category-${index}-service-${serviceIndex}`}
                                 onChange={props.handleServiceChange}
-                              /> {service.name}
+                              /> {service.name}{service.id}
                             </Label>
                           </Accordion.Toggle>
                         </CardHeader>
@@ -81,7 +81,7 @@ const ServiceStep = props => {
                                         checked={el.services[serviceIndex].sub_services[subServiceIndex].checked || false}
                                         onChange={props.handleSubServiceChange}
                                       />
-                                      {sub_service.name}
+                                      {sub_service.name}{sub_service.id}
                                     </Label>
                                   </Col>
                                 )
