@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { Delete, Edit, Eye } from 'react-feather';
 import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
 import SweetAlert from 'sweetalert2';
-import { USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW } from '../../constant/permissions';
 import BreadCrumb from '../../layout/Breadcrumb';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { apiClient } from '../../utils/apiClient';
@@ -11,7 +11,7 @@ import { BACKEND_API } from '../../utils/backend';
 import { checkPermissions } from '../../utils/helperFunctions';
 import setLinksView from '../../utils/pagination';
 import FuelStationForm from './forms/FuelStationForm';
-import UserView from './vews/UserView';
+import FuelStationView from './vews/FuelStationView';
 
 
 const FuelStationList = () => {
@@ -25,47 +25,48 @@ const FuelStationList = () => {
     const [lastPage, setLastPage] = useState(0)
     const [links, setLinks] = useState(null)
     const [current_page, set_current_page] = useState(0);
-    const [endDate, setendDate] = useState(new Date());
-    const [userViewData, setUserViewData] = useState(null);
-    const [userViewModal, setUserViewModal] = useState(false);
-    const [userUpdateData, setUserUpdateData] = useState(null);
-    const [userUpdateModal, setUserUpdateModal] = useState(false);
-    const [userCreateModal, setUserCreateModal] = useState(false);
+    const [fuelStationViewData, setFuelStationViewData] = useState(null);
+    const [fuelStationViewModal, setFuelStationViewModal] = useState(false);
+    const [fuelStationUpdateData, setFuelStationUpdateData] = useState(null);
+    const [fuelStationUpdateModal, setFuelStationUpdateModal] = useState(false);
+    const [fuelStationCreateModal, setFuelStationCreateModal] = useState(false);
     const [searchKey, setSearchKey] = useState("");
 
     const [startDate, setstartDate] = useState(new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
         1))
+    const [endDate, setendDate] = useState(new Date())
+
 
     const setStartDate = date => {
         setstartDate(date);
         let startDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
-        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+        fetchData(`${BACKEND_API}/v1.0/fuel-station/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
     };
 
     const setEndDate = date => {
         setendDate(date);
         let startDataFinal = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
         let endDataFinal = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-        fetchData(`${BACKEND_API}/v1.0/users/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
+        fetchData(`${BACKEND_API}/v1.0/fuel-station/${perPage}?start_date=${startDataFinal}&&end_date=${endDataFinal}`)
 
     };
 
     // modal
-    const userCreateModaltoggle = () => setUserCreateModal(!userCreateModal);
-    const userUpdateModaltoggle = () => setUserUpdateModal(!userUpdateModal);
+    const fuelStationCreateModaltoggle = () => setFuelStationCreateModal(!fuelStationCreateModal);
+    const fuelStationUpdateModaltoggle = () => setFuelStationUpdateModal(!fuelStationUpdateModal);
 
     const editForm = (el) => {
-        userUpdateModaltoggle()
-        setUserUpdateData(el)
+        fuelStationUpdateModaltoggle()
+        setFuelStationUpdateData(el)
     }
-    const userViewModaltoggle = () => setUserViewModal(!userViewModal);
+    const fuelStationViewModaltoggle = () => setFuelStationViewModal(!fuelStationViewModal);
 
     const viewForm = (el) => {
-        userViewModaltoggle()
-        setUserViewData(el)
+        fuelStationViewModaltoggle()
+        setFuelStationViewData(el)
     }
 
     // end modal
@@ -139,7 +140,7 @@ const FuelStationList = () => {
     }, [])
 
 
-    if (!permissions.includes(USER_VIEW)) {
+    if (!permissions.includes(FUEL_STATION_VIEW)) {
         return <><Error401Unauthorized></Error401Unauthorized></>
     }
 
@@ -157,7 +158,7 @@ const FuelStationList = () => {
                                     <span> Manage fuel stations</span>
                                 </div>
 
-                                {checkPermissions([USER_CREATE], permissions) ? (<Button color="primary" onClick={userCreateModaltoggle}>Create Fuel Station</Button>) : (null)}
+                                {checkPermissions([FUEL_STATION_CREATE], permissions) ? (<Button color="primary" onClick={fuelStationCreateModaltoggle}>Create Fuel Station</Button>) : (null)}
 
                             </CardHeader>
                             <Row>
@@ -173,9 +174,9 @@ const FuelStationList = () => {
                                 </Col>
                                 <Col sm={"4"}>
                                     <CardHeader>
-                                        <Row className="date-range">
+                                    <Row className="date-range">
                                             <Col sm="6">
-                                                <DatePicker className="form-control digits mx-2"
+                                             <DatePicker className="form-control digits mx-2"
                                                     selected={startDate}
                                                     onChange={setStartDate}
                                                     selectsStart
@@ -208,7 +209,7 @@ const FuelStationList = () => {
                                             <th scope="col">{"Address"}</th>
                                             <th scope="col">{"Opening Time"}</th>
                                             <th scope="col">{"Closing Time"}</th>
-                                            <th scope="col">{"actions"}</th>
+                                            <th scope="col">{"Action"}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -221,14 +222,14 @@ const FuelStationList = () => {
                                                 <td>{el.opening_time}</td>
                                                 <td>{el.closing_time}</td>
                                                 <td>
-                                                    {checkPermissions([USER_VIEW], permissions) && (
+                                                    {checkPermissions([FUEL_STATION_VIEW], permissions) && (
                                                         <Eye
                                                             className='mr-1'
                                                             color="#51bb25" size={18} style={{ cursor: "pointer" }}
                                                             onClick={() => viewForm(el)}
                                                         ></Eye>
                                                     )}
-                                                    {checkPermissions([USER_UPDATE], permissions) && (
+                                                    {checkPermissions([FUEL_STATION_UPDATE], permissions) && (
                                                         <Edit
                                                             className='mr-1'
                                                             color="#007bff" size={18} style={{ cursor: "pointer" }}
@@ -236,13 +237,13 @@ const FuelStationList = () => {
                                                         ></Edit>
                                                     )}
 
-                                                    {checkPermissions([USER_DELETE], permissions) && (
-                                                        <Delete 
-                                                        color="#ff3f70" 
-                                                        size={18} 
-                                                        style={{ cursor: "pointer" }}
+                                                    {checkPermissions([FUEL_STATION_DELETE], permissions) && (
+                                                        <Delete
+                                                            color="#ff3f70"
+                                                            size={18}
+                                                            style={{ cursor: "pointer" }}
                                                             onClick={() => deleteFunc(el.id)}
-                                                            ></Delete>
+                                                        ></Delete>
                                                     )}
                                                 </td>
                                             </tr>)
@@ -284,35 +285,38 @@ const FuelStationList = () => {
             </Container>
 
 
-
-
             {/* =========================== ALL MODALS =============================  */}
-            <Modal isOpen={userCreateModal} toggle={userCreateModaltoggle} size="lg">
-                <ModalHeader toggle={userCreateModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={fuelStationCreateModal} toggle={fuelStationCreateModaltoggle} size="lg">
+                <ModalHeader toggle={fuelStationCreateModaltoggle} className="text-center">
+                    Create Fuel Station
                 </ModalHeader>
                 <ModalBody>
-                    <FuelStationForm toggleModal={userCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></FuelStationForm>
+                    <FuelStationForm toggleModal={fuelStationCreateModaltoggle} fetchData={fetchData} perPage={perPage} type="create"></FuelStationForm>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={userUpdateModal} toggle={userUpdateModaltoggle} size="lg">
-                <ModalHeader toggle={userUpdateModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={fuelStationUpdateModal} toggle={fuelStationUpdateModaltoggle} size="lg">
+                <ModalHeader toggle={fuelStationUpdateModaltoggle} className="text-center">
+                    Update Fuel Station
                 </ModalHeader>
                 <ModalBody>
-                    <FuelStationForm toggleModal={userUpdateModaltoggle} fetchData={fetchData} perPage={perPage} type="update" userUpdateData={userUpdateData}></FuelStationForm>
+                    <FuelStationForm
+                        toggleModal={fuelStationUpdateModaltoggle}
+                        fetchData={fetchData}
+                        perPage={perPage}
+                        type="update"
+                        fuelStationUpdateData={fuelStationUpdateData}></FuelStationForm>
                 </ModalBody>
             </Modal>
 
-            <Modal isOpen={userViewModal} toggle={userViewModaltoggle} size="lg">
-                <ModalHeader toggle={userViewModaltoggle} className="text-center">
-                    User
+            <Modal isOpen={fuelStationViewModal} toggle={fuelStationViewModaltoggle} size="lg">
+                <ModalHeader toggle={fuelStationViewModaltoggle} className="text-center">
+                    Fuel Station
                 </ModalHeader>
                 <ModalBody>
-                    <UserView
-                        toggleModal={userViewModaltoggle}
-                        userViewData={userViewData}>
-                    </UserView>
+                    <FuelStationView
+                        toggleModal={fuelStationViewModaltoggle}
+                        fuelStationViewData={fuelStationViewData}>
+                    </FuelStationView>
                 </ModalBody>
             </Modal>
         </Fragment>

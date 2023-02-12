@@ -19,8 +19,6 @@ export const AUTOMOBILE_VIEW = "automobile_view";
 export const AUTOMOBILE_DELETE = "automobile_delete";
 
 
-
-
 export const SERVICE_CREATE = "service_create";
 export const SERVICE_UPDATE = "service_update";
 export const SERVICE_VIEW = "service_view";
@@ -31,3 +29,9 @@ export const SUB_SERVICE_CREATE = "sub_service_create";
 export const SUB_SERVICE_UPDATE = "sub_service_update";
 export const SUB_SERVICE_VIEW = "sub_service_view";
 export const SUB_SERVICE_DELETE = "sub_service_delete";
+
+
+export const FUEL_STATION_CREATE = "fuel_station_create";
+export const FUEL_STATION_UPDATE = "fuel_station_update";
+export const FUEL_STATION_VIEW = "fuel_station_view";
+export const FUEL_STATION_DELETE = "fuel_station_delete";
