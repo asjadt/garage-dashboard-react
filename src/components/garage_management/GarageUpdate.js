@@ -184,20 +184,21 @@ const GarageUpdate = ({ history }) => {
                         updateServiceData.map(el2 => {
                             if (!checked) {
                                 checked = (el2.service_id === el.id) ? true : false;
-                            }
-                            if (checked) {
+                                if (checked) {
 
-                                el.sub_services.forEach(sub_el => {
-                                    let sub_checked = false
-                                    el2.garage_sub_services.forEach(sub_el2 => {
-                                        if (!sub_checked) {
-                                            sub_checked = (sub_el2.sub_service_id === sub_el.id) ? true : false;
-                                        }
+                                    el.sub_services.forEach(sub_el => {
+                                        let sub_checked = false
+                                        el2.garage_sub_services.forEach(sub_el2 => {
+                                            if (!sub_checked) {
+                                                sub_checked = (sub_el2.sub_service_id === sub_el.id) ? true : false;
+                                            }
+                                        })
+                                        sub_el.checked = sub_checked
+                                        return sub_el;
                                     })
-                                    sub_el.checked = sub_checked
-                                    return sub_el;
-                                })
+                                }
                             }
+
                         })
                         el.checked = checked
                         return el;
@@ -207,19 +208,20 @@ const GarageUpdate = ({ history }) => {
                         updateMakeData.map(el2 => {
                             if (!checked) {
                                 checked = (el.id === el2.automobile_make_id) ? true : false;
-                            }
-                            if (checked) {
-                                el.models=el.models.map(model => {
-                                    let mod_checked = false
-                                    el2.garage_automobile_models.map(model2 => {
-                                        if (!mod_checked) {
-                                            mod_checked = (model.id === model2.automobile_model_id) ? true : false;
-                                        }
+                                if (checked) {
+                                    el.models = el.models.map(model => {
+                                        let mod_checked = false
+                                        el2.garage_automobile_models.map(model2 => {
+                                            if (!mod_checked) {
+                                                mod_checked = (model.id === model2.automobile_model_id) ? true : false;
+                                            }
+                                        })
+                                        model.checked = mod_checked;
+                                        return model;
                                     })
-                                    model.checked = mod_checked;
-                                    return model;
-                                })
+                                }
                             }
+
                         })
                         el.checked = checked
                         return el;

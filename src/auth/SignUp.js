@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import Birthdate from '../components/forms/form-layout/form-wizard-1/birthdate';
 import Emails from '../components/forms/form-layout/form-wizard-1/email';
 
+import { Link } from "react-router-dom";
 import Registration from "../components/forms/form-layout/form-wizard-1/registration";
 import GarageStep from "../components/garage_management/forms/GarageStep";
 import ServiceStep from "../components/garage_management/forms/ServiceStep";
@@ -205,11 +206,6 @@ export default function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // const { email, username, password } = state;
-        // alert(`Your registration detail: \n 
-        //   Email: ${email} \n 
-        //   Username: ${username} \n
-        //   Password: ${password}`);
     };
 
     const _next = () => {
@@ -527,7 +523,7 @@ export default function SignUp() {
                     _next()
                 }
             }
-            else if (error.response?.status == 401) {
+            else if (error.response?.status === 401) {
                 SweetAlert.fire({ title: error.response.data.message, text: "Hello!!! You do not have permission.", icon: "warning" });
             }
             else {
@@ -540,8 +536,9 @@ export default function SignUp() {
 
     return (
         <Fragment>
-            <Container fluid={true}>
+            <Container fluid={true} >
                 <Row>
+          
                     <Col sm="12">
                         <Form onSubmit={handleSubmit}>
                             <Card>
@@ -583,8 +580,9 @@ export default function SignUp() {
                                         handleModelChange={handleModelChange}
                                         handleServiceChange={handleServiceChange}
                                         handleSubServiceChange={handleSubServiceChange}
-                                    />
+                                    /><div>Already have an account? <Link to={`/login`}>Login.</Link></div>
                                 </CardBody>
+                                
                                 <CardFooter>
                                     {previousButton()}
                                     {nextButton()}
@@ -594,6 +592,7 @@ export default function SignUp() {
                             </Card>
                         </Form>
                     </Col>
+             
                 </Row>
             </Container>
         </Fragment>

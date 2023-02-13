@@ -47,6 +47,7 @@ import Maintenance from "./pages/Maintenance";
 
 import Callback from './auth/callback';
 
+import ResetPassword from './auth/ResetPassword';
 import SignUp from './auth/SignUp';
 import { apiClient } from './utils/apiClient';
 import { BACKEND_API } from './utils/backend';
@@ -110,6 +111,7 @@ const Root = (props) => {
                             {/* AUTHENTICATION ROUTES  */}
                             <Route path={`${process.env.PUBLIC_URL}/login`} component={Signin} />
                             <Route path={`${process.env.PUBLIC_URL}/registration`} component={SignUp} />
+                            <Route path={`${process.env.PUBLIC_URL}/reset-password`} component={ResetPassword} />
 
                             <Route path={`${process.env.PUBLIC_URL}/pages/errors/error400`} component={Error400}></Route>
                             <Route path={`${process.env.PUBLIC_URL}/pages/errors/error401`} component={Error401}></Route>

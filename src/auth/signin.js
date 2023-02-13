@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import man from '../assets/images/dashboard/user.png';
 import { LOGIN, Password, RememberMe, YourName } from '../constant';
@@ -44,6 +44,7 @@ const Logins = (props) => {
       console.log(err.response)
     })
   }
+
   
   return (
     <div className="page-wrapper d-flex justify-content-center min-vh-100 w-100 align-items-center">
@@ -58,10 +59,14 @@ const Logins = (props) => {
             <Label className="col-form-label">{Password}</Label>
             <Input className="form-control" type="password" onChange={e => setPassword(e.target.value)} defaultValue={password} required="" />
           </FormGroup>
+          <div className='d-flex justify-content-between align-items-center'>
           <div className="checkbox pl-3">
             <Input id="checkbox1" type="checkbox" />
             <Label for="checkbox1">{RememberMe}</Label>
           </div>
+          <Link to={'/reset-password'}>Forgot password?</Link>
+          </div>
+          
           <div>
             Haven't Any Account? <span role="button" className='text-primary' onClick={() => { history.push(`${process.env.PUBLIC_URL}/registration`) }}>Create Account.</span>
           </div>

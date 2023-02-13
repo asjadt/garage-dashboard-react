@@ -1,1 +1,20 @@
-@import 'assets/scss/app.scss';
+@import "assets/scss/app.scss";
+
+.loginpage-container {
+  background-image: url("https://i.ibb.co/qBDTmbF/azhar-munir-din-NWPGfi4-RAEY-unsplash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+.loginpage-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(43, 41, 41, 0.887);
+  z-index: 1;
+}
