@@ -1,9 +1,7 @@
-import React, { useState,useCallback,useEffect } from 'react'
-import {Row, Col,Input, Container,Breadcrumb,BreadcrumbItem} from 'reactstrap'
-import { Star } from 'react-feather'
-import {MENUITEMS} from './sidebar/menu'
-import {Link} from 'react-router-dom'
-import { Tooltip } from 'reactstrap';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
+import { MENUITEMS } from './sidebar/menu'
 const Breadcrumbs = (props) => {
     // eslint-disable-next-line
     const [breadcrumb, setBreadcrumb] = useState(props);
@@ -141,7 +139,7 @@ const Breadcrumbs = (props) => {
         <Container fluid={true}>
         <div className="page-header">
             <Row>
-            <Col lg='6'>
+            <Col lg='12'>
                 <h3>{breadcrumb.title}</h3>
                 <Breadcrumb>
                 <BreadcrumbItem><Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>{breadcrumb.parent}</Link></BreadcrumbItem>
@@ -149,7 +147,7 @@ const Breadcrumbs = (props) => {
                 <BreadcrumbItem active>{breadcrumb.title}</BreadcrumbItem>
                 </Breadcrumb>
             </Col>
-            <Col lg='6'>
+            {/* <Col lg='6'>
                 <div className="bookmark pull-right">
                 <ul>
                     {bookmarkItems.map((items, index) => {
@@ -217,7 +215,7 @@ const Breadcrumbs = (props) => {
                     </li>
                 </ul>
                 </div>
-            </Col>
+            </Col> */}
             </Row>
         </div>
         </Container>

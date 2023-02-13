@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 const Footer = () => {
     return (
@@ -6,7 +7,7 @@ const Footer = () => {
         <Container fluid={true}>
           <Row>
             <Col md="6" className="footer-copyright">
-              <p className="mb-0">{"Copyright 2023 © All rights reserved by Garage Management System."}</p>
+              <p className="mb-0">Copyright 2023 © All rights reserved by <Link to={'/'}>Autofixo.</Link></p>
             </Col>
             <Col md="6" >
               {/* <p className="pull-right mb-0">{"Hand crafted & made with"}<i className="fa fa-heart"></i></p> */}

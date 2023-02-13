@@ -1,8 +1,5 @@
-import React,{useState, Fragment} from 'react';
+import React, { Fragment, useState } from 'react';
 import { Maximize, MoreHorizontal } from 'react-feather';
-import CategoryDropdown from './CategoryDropdown'
-import StatusDropdown from './StatusDropdown'
-import OrderDropdown from './OrderDropdown'
 const Leftbar = () => {
   const [LeftBar,setLeftBar]=useState(false)
   function ToggleLeftBar() {
@@ -35,15 +32,6 @@ const Leftbar = () => {
           <div className="nav-right col left-menu-header">
             <ul className={`nav-menus-left ${LeftBar? 'open': ''}`}>
               <li><a onClick={goFull} className="text-dark" href="#!"><Maximize/></a></li>
-              <li>
-              <CategoryDropdown/>
-              </li>
-              <li>
-                <StatusDropdown/>
-              </li>
-              <li>
-               <OrderDropdown/>
-              </li>
             </ul>
             <div onClick={ToggleLeftBar} className="d-xl-none mobile-toggle-left pull-right">
             <MoreHorizontal/>

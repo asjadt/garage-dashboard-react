@@ -4,7 +4,7 @@ import {
 } from 'react-feather';
 import { AiFillCar, AiFillShop } from "react-icons/ai";
 import { FaOilCan } from 'react-icons/fa';
-import { AUTOMOBILE_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { AUTOMOBILE_VIEW, FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -12,26 +12,9 @@ export const MENUITEMS = [
         title: 'Dashboard', icon: Home, type: 'link', path: `${process.env.PUBLIC_URL}/dashboard/default`, active: false, bookmark: true,
         show: checkPermissions([USER_VIEW], permissions),
     },
+    
     {
-        title: 'User Management', icon: User,
-        type: 'sub',
-        badgeType: 'primary',
-        active: false,
-        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
-        show: checkPermissions([USER_VIEW, ROLE_VIEW], permissions),
-        children: [
-            {
-                path: `${process.env.PUBLIC_URL}/users/list`, title: 'Users', type: 'link',
-                show: checkPermissions([USER_VIEW], permissions),
-            },
-            {
-                path: `${process.env.PUBLIC_URL}/roles/list`, title: 'Roles', type: 'link',
-                show: checkPermissions([ROLE_VIEW], permissions),
-            },
-        ]
-    },
-    {
-        title: 'Garage Management',
+        title: 'Garages',
         icon: AiFillShop,
         type: 'sub',
         badgeType: 'primary',
@@ -41,7 +24,7 @@ export const MENUITEMS = [
         children: [
             {
                 path: `${process.env.PUBLIC_URL}/garages/list`,
-                title: 'Garages',
+                title: 'All Garages',
                 type: 'link',
                 show: checkPermissions([GARAGE_VIEW], permissions),
             },
@@ -52,7 +35,7 @@ export const MENUITEMS = [
         ]
     },
     {
-        title: 'Service Management', icon: Tool,
+        title: 'Services', icon: Tool,
         type: 'sub',
         badgeType: 'primary',
         active: false,
@@ -60,13 +43,13 @@ export const MENUITEMS = [
         show: checkPermissions([SERVICE_VIEW], permissions),
         children: [
             {
-                path: `${process.env.PUBLIC_URL}/services/list`, title: 'Services', type: 'link',
+                path: `${process.env.PUBLIC_URL}/services/list`, title: 'All Services', type: 'link',
                 show: checkPermissions([SERVICE_VIEW], permissions),
             },
         ]
     },
     {
-        title: 'Automobile Management', icon: AiFillCar,
+        title: 'Automobiles', icon: AiFillCar,
         type: 'sub',
         badgeType: 'primary',
         active: false,
@@ -74,14 +57,36 @@ export const MENUITEMS = [
         show: checkPermissions([AUTOMOBILE_VIEW], permissions),
         children: [
             {
-                path: `${process.env.PUBLIC_URL}/automobile-categories/list`, title: 'Automobile Categories', type: 'link',
+                path: `${process.env.PUBLIC_URL}/automobile-categories/list`, title: 'All Categories', type: 'link',
+                show: checkPermissions([USER_VIEW], permissions),
+            },
+            {
+                path: `${process.env.PUBLIC_URL}/automobile-make/list`, title: 'All Makes', type: 'link',
+                show: checkPermissions([USER_VIEW], permissions),
+            },
+            {
+                path: `${process.env.PUBLIC_URL}/automobile-models/list`, title: 'All Models', type: 'link',
                 show: checkPermissions([USER_VIEW], permissions),
             },
         ]
     },
     {
-        title: 'Fuel Station Management', 
+        title: 'Fuel Stations', 
         icon: FaOilCan,
+        type: 'sub',
+        badgeType: 'primary',
+        active: false,
+        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
+        show: checkPermissions([FUEL_STATION_VIEW,FUEL_STATION_CREATE,FUEL_STATION_UPDATE,FUEL_STATION_DELETE], permissions),
+        children: [
+            {
+                path: `${process.env.PUBLIC_URL}/fuel_station/list`, title: 'All Fuel Stations', type: 'link',
+                show: checkPermissions([FUEL_STATION_VIEW], permissions),
+            },
+        ]
+    },
+    {
+        title: 'Users', icon: User,
         type: 'sub',
         badgeType: 'primary',
         active: false,
@@ -89,9 +94,13 @@ export const MENUITEMS = [
         show: checkPermissions([USER_VIEW, ROLE_VIEW], permissions),
         children: [
             {
-                path: `${process.env.PUBLIC_URL}/fuel_station/list`, title: 'Fuel Stations', type: 'link',
+                path: `${process.env.PUBLIC_URL}/users/list`, title: 'All Users', type: 'link',
                 show: checkPermissions([USER_VIEW], permissions),
-            }
+            },
+            {
+                path: `${process.env.PUBLIC_URL}/roles/list`, title: 'All Roles', type: 'link',
+                show: checkPermissions([ROLE_VIEW], permissions),
+            },
         ]
     },
     {

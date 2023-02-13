@@ -1,9 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/creative-logo.png';
-import logo_light from '../assets/images/creative-logo1.png';
-import logo_compact from '../assets/images/logo/compact-logo.png';
 import configDB from '../data/customizer/config';
 import { MENUITEMS } from './sidebar/menu';
 
@@ -181,9 +178,10 @@ const Sidebar = () => {
                 <div className="main-header-left d-none d-lg-block">
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                            <img className="blur-up lazyloaded light" src={logo_light} alt="" />
+                            <h1 className='text-center font-weight-bold'>Autofixo</h1>
+                            {/* <img className="blur-up lazyloaded light" src={logo_light} alt="" />
                             <img className="blur-up lazyloaded compactlogo" src={logo_compact} alt="" />
-                            <img className="blur-up lazyloaded logo" src={logo} alt="" />
+                            <img className="blur-up lazyloaded logo" src={logo} alt="" /> */}
                         </Link>
                     </div>
                 </div>
@@ -191,9 +189,7 @@ const Sidebar = () => {
                     <ul
                         className="sidebar-menu"
                         id="myDIV"
-                        style={wrapper === 'horizontal_sidebar' ? layout === 'rtl' ?
-                            { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }}
-                    >
+                        style={wrapper === 'horizontal_sidebar' ? layout === 'rtl' ? { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }} >
                         <li className={`left-arrow ${layout === 'rtl' ? hideLeftArrowRTL ? 'd-none' : '' : hideLeftArrow ? 'd-none' : ''}`}
                             onClick={(wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToLeftRTL : scrollToLeft}><i className="fa fa-angle-left"></i></li>
                         {
@@ -236,14 +232,15 @@ const Sidebar = () => {
                                                     {childrenItem.children ?
                                                         <ul className={`sidebar-submenu ${childrenItem.active ? 'menu-open' : 'active'}`}>
                                                             {childrenItem.children.map((childrenSubItem, key) => {
-                                                                return childrenSubItem.show ? (<li className={childrenSubItem.active ? 'active' : ''} key={key}>
-                                                                    {(childrenSubItem.type === 'link') ?
+                                                                return childrenSubItem.show && (
+                                                                <li className={childrenSubItem.active ? 'active' : ''} key={key}>
+                                                                    {(childrenSubItem.type === 'link') &&
                                                                         <Link className={childrenSubItem.active ? 'active' : ''}
                                                                             onClick={() => toggletNavActive(childrenSubItem)} to={childrenSubItem.path} >
                                                                             <i className="fa fa-circle"></i>{childrenSubItem.title}
                                                                         </Link>
-                                                                        : ''}
-                                                                </li>) : (null)
+                                                                        }
+                                                                </li>)
                                                             }
                                                             )}
                                                         </ul>

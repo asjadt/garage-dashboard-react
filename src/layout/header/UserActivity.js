@@ -60,7 +60,7 @@ const UserActivity = (props) => {
             <li><Link to={'/'}><MessageSquare/>{Inbox}</Link></li>
             <li><Link to={'/'}><FileText/>{Taskboard}</Link></li>
             <li><Link to={'/'}><Settings/>{Setting}</Link></li>
-            <li><Link to={''} onClick={authenticated ? Logout_From_Auth0 : Logout_From_Firebase}><LogOut/>{LogOuts}</Link></li>
+            <li><Link to={'/login'} onClick={authenticated ? Logout_From_Auth0 : Logout_From_Firebase}><LogOut/>{LogOuts}</Link></li>
       </ul>
     </DropdownMenu>
     </Dropdown>
