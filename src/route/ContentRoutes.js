@@ -46,13 +46,13 @@ import Tour from '../components/advance/Tour'
 import UploadImage from '../components/advance/uploadImage'
 
 // todo-app
- import Todo from '../components/application/todo-app/todo'
+import Todo from '../components/application/todo-app/todo'
 
- // todo-firebase-app
- import TodoFirebase from '../components/application/todo-firebase-app/todo-firebase'
+// todo-firebase-app
+import TodoFirebase from '../components/application/todo-firebase-app/todo-firebase'
 
- // E-commerce-app 
- import Cart from '../components/application/ecommerce-app/Cart'
+// E-commerce-app 
+import Cart from '../components/application/ecommerce-app/Cart'
 import Checkout from '../components/application/ecommerce-app/Checkout'
 import Invoice from '../components/application/ecommerce-app/Invoice'
 import OrderHistory from '../components/application/ecommerce-app/OrderHistory'
@@ -62,8 +62,8 @@ import Productlist from '../components/application/ecommerce-app/productlist'
 import ProductDetail from '../components/application/ecommerce-app/productpage'
 import Wishlist from '../components/application/ecommerce-app/Wishlist'
 
- // Chat 
- import Chat from '../components/application/chat-app/chat'
+// Chat 
+import Chat from '../components/application/chat-app/chat'
 
 // Social App 
 import SocialApp from '../components/social-app/SocialApp'
@@ -74,15 +74,15 @@ import JobApply from '../components/jobSearch/Job-apply'
 import JobDetail from '../components/jobSearch/Job-detail'
 import JobList from '../components/jobSearch/Job-list'
 
- // Email
- import Email from '../components/application/email-app/emailDefault'
+// Email
+import Email from '../components/application/email-app/emailDefault'
 
- // Contact app
- import ContactApp from '../components/application/contact-app/contactApp'
+// Contact app
+import ContactApp from '../components/application/contact-app/contactApp'
 import EditUser from '../components/application/contact-app/edit-user'
 import NewUser from '../components/application/contact-app/new-user'
 
- // Forms
+// Forms
 import BaseInput from '../components/forms/form-control/baseInput'
 import CheckboxandRadio from '../components/forms/form-control/CheckboxandRadio'
 import FormValidation from '../components/forms/form-control/form-validation'
@@ -93,7 +93,7 @@ import MegaOption from '../components/forms/form-control/MegaOption'
 import FormWizard1 from '../components/forms/form-layout/form-wizard-1/Formwizard1'
 import FormDefault from '../components/forms/form-layout/formDefault'
 
- // Forms widgets
+// Forms widgets
 import Datepicker from '../components/forms/form-widget/datepicker'
 import Timepicker from '../components/forms/form-widget/timepickerComponent/timepicker'
 import Typeahead from '../components/forms/form-widget/typeaheadComponent/typeahead'
@@ -203,6 +203,8 @@ import AutomobileFuelTypeList from '../components/automobile_management/Automobi
 import AutomobileMakeList from '../components/automobile_management/AutomobileMakeList'
 import AutomobileModelList from '../components/automobile_management/AutomobileModelList'
 import AutomobileModelVariantList from '../components/automobile_management/AutomobileModelVariantList'
+import EmailTemplateList from '../components/email_template_management/views/EmailTemplateList'
+import EmailTemplateUpdate from '../components/email_template_management/views/EmailTemplateUpdate'
 import FuelStationList from '../components/fuel_station_management/FuelStationList'
 import GarageCreate from '../components/garage_management/GarageCreate'
 import GarageList from '../components/garage_management/GarageList'
@@ -214,31 +216,36 @@ import RoleList from '../components/user_management/RoleList'
 import UserList from '../components/user_management/UserList'
 
 export const routes = [
-  { path: "/users/list" ,Component: UserList},
-  { path: "/roles/list" ,Component: RoleList},
+  { path: "/users/list", Component: UserList },
+  { path: "/roles/list", Component: RoleList },
 
 
 
-  { path: "/garages/list" ,Component: GarageList},
-  { path: "/garages/create" ,Component: GarageCreate},
-  { path: "/garages/update/:id" ,Component: GarageUpdate},
+  { path: "/garages/list", Component: GarageList },
+  { path: "/garages/create", Component: GarageCreate },
+  { path: "/garages/update/:id", Component: GarageUpdate },
 
 
 
-  { path: "/automobile-categories/list" ,Component: AutomobileCategoryList},
-  { path: "/automobile-category/single/:id"  ,Component: AutomobileMakeList},
-  { path: "/automobile-make/single/:id"  ,Component: AutomobileModelList},
-  { path: "/automobile-model/single/:id"  ,Component: AutomobileModelVariantList},
-  { path: "/automobile-model-variant/single/:id"  ,Component: AutomobileFuelTypeList},
-
-  
-
-  { path: "/services/list" ,Component: ServiceList},
-  { path: "/services/single/:id"  ,Component: SubServiceList},
-  
+  { path: "/automobile-categories/list", Component: AutomobileCategoryList },
+  { path: "/automobile-category/single/:id", Component: AutomobileMakeList },
+  { path: "/automobile-make/single/:id", Component: AutomobileModelList },
+  { path: "/automobile-model/single/:id", Component: AutomobileModelVariantList },
+  { path: "/automobile-model-variant/single/:id", Component: AutomobileFuelTypeList },
 
 
-  { path: "/fuel_station/list"  ,Component: FuelStationList},
+
+  { path: "/services/list", Component: ServiceList },
+  { path: "/services/single/:id", Component: SubServiceList },
+
+
+
+  { path: "/fuel_station/list", Component: FuelStationList },
+
+
+
+  { path: "/email_template/list", Component: EmailTemplateList },
+  { path: "/email_template/update/:id", Component: EmailTemplateUpdate },
 
 
 
@@ -255,160 +262,160 @@ export const routes = [
 
 
   { path: '/dashboard/default', Component: Default },
-  { path: "/dashboard/hospital",Component: Hospital },
-  { path: "/dashboard/sass",Component: Sass},
-  { path: "/dashboard/crm",Component: Crm},
-  { path: "/dashboard/crypto",Component: Crypto},
-  { path: "/widgets/general",Component: GeneralWidget},
-  { path: "/widgets/chart",Component: ChartWidget},
+  { path: "/dashboard/hospital", Component: Hospital },
+  { path: "/dashboard/sass", Component: Sass },
+  { path: "/dashboard/crm", Component: Crm },
+  { path: "/dashboard/crypto", Component: Crypto },
+  { path: "/widgets/general", Component: GeneralWidget },
+  { path: "/widgets/chart", Component: ChartWidget },
 
-  { path: "/base/statecolor",Component: StateColor},
-  { path: "/base/typography",Component: Typography},
-  { path: "/base/avatars",Component: Avatars},
-  { path: "/base/helperclasses",Component: HelperClasses},
-  { path: "/base/grid",Component: Grid},
-  { path: "/base/tag-pills",Component: TagAndPills},
-  { path: "/base/progress-bar",Component: Progress},
-  { path: "/base/modal",Component: Modal},
-  { path: "/base/alert",Component: Alert},
-  { path: "/base/popover",Component: Popover},
-  { path: "/base/tooltips",Component: Tooltip},
-  { path: "/base/spinner",Component: Spinner},
-  { path: "/base/dropdown",Component: Dropdown},
-  { path: "/base/tab-bootstrap",Component: TabBootstrap},
-  { path: "/base/tab-line",Component: TabLine},
-  { path: "/base/accordion" ,Component: Accordian},
-  { path: "/base/navs" ,Component: Navs},
-  { path: "/base/shadow" ,Component: Shadow},
-  { path: "/base/list" ,Component: List},
+  { path: "/base/statecolor", Component: StateColor },
+  { path: "/base/typography", Component: Typography },
+  { path: "/base/avatars", Component: Avatars },
+  { path: "/base/helperclasses", Component: HelperClasses },
+  { path: "/base/grid", Component: Grid },
+  { path: "/base/tag-pills", Component: TagAndPills },
+  { path: "/base/progress-bar", Component: Progress },
+  { path: "/base/modal", Component: Modal },
+  { path: "/base/alert", Component: Alert },
+  { path: "/base/popover", Component: Popover },
+  { path: "/base/tooltips", Component: Tooltip },
+  { path: "/base/spinner", Component: Spinner },
+  { path: "/base/dropdown", Component: Dropdown },
+  { path: "/base/tab-bootstrap", Component: TabBootstrap },
+  { path: "/base/tab-line", Component: TabLine },
+  { path: "/base/accordion", Component: Accordian },
+  { path: "/base/navs", Component: Navs },
+  { path: "/base/shadow", Component: Shadow },
+  { path: "/base/list", Component: List },
 
-  { path: "/advance/scrollable" ,Component: Scrolling},
-  { path: "/advance/bootstrap-notify" ,Component: BootstrapNotify},
-  { path: "/advance/rating" ,Component: Rating},  
-  { path: "/advance/dropzone" ,Component: Dropzone},
-  { path: "/advance/sweetAlert" ,Component: SweetAlert},
-  { path: "/advance/tourComponent" ,Component: Tour},
-  { path: "/advance/breadcrumb" ,Component: Breadcrumb},
-  { path: "/advance/rangeSlider" ,Component: RangeSlider},
-  { path: "/advance/imageCropper" ,Component: Imagecrop},
-  { path: "/advance/stickyNotes" ,Component: Sticky},
-  { path: "/advance/carousel" ,Component: Carousel},
-  { path: "/advance/pagination" ,Component: Pagination},
-  { path: "/advance/steps" ,Component: Steps},
-  { path: "/advance/dragNDropComp" ,Component: DragAndDrop},
-  { path: "/advance/image-upload" ,Component: UploadImage},
+  { path: "/advance/scrollable", Component: Scrolling },
+  { path: "/advance/bootstrap-notify", Component: BootstrapNotify },
+  { path: "/advance/rating", Component: Rating },
+  { path: "/advance/dropzone", Component: Dropzone },
+  { path: "/advance/sweetAlert", Component: SweetAlert },
+  { path: "/advance/tourComponent", Component: Tour },
+  { path: "/advance/breadcrumb", Component: Breadcrumb },
+  { path: "/advance/rangeSlider", Component: RangeSlider },
+  { path: "/advance/imageCropper", Component: Imagecrop },
+  { path: "/advance/stickyNotes", Component: Sticky },
+  { path: "/advance/carousel", Component: Carousel },
+  { path: "/advance/pagination", Component: Pagination },
+  { path: "/advance/steps", Component: Steps },
+  { path: "/advance/dragNDropComp", Component: DragAndDrop },
+  { path: "/advance/image-upload", Component: UploadImage },
 
-  { path: "/todo-app/todo" ,Component: Todo},
+  { path: "/todo-app/todo", Component: Todo },
 
-  { path: "/todo-app/todo-firebase" ,Component: TodoFirebase},
+  { path: "/todo-app/todo-firebase", Component: TodoFirebase },
 
-  { path: "/ecommerce/product" ,Component: Product},
-  { path: "/ecommerce/product-detail/:id" ,Component: ProductDetail},
-  { path: "/ecommerce/cart" ,Component: Cart},
-  { path: "/ecommerce/wishlist" ,Component: Wishlist},
-  { path: "/ecommerce/checkout" ,Component: Checkout},
-  { path: "/ecommerce/invoice" ,Component: Invoice},
-  { path: "/ecommerce/product-list" ,Component: Productlist},
-  { path: "/ecommerce/payment-details" ,Component: Paymentdetails},
-  { path: "/ecommerce/orderhistory" ,Component: OrderHistory},
+  { path: "/ecommerce/product", Component: Product },
+  { path: "/ecommerce/product-detail/:id", Component: ProductDetail },
+  { path: "/ecommerce/cart", Component: Cart },
+  { path: "/ecommerce/wishlist", Component: Wishlist },
+  { path: "/ecommerce/checkout", Component: Checkout },
+  { path: "/ecommerce/invoice", Component: Invoice },
+  { path: "/ecommerce/product-list", Component: Productlist },
+  { path: "/ecommerce/payment-details", Component: Paymentdetails },
+  { path: "/ecommerce/orderhistory", Component: OrderHistory },
 
-  { path: "/Chat-app/chat" ,Component: Chat},
+  { path: "/Chat-app/chat", Component: Chat },
 
-  { path: "/social-app/socialApp" ,Component: SocialApp},
+  { path: "/social-app/socialApp", Component: SocialApp },
 
-  { path: "/jobSearch/cardView" ,Component: CardView},
-  { path: "/jobSearch/job-list" ,Component: JobList},
-  { path: "/jobSearch/job-detail" ,Component: JobDetail},
-  { path: "/jobSearch/job-apply" ,Component: JobApply},
+  { path: "/jobSearch/cardView", Component: CardView },
+  { path: "/jobSearch/job-list", Component: JobList },
+  { path: "/jobSearch/job-detail", Component: JobDetail },
+  { path: "/jobSearch/job-apply", Component: JobApply },
 
-  { path: "/Email-app/emailDefault" ,Component: Email},
+  { path: "/Email-app/emailDefault", Component: Email },
 
-  { path: "/contact-app/contact" ,Component: ContactApp},
-  { path: "/contact-app/new-user" ,Component: NewUser},
-  { path: "/contact-app/edit-user/:id" ,Component: EditUser},
+  { path: "/contact-app/contact", Component: ContactApp },
+  { path: "/contact-app/new-user", Component: NewUser },
+  { path: "/contact-app/edit-user/:id", Component: EditUser },
 
-  { path: "/forms/form-validation" ,Component: FormValidation},
-  { path: "/forms/baseInput" ,Component: BaseInput},
-  { path: "/forms/inputGroup" ,Component: InputGroup},
-  { path: "/forms/megaOptions" ,Component: MegaOption},
-  { path: "/forms/radio-checkbox" ,Component: CheckboxandRadio},
-  { path: "/forms/formDefault" ,Component: FormDefault},
-  { path: "/forms/formWizard" ,Component: FormWizard1},
+  { path: "/forms/form-validation", Component: FormValidation },
+  { path: "/forms/baseInput", Component: BaseInput },
+  { path: "/forms/inputGroup", Component: InputGroup },
+  { path: "/forms/megaOptions", Component: MegaOption },
+  { path: "/forms/radio-checkbox", Component: CheckboxandRadio },
+  { path: "/forms/formDefault", Component: FormDefault },
+  { path: "/forms/formWizard", Component: FormWizard1 },
 
-  { path: "/form-widget/datepicker" ,Component: Datepicker},
-  { path: "/form-widget/timepicker" ,Component: Timepicker},
-  { path: "/form-widget/typeahead" ,Component: Typeahead},
+  { path: "/form-widget/datepicker", Component: Datepicker },
+  { path: "/form-widget/timepicker", Component: Timepicker },
+  { path: "/form-widget/typeahead", Component: Typeahead },
 
-  { path: "/table/basic" ,Component: BasicTabels},
-  { path: "/table/border" ,Component: BorderTable},
-  { path: "/table/sizing" ,Component: SizingTable},
-  { path: "/table/styling" ,Component: StylingTable},
-  { path: "/table/datatable" ,Component: DataTable},
+  { path: "/table/basic", Component: BasicTabels },
+  { path: "/table/border", Component: BorderTable },
+  { path: "/table/sizing", Component: SizingTable },
+  { path: "/table/styling", Component: StylingTable },
+  { path: "/table/datatable", Component: DataTable },
 
-  { path: "/cards/basicCards" ,Component: BasicCards},
-  { path: "/cards/creativeCards" ,Component: CreativeCards},
-  { path: "/cards/tabCard" ,Component: TabCard},
-  { path: "/cards/draggingCards" ,Component: DraggingCards},
-  
-  { path: "/users/userProfile" ,Component: UserProfile},
-  { path: "/users/userEdit" ,Component: UserEdit},
-  { path: "/users/userCards" ,Component: UserCards},
+  { path: "/cards/basicCards", Component: BasicCards },
+  { path: "/cards/creativeCards", Component: CreativeCards },
+  { path: "/cards/tabCard", Component: TabCard },
+  { path: "/cards/draggingCards", Component: DraggingCards },
 
-  { path: "/calendar/basic-calendar" ,Component: BasicCalender},
-  { path: "/calendar/draggable-calendar" ,Component: DraggableCalendar},
+  { path: "/users/userProfile", Component: UserProfile },
+  { path: "/users/userEdit", Component: UserEdit },
+  { path: "/users/userCards", Component: UserCards },
 
-  { path: "/icons/flagIcons" ,Component: FlagIcons},
-  { path: "/icons/fontAwsomeIcon" ,Component: FontAwsomeIcon},
-  { path: "/icons/icoIcons" ,Component: IcoIcons},
-  { path: "/icons/featherIcons" ,Component: FeatherIcons},
-  { path: "/icons/themifyIcons" ,Component: ThemifyIcons},
-  { path: "/icons/weatherIcons" ,Component: WeatherIcons},
+  { path: "/calendar/basic-calendar", Component: BasicCalender },
+  { path: "/calendar/draggable-calendar", Component: DraggableCalendar },
 
-  { path: "/icons/material-design-icon" ,Component: Materialdesignicon},
-  { path: "/icons/pe7-icon" ,Component: Pe7icons},
-  { path: "/icons/typicons-icon" ,Component: Typicon},
-  { path: "/icons/simplelineIcon" ,Component: Simplelineicon},
-  { path: "/icons/ionic-icon" ,Component: Ionicicon},
+  { path: "/icons/flagIcons", Component: FlagIcons },
+  { path: "/icons/fontAwsomeIcon", Component: FontAwsomeIcon },
+  { path: "/icons/icoIcons", Component: IcoIcons },
+  { path: "/icons/featherIcons", Component: FeatherIcons },
+  { path: "/icons/themifyIcons", Component: ThemifyIcons },
+  { path: "/icons/weatherIcons", Component: WeatherIcons },
 
-  { path: "/buttons/default-btn" ,Component: DefaultButton},
-  { path: "/buttons/flatBtn" ,Component: FlatButton},
-  { path: "/buttons/edgeBtn" ,Component: EdgeButton},
-  { path: "/buttons/raisedBtn" ,Component: RaisedButton},
-  { path: "/buttons/groupBtn" ,Component: GroupButton},
+  { path: "/icons/material-design-icon", Component: Materialdesignicon },
+  { path: "/icons/pe7-icon", Component: Pe7icons },
+  { path: "/icons/typicons-icon", Component: Typicon },
+  { path: "/icons/simplelineIcon", Component: Simplelineicon },
+  { path: "/icons/ionic-icon", Component: Ionicicon },
 
-  { path: "/gallery/imageGallery" ,Component: ImageGallery},
-  { path: "/gallery/imageWithDesc" ,Component: ImageWithDesc},
-  { path: "/gallery/mesonryGallery" ,Component: MesonryGallery},
-  { path: "/gallery/mesonryDesc" ,Component: MesonryDesc},
-  { path: "/gallery/imageHover" ,Component: ImageHover},
+  { path: "/buttons/default-btn", Component: DefaultButton },
+  { path: "/buttons/flatBtn", Component: FlatButton },
+  { path: "/buttons/edgeBtn", Component: EdgeButton },
+  { path: "/buttons/raisedBtn", Component: RaisedButton },
+  { path: "/buttons/groupBtn", Component: GroupButton },
 
-  { path: "/timelines/timeline1" ,Component: Timeline1},
-  { path: "/timelines/timeline2" ,Component: Timeline2},
+  { path: "/gallery/imageGallery", Component: ImageGallery },
+  { path: "/gallery/imageWithDesc", Component: ImageWithDesc },
+  { path: "/gallery/mesonryGallery", Component: MesonryGallery },
+  { path: "/gallery/mesonryDesc", Component: MesonryDesc },
+  { path: "/gallery/imageHover", Component: ImageHover },
 
-  { path: "/charts/apexCharts" ,Component: Apexcharts},
-  { path: "/charts/googleChart" ,Component: GoogleCharts},
-  { path: "/charts/knobChart" ,Component: KnobChart},
-  { path: "/charts/chartJs" ,Component: Chartsjs},
-  { path: "/charts/chartistComponent" ,Component: Chartist},
+  { path: "/timelines/timeline1", Component: Timeline1 },
+  { path: "/timelines/timeline2", Component: Timeline2 },
 
-  { path: "/map/googleMap" ,Component: GoogleMap},
-  { path: "/map/LeafletMap" ,Component: LeafletMap},
+  { path: "/charts/apexCharts", Component: Apexcharts },
+  { path: "/charts/googleChart", Component: GoogleCharts },
+  { path: "/charts/knobChart", Component: KnobChart },
+  { path: "/charts/chartJs", Component: Chartsjs },
+  { path: "/charts/chartistComponent", Component: Chartist },
 
-  { path: "/editor/ckEditor" ,Component: CkEditor},
-  { path: "/editor/mdeEditor" ,Component: MdeEditor},
+  { path: "/map/googleMap", Component: GoogleMap },
+  { path: "/map/LeafletMap", Component: LeafletMap },
 
-  { path: "/blog/blogDetail" ,Component: BlogDetail},
-  { path: "/blog/blogSingle" ,Component: BlogSingle},
-  { path: "/blog/blogPost" ,Component: BlogPost},
+  { path: "/editor/ckEditor", Component: CkEditor },
+  { path: "/editor/mdeEditor", Component: MdeEditor },
 
-  { path: "/learning/learning-list" ,Component: Learninglist},
-  { path: "/learning/learning-detail" ,Component: LearningDeatil},
+  { path: "/blog/blogDetail", Component: BlogDetail },
+  { path: "/blog/blogSingle", Component: BlogSingle },
+  { path: "/blog/blogPost", Component: BlogPost },
 
-  { path: "/price/pricing" ,Component: Pricing},
-  { path: "/sample/samplepage" ,Component: Sample},
-  { path: "/search/searchpage" ,Component: Search},
+  { path: "/learning/learning-list", Component: Learninglist },
+  { path: "/learning/learning-detail", Component: LearningDeatil },
 
-  { path: "/faq/faqComponent" ,Component: FaqComponent},
-  { path: "/knowledgebase/knowledgebaseComponent" ,Component: KnowledgebaseComponent},
-  { path: "/support-ticket/supportTicket" ,Component: SupportTicket},
+  { path: "/price/pricing", Component: Pricing },
+  { path: "/sample/samplepage", Component: Sample },
+  { path: "/search/searchpage", Component: Search },
+
+  { path: "/faq/faqComponent", Component: FaqComponent },
+  { path: "/knowledgebase/knowledgebaseComponent", Component: KnowledgebaseComponent },
+  { path: "/support-ticket/supportTicket", Component: SupportTicket },
 ]

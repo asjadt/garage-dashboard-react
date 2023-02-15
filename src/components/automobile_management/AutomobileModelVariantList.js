@@ -3,7 +3,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import {
     Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table
 } from "reactstrap";
-import BreadCrumb from '../../layout/Breadcrumb';
 import { apiClient } from '../../utils/apiClient';
 import { BACKEND_API } from '../../utils/backend';
 import setLinksView from '../../utils/pagination';
@@ -204,7 +203,6 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Model Variant" title="Manage Automobile Model Variant" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">

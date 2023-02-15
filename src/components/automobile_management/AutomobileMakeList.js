@@ -1,25 +1,19 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import BreadCrumb from '../../layout/Breadcrumb'
-import { Container, Row, Col, Card, CardHeader, Table, Pagination, PaginationItem, Button, CardBody, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from "reactstrap"
-import { HorizontalBorders, VerticalBorders, BothBordeds, BorderlessTable, DefaultTableBorder, DoubleBorder, BorderBottomColor, DottedBorder, DashedBorder, SolidBorder } from "../../constant";
-import { BACKEND_API, http } from '../../utils/backend';
-import { apiClient } from '../../utils/apiClient';
 import { css } from "@emotion/react";
-import { ClipLoader } from 'react-spinners';
-import setLinksView from '../../utils/pagination';
-import AutomobileCategoryForm from './forms/AutomobileCategoryForm';
-import SweetAlert from 'sweetalert2'
-import {
-    Edit, Delete, Eye
-} from 'react-feather';
-import AutomobileCategoryView from './vews/AutomobileCategoryView';
+import React, { Fragment, useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
+import { Delete, Edit, Eye } from 'react-feather';
+import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
+import SweetAlert from 'sweetalert2';
 import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIEW } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
+import { apiClient } from '../../utils/apiClient';
+import { BACKEND_API } from '../../utils/backend';
 import { checkPermissions } from '../../utils/helperFunctions';
-import { useParams } from 'react-router';
+import setLinksView from '../../utils/pagination';
 import AutomobileMakeForm from './forms/AutomobileMakeForm';
-import { Link } from 'react-router-dom';
+import AutomobileCategoryView from './vews/AutomobileCategoryView';
 
 
 
@@ -206,7 +200,6 @@ return <><Error401Unauthorized></Error401Unauthorized></>
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Make" title="Manage Automobile Make" />
             <Container fluid={true}>
                 <Row className='mb-3'>
                     <Col sm="9">

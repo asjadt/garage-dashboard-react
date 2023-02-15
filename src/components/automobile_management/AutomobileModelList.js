@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
-import BreadCrumb from '../../layout/Breadcrumb';
 
 import { apiClient } from '../../utils/apiClient';
 import { BACKEND_API } from '../../utils/backend';
@@ -178,7 +177,6 @@ const AutomobileModelList = () => {
     return (
         <Fragment>
 
-            <BreadCrumb parent="Home" subparent="Automobile Management / Model" title="Manage Automobile Model" />
             <Container fluid={true}>
                 <Row>
                     <Col sm="12">

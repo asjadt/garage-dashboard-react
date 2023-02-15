@@ -35,3 +35,9 @@ export const FUEL_STATION_CREATE = "fuel_station_create";
 export const FUEL_STATION_UPDATE = "fuel_station_update";
 export const FUEL_STATION_VIEW = "fuel_station_view";
 export const FUEL_STATION_DELETE = "fuel_station_delete";
+
+
+export const EMAIL_TEMPLATE_CREATE = "template_create";
+export const EMAIL_TEMPLATE_UPDATE = "template_update";
+export const EMAIL_TEMPLATE_VIEW = "template_view";
+export const EMAIL_TEMPLATE_DELETE = "template_delete";

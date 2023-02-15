@@ -72,6 +72,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.3",
     "react-scrollbar": "^0.5.6",
+    "react-simple-code-editor": "^0.13.1",
     "react-simplemde-editor": "^4.1.0",
     "react-slick": "^0.25.2",
     "react-sparklines": "^1.7.0",

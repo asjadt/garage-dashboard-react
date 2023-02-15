@@ -1,11 +1,11 @@
-import React, {  useState , useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Loader = (props) => {
     const [show, setShow] = useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
             setShow(false)
-          }, 3000);
+          }, 1000);
 
         return () => {
             clearTimeout(timeout);

@@ -24,6 +24,7 @@ const FuelStationForm = ({ toggleModal, fetchData, perPage, type, fuelStationUpd
 
 
   const onSubmit = data => {
+    console.log(data.closing_time)
     setLoading(true)
     setServerSideErrors(null)
     if (type === "update") {

@@ -4,7 +4,8 @@ import {
 } from 'react-feather';
 import { AiFillCar, AiFillShop } from "react-icons/ai";
 import { FaOilCan } from 'react-icons/fa';
-import { AUTOMOBILE_VIEW, FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { HiOutlineMail } from "react-icons/hi";
+import { AUTOMOBILE_VIEW, EMAIL_TEMPLATE_DELETE, EMAIL_TEMPLATE_UPDATE, EMAIL_TEMPLATE_VIEW, FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -102,6 +103,15 @@ export const MENUITEMS = [
                 show: checkPermissions([ROLE_VIEW], permissions),
             },
         ]
+    },
+    {
+        title: 'Email Templates', icon: HiOutlineMail,
+        type: 'link',
+        badgeType: 'primary',
+        active: false,
+        path: `${process.env.PUBLIC_URL}/email_template/list`,
+        // permissionList:[USER_CREATE,USER_UPDATE,USER_VIEW,USER_DELETE],
+        show: checkPermissions([EMAIL_TEMPLATE_DELETE,EMAIL_TEMPLATE_UPDATE,EMAIL_TEMPLATE_VIEW], permissions),
     },
     {
         title: 'Dashboard', icon: Home, type: 'sub', badgeType: 'primary', active: false,

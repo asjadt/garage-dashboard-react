@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import React, { Fragment, useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import { Delete, Edit, Eye } from 'react-feather';
@@ -6,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { Button, Card, CardHeader, Col, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Pagination, Row, Table } from "reactstrap";
 import SweetAlert from 'sweetalert2';
 import { AUTOMOBILE_CREATE, AUTOMOBILE_DELETE, AUTOMOBILE_UPDATE, AUTOMOBILE_VIEW } from '../../constant/permissions';
-import BreadCrumb from '../../layout/Breadcrumb';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 import { apiClient } from '../../utils/apiClient';
 import { BACKEND_API } from '../../utils/backend';
@@ -158,22 +156,14 @@ const AutomobileCategoryList = () => {
     }, [])
 
 
-    const override = css`
-    border-color: black;
-  `;
-
-
     if (!permissions.includes(AUTOMOBILE_VIEW)) {
         return <><Error401Unauthorized></Error401Unauthorized></>
     }
 
     return (
         <Fragment>
-
-            <BreadCrumb parent="Home" subparent="Automobile Management / Category" title="Manage Automobile Categories" />
             <Container fluid={true}>
                 <Row>
-
                     <Col sm="12">
                         <Card>
                             <CardHeader>
