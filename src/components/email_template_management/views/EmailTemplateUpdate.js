@@ -89,7 +89,6 @@ export default function EmailTemplateUpdate() {
             </Col>
           </Row>
           <Row>
-
             <Col sm='12' className="my-2">
               <Row>
                 <Col sm='6'>

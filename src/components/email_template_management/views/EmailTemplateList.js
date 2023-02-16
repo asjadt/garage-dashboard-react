@@ -56,9 +56,9 @@ const EmailTemplateList = () => {
     const [userViewModal, setUserViewModal] = useState(false);
     const userViewModaltoggle = () => setUserViewModal(!userViewModal);
 
-    const viewForm = (el) => {
+    const viewForm = (el,id) => {
         userViewModaltoggle()
-        setTemplateViewData(el)
+        setTemplateViewData(el,id)
     }
 
     // end modal
@@ -221,7 +221,7 @@ const EmailTemplateList = () => {
                                                             <Eye
                                                                 className='mr-1'
                                                                 color="#51bb25" size={18} style={{ cursor: "pointer" }}
-                                                                onClick={() => viewForm(el)}></Eye>
+                                                                onClick={() => viewForm(el,el.id)}></Eye>
                                                         )}
                                                         {checkPermissions([EMAIL_TEMPLATE_UPDATE], permissions) && (
                                                             <Link to={`/email_template/update/${el.id}`}>
