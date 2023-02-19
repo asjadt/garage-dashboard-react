@@ -41,7 +41,6 @@ export default function EmailTemplateUpdate() {
 
   const handleSubmit = () => {
     console.log({
-      
       type: singleTypes,
       template: htmls,
     })
