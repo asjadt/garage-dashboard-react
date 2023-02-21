@@ -4,7 +4,7 @@ import SweetAlert from 'sweetalert2';
 
 
 
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Birthdate from '../components/forms/form-layout/form-wizard-1/birthdate';
 import Emails from '../components/forms/form-layout/form-wizard-1/email';
 
@@ -20,7 +20,7 @@ import { getPermissions } from "../utils/helperFunctions";
 
 
 export default function SignUp() {
-
+    const { pathname } = useLocation()
 
     const [placeAutoComplete, setPlaceAutoComplete] = useState({});
     const [placeAutoComplete2, setPlaceAutoComplete2] = useState({});
@@ -533,12 +533,11 @@ export default function SignUp() {
             console.log("garage_err", error)
         })
     };
-
+    
     return (
         <Fragment>
             <Container fluid={true} >
                 <Row>
-          
                     <Col sm="12">
                         <Form onSubmit={handleSubmit}>
                             <Card>
@@ -567,6 +566,7 @@ export default function SignUp() {
                                     />
 
                                     <ServiceStep
+                                        pathname={pathname}
                                         handleMakeChangeAll={handleMakeChangeAll}
                                         handleServiceChangeAll={handleServiceChangeAll}
                                         currentStep={state.currentStep}
@@ -582,7 +582,7 @@ export default function SignUp() {
                                         handleSubServiceChange={handleSubServiceChange}
                                     /><div>Already have an account? <Link to={`/login`}>Login.</Link></div>
                                 </CardBody>
-                                
+
                                 <CardFooter>
                                     {previousButton()}
                                     {nextButton()}
@@ -592,7 +592,6 @@ export default function SignUp() {
                             </Card>
                         </Form>
                     </Col>
-             
                 </Row>
             </Container>
         </Fragment>

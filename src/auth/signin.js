@@ -2,10 +2,12 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import SweetAlert from 'sweetalert2';
 import man from '../assets/images/dashboard/user.png';
 import { LOGIN, Password, RememberMe, YourName } from '../constant';
 import { BACKEND_API } from '../utils/backend';
 import { getPermissions } from '../utils/helperFunctions';
+
 
 const Logins = (props) => {
 
@@ -40,12 +42,32 @@ const Logins = (props) => {
       localStorage.setItem('permissions', JSON.stringify(getPermissions(response.data.data)));
       window.location.href = `${process.env.PUBLIC_URL}/dashboard/default`
       return response.data.data.token;
-    }).catch(err => {
-      console.log(err.response)
+    }).catch(error => {
+
+      if (error.response?.status === 409) {
+        SweetAlert.fire({
+          title: "Oops!",
+          html: `
+              <div style="display:flex;justify-content:center;align-items:center;width:100%;flex-direction:column;" >
+                  <h2 style="font-weight:bold">Your email is not verified yet!</h2>
+                  <p style="text-align:center">
+                       We have already sent a email to: <strong style="color:#158DF7"> ${email}</strong>. Please active your account by verifing your email address. then come back and try to login again.<br>
+                       <div STYLE="background-color:#eeeeee; margin-top:5px; border-radius:10px; padding:5px 10px;">
+                        <span style="color:#333333; font-size:0.8rem;">
+                            NOTE: If you can't find the email in your inbox then please check to the spam folder.
+                        </span>
+                       </div>
+                  </p>
+              </div>
+              `,
+          icon: "warning"
+        })
+        setLoading(false)
+      }
     })
   }
 
-  
+
   return (
     <div className="page-wrapper d-flex justify-content-center min-vh-100 w-100 align-items-center">
       <Container fluid={true} className="w-50">
@@ -60,13 +82,13 @@ const Logins = (props) => {
             <Input className="form-control" type="password" onChange={e => setPassword(e.target.value)} defaultValue={password} required="" />
           </FormGroup>
           <div className='d-flex justify-content-between align-items-center'>
-          <div className="checkbox pl-3">
-            <Input id="checkbox1" type="checkbox" />
-            <Label for="checkbox1">{RememberMe}</Label>
+            <div className="checkbox pl-3">
+              <Input id="checkbox1" type="checkbox" />
+              <Label for="checkbox1">{RememberMe}</Label>
+            </div>
+            <Link to={'/reset-password'}>Forgot password?</Link>
           </div>
-          <Link to={'/reset-password'}>Forgot password?</Link>
-          </div>
-          
+
           <div>
             Haven't Any Account? <span role="button" className='text-primary' onClick={() => { history.push(`${process.env.PUBLIC_URL}/registration`) }}>Create Account.</span>
           </div>

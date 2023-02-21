@@ -6,7 +6,7 @@ import BreadCrumb from '../../layout/Breadcrumb';
 import { apiClient } from '../../utils/apiClient';
 import { BACKEND_API } from '../../utils/backend';
 
-import { withRouter } from 'react-router-dom';
+import { useLocation, withRouter } from 'react-router-dom';
 import { GARAGE_CREATE } from '../../constant/permissions';
 import Error401Unauthorized from '../../pages/errors/Error401Unauthorized';
 
@@ -20,6 +20,7 @@ import MultiStepProgressBar from './utils/MultiStepProgressBar';
 
 
 const GarageCreate = ({ history }) => {
+  const { pathname } = useLocation()
   // eslint-disable-next-line 
   const [stateOptions, setStateValues] = useState(topCardState);
   const [placeAutoComplete, setPlaceAutoComplete] = useState({});
@@ -421,11 +422,9 @@ const GarageCreate = ({ history }) => {
       })
       .catch(error => {
         setLoading(false)
-        console.log("error", error.response)
         if (error.response?.status === 422) {
           const { errors } = error.response.data
           setServerSideErrors(errors)
-          console.log({ errors })
           if (
             (currentStep >= 1)
             &&
@@ -586,6 +585,7 @@ const GarageCreate = ({ history }) => {
                     serverSideErrors={serverSideErrors} />
 
                   <ServiceStep
+                    pathname={pathname}
                     handleMakeChangeAll={handleMakeChangeAll}
                     handleServiceChangeAll={handleServiceChangeAll}
                     currentStep={state.currentStep}
