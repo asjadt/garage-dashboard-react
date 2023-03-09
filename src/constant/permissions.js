@@ -41,3 +41,4 @@ export const EMAIL_TEMPLATE_CREATE = "template_create";
 export const EMAIL_TEMPLATE_UPDATE = "template_update";
 export const EMAIL_TEMPLATE_VIEW = "template_view";
 export const EMAIL_TEMPLATE_DELETE = "template_delete";
+export const GARAGE_TIME = "garage_times_view";

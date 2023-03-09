@@ -214,6 +214,7 @@ import SubServiceList from '../components/service_management/SubServiceList'
 import SupportTicket from "../components/support-ticket/supportTicket"
 import RoleList from '../components/user_management/RoleList'
 import UserList from '../components/user_management/UserList'
+import Timing from '../garageOwnerComponent/Timing/Timing'
 
 export const routes = [
   { path: "/users/list", Component: UserList },
@@ -418,4 +419,5 @@ export const routes = [
   { path: "/faq/faqComponent", Component: FaqComponent },
   { path: "/knowledgebase/knowledgebaseComponent", Component: KnowledgebaseComponent },
   { path: "/support-ticket/supportTicket", Component: SupportTicket },
+  { path: "/pages/garage-time", Component: Timing },
 ]

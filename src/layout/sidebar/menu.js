@@ -1,11 +1,11 @@
 import {
     Airplay, AlertOctagon, BarChart, Book, Box, Briefcase, Calendar, Chrome, Cloud, Command, Database, DollarSign, Edit, File, FileText, FolderPlus, GitPullRequest, Headphones, HelpCircle, Home, Image, Layers, Lock, Mail, Map, MessageSquare, Mic, Search, Server, Settings, ShoppingBag, Sliders, Tool, User, UserCheck, UserPlus,
-    Users
+    Users,Clock
 } from 'react-feather';
 import { AiFillCar, AiFillShop } from "react-icons/ai";
 import { FaOilCan } from 'react-icons/fa';
 import { HiOutlineMail } from "react-icons/hi";
-import { AUTOMOBILE_VIEW, EMAIL_TEMPLATE_DELETE, EMAIL_TEMPLATE_UPDATE, EMAIL_TEMPLATE_VIEW, FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
+import { AUTOMOBILE_VIEW, EMAIL_TEMPLATE_DELETE, EMAIL_TEMPLATE_UPDATE, EMAIL_TEMPLATE_VIEW, FUEL_STATION_CREATE, FUEL_STATION_DELETE, FUEL_STATION_UPDATE, FUEL_STATION_VIEW, GARAGE_TIME, GARAGE_VIEW, ROLE_VIEW, SERVICE_VIEW, USER_CREATE, USER_DELETE, USER_UPDATE, USER_VIEW } from '../../constant/permissions';
 import { checkPermissions } from '../../utils/helperFunctions';
 let permissions = JSON.parse(localStorage.getItem("permissions"));
 export const MENUITEMS = [
@@ -803,5 +803,8 @@ export const MENUITEMS = [
     },
     {
         title: 'Maintenance', icon: Settings, path: `${process.env.PUBLIC_URL}/pages/maintenance`, type: 'link', active: false, show: checkPermissions([USER_CREATE, USER_UPDATE, USER_VIEW, USER_DELETE], permissions),
-    }
+    },
+    {
+        title: 'Garage Timing', icon: Clock, type: 'link', path: `${process.env.PUBLIC_URL}/pages/garage-time`, active: false, show: checkPermissions([GARAGE_TIME], permissions),
+    },
 ]
